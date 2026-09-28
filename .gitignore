@@ -1,0 +1,20 @@
+# Material interno: no se publica
+01_assets/
+02_curado_para_reconstruccion/
+Assessment_sitio_w-it_*.md
+Brief_Claude_Design_w-it_*.md
+PartnerCenter_cambios_propuestos_*.md
+.claude/
+
+# Originales pesados que el sitio no usa (se publican las versiones optimizadas)
+sitio/assets/img/fondo.png
+sitio/assets/img/Imagen de Codex*.png
+sitio/assets/img/hero-tierra-duotono.*
+
+# Python
+__pycache__/
+*.pyc
+
+# Sistema
+.DS_Store
+Thumbs.db
