@@ -197,10 +197,23 @@
     </div>
   </div>
 </section>
-<section class="section bg-white"><div class="container stack-40">
-  <div class="section-head"><span class="eyebrow">Señales de que lo necesitas</span><h2 class="h2">Si te suena alguna de estas, conversemos.</h2></div>
-  <div class="signals"><div class="signal"><h3>Consentimientos dispersos</h3><p>Web, app, sucursal, call center y papel, sin un registro único.</p></div><div class="signal"><h3>Sin evidencia</h3><p>No podrías demostrar hoy qué consintió cada titular y cuándo.</p></div><div class="signal"><h3>Datos sin clasificar</h3><p>No hay inventario de dónde están los datos personales.</p></div><div class="signal"><h3>Accesos sin control</h3><p>Cuentas y permisos que nadie revisa periódicamente.</p></div></div>
-</div></section>
+<section class="section bg-white senales" aria-labelledby="sen-title">
+  <div class="container senales-inner">
+    <div class="sen-head">
+      <svg class="sen-art" viewBox="0 0 160 132" aria-hidden="true" focusable="false">
+  <path d="M22 10h76a18 18 0 0 1 18 18v44a18 18 0 0 1-18 18H52L34 106V90H22A18 18 0 0 1 4 72V28a18 18 0 0 1 18-18z" fill="#1B3A50"/>
+  <text x="60" y="68" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="52" font-weight="700" fill="#fff">?</text>
+  <path d="M106 64h36a14 14 0 0 1 14 14v20a14 14 0 0 1-14 14h-8v14l-14-14h-14a14 14 0 0 1-14-14V78a14 14 0 0 1 14-14z" fill="#54BA00" stroke="#fff" stroke-width="4"/>
+  <text x="124" y="101" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="30" font-weight="700" fill="#fff">!</text>
+</svg>
+      <span class="eyebrow">Señales de que lo necesitas</span>
+      <h2 class="h2" id="sen-title">¿Tienes alguno de estos inconvenientes? <em>Conversemos.</em></h2>
+      <p class="lead">Son las situaciones que más vemos al iniciar un proyecto. En un diagnóstico de 30 minutos sabemos por dónde empezar.</p>
+      <a class="btn btn-green" href="../../contacto/">Agenda un diagnóstico</a>
+    </div>
+    <ol class="sen-list"><li class="sen-item is-on"><span class="sen-ico" aria-hidden="true">?</span><div class="sen-txt"><h3>Consentimientos dispersos</h3><p>Web, app, sucursal, call center y papel, sin un registro único.</p></div></li><li class="sen-item"><span class="sen-ico" aria-hidden="true">?</span><div class="sen-txt"><h3>Sin evidencia</h3><p>No podrías demostrar hoy qué consintió cada titular y cuándo.</p></div></li><li class="sen-item"><span class="sen-ico" aria-hidden="true">?</span><div class="sen-txt"><h3>Datos sin clasificar</h3><p>No hay inventario de dónde están los datos personales.</p></div></li><li class="sen-item"><span class="sen-ico" aria-hidden="true">?</span><div class="sen-txt"><h3>Accesos sin control</h3><p>Cuentas y permisos que nadie revisa periódicamente.</p></div></li></ol>
+  </div>
+</section>
 <section class="section bg-soft"><div class="container stack-40">
   <div class="section-head"><span class="eyebrow">Qué implementamos</span><h2 class="h2">Tecnología Microsoft, elegida según tu proceso.</h2></div>
   <div class="product-grid"><div class="product-card"><span class="icon-slot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span>
@@ -215,8 +228,80 @@
 </div></section>
 
 <section class="section bg-blue"><div class="container stack-40">
-  <div class="section-head"><span class="eyebrow">Cómo lo hacemos</span><h2 class="h2">Cinco fases. IA en cada una.</h2></div>
-  <ol class="fases"><li class="fase"><h3>Descubrir</h3><p>Mapeo de procesos y datos.</p><div class="fase-ia"><span class="tag-ia">IA</span><span>Análisis automático de entornos y del modelo entidad-relación.</span></div></li><li class="fase"><h3>Diseñar</h3><p>Solution Blueprint y arquitectura.</p><div class="fase-ia"><span class="tag-ia">IA</span><span>Borradores de diseño y reglas de negocio.</span></div></li><li class="fase"><h3>Construir</h3><p>Implementación e integraciones.</p><div class="fase-ia"><span class="tag-ia">IA</span><span>Personalizaciones asistidas y pruebas.</span></div></li><li class="fase"><h3>Adoptar</h3><p>UAT, capacitación y go-live.</p><div class="fase-ia"><span class="tag-ia">IA</span><span>Medición del uso real.</span></div></li><li class="fase"><h3>Operar</h3><p>Soporte, AMS y mejora continua.</p><div class="fase-ia"><span class="tag-ia">IA</span><span>Agentes y monitoreo.</span></div></li></ol>
+  <div class="section-head-row"><div class="section-head"><span class="eyebrow">Cómo lo hacemos</span><h2 class="h2">Cloud Adoption Framework, por olas.</h2><p class="lead">Primero la landing zone, luego migraciones por olas pequeñas para aprender rápido, con costos y seguridad bajo control desde el primer día. Sobre el Cloud Adoption Framework y el Well-Architected Framework de Microsoft.</p></div><a class="link-strong" href="../../como-trabajamos/">Cómo trabajamos <span aria-hidden="true">→</span></a></div>
+  <div class="metodo" data-metodo>
+  <ol class="mt-rail" style="--i:0">
+    <li class="mt-step is-on">
+      <button class="mt-btn is-on" type="button" id="mt-azure-b1" aria-controls="mt-azure-p1" aria-expanded="true">
+        <span class="mt-dot" aria-hidden="true">1</span><span class="mt-name">Estrategia</span><span class="mt-sbd">Strategy</span>
+      </button>
+      <div class="mt-panel" id="mt-azure-p1" role="region" aria-labelledby="mt-azure-b1">
+        <div class="mt-panel-head"><p class="mt-linea">Definimos por qué y para qué: resultados de negocio, no solo servidores.</p><span class="mt-hito">Cloud Adoption Framework · Business case aprobado</span></div>
+        <div class="mt-cols">
+          <div><h4>Qué hacemos</h4><ul><li>Motivaciones y resultados esperados: costos, agilidad, seguridad, salida del datacenter.</li><li>Business case y modelo de costos (TCO) en Azure.</li><li>Inventario inicial de cargas de trabajo y dependencias.</li><li>Casos de uso de datos e IA que la nube habilita.</li></ul></div>
+          <div><h4>Qué recibes</h4><ul><li>Estrategia de adopción y business case.</li><li>Inventario de cargas de trabajo.</li><li>Primera ola candidata.</li></ul></div>
+          <div class="mt-ia"><h4><span class="tag-ia">IA</span>IA en esta fase</h4><p>Descubrimiento y clasificación automática de cargas y dependencias.</p></div>
+        </div>
+      </div>
+    </li>
+    <li class="mt-step">
+      <button class="mt-btn" type="button" id="mt-azure-b2" aria-controls="mt-azure-p2" aria-expanded="false">
+        <span class="mt-dot" aria-hidden="true">2</span><span class="mt-name">Planificar</span><span class="mt-sbd">Plan</span>
+      </button>
+      <div class="mt-panel" id="mt-azure-p2" role="region" aria-labelledby="mt-azure-b2" hidden>
+        <div class="mt-panel-head"><p class="mt-linea">Un plan por olas, con la primera lo bastante pequeña para aprender rápido.</p><span class="mt-hito">Cloud Adoption Framework · Plan de olas aprobado</span></div>
+        <div class="mt-cols">
+          <div><h4>Qué hacemos</h4><ul><li>Evaluación de cada carga: migrar, modernizar o reemplazar.</li><li>Olas de migración ordenadas por dependencia y riesgo.</li><li>Preparación del equipo: roles, habilidades y modelo de operación.</li><li>FinOps desde el inicio: presupuesto y controles de costos.</li></ul></div>
+          <div><h4>Qué recibes</h4><ul><li>Plan de adopción por olas.</li><li>Modelo de operación y roles.</li><li>Presupuesto y controles de costos.</li></ul></div>
+          <div class="mt-ia"><h4><span class="tag-ia">IA</span>IA en esta fase</h4><p>Recomendaciones de dimensionamiento y costos por carga de trabajo.</p></div>
+        </div>
+      </div>
+    </li>
+    <li class="mt-step">
+      <button class="mt-btn" type="button" id="mt-azure-b3" aria-controls="mt-azure-p3" aria-expanded="false">
+        <span class="mt-dot" aria-hidden="true">3</span><span class="mt-name">Preparar</span><span class="mt-sbd">Ready</span>
+      </button>
+      <div class="mt-panel" id="mt-azure-p3" role="region" aria-labelledby="mt-azure-b3" hidden>
+        <div class="mt-panel-head"><p class="mt-linea">Construimos la landing zone: la base segura y gobernada donde todo aterriza.</p><span class="mt-hito">Cloud Adoption Framework · Landing zone lista</span></div>
+        <div class="mt-cols">
+          <div><h4>Qué hacemos</h4><ul><li>Azure landing zone: suscripciones, red, identidad y políticas.</li><li>Seguridad base: Microsoft Entra ID, Microsoft Defender for Cloud y respaldos.</li><li>Conectividad híbrida y residencia de datos en Azure Chile Central.</li><li>Infraestructura como código y pipelines de despliegue.</li></ul></div>
+          <div><h4>Qué recibes</h4><ul><li>Landing zone operativa.</li><li>Políticas y controles de seguridad activos.</li><li>Plantillas de infraestructura reutilizables.</li></ul></div>
+          <div class="mt-ia"><h4><span class="tag-ia">IA</span>IA en esta fase</h4><p>Revisión asistida de la configuración contra las recomendaciones de Azure.</p></div>
+        </div>
+      </div>
+    </li>
+    <li class="mt-step">
+      <button class="mt-btn" type="button" id="mt-azure-b4" aria-controls="mt-azure-p4" aria-expanded="false">
+        <span class="mt-dot" aria-hidden="true">4</span><span class="mt-name">Adoptar</span><span class="mt-sbd">Adopt</span>
+      </button>
+      <div class="mt-panel" id="mt-azure-p4" role="region" aria-labelledby="mt-azure-b4" hidden>
+        <div class="mt-panel-head"><p class="mt-linea">Migramos y modernizamos ola por ola, sin big bang.</p><span class="mt-hito">Cloud Adoption Framework · Ola migrada y validada</span></div>
+        <div class="mt-cols">
+          <div><h4>Qué hacemos</h4><ul><li>Migración con Azure Migrate y pruebas de cada ola.</li><li>Modernización donde aporta: PaaS, contenedores, Azure Virtual Desktop o Azure VMware Solution.</li><li>Corte planificado y validación con el negocio.</li><li>Optimización de costos al cierre de cada ola.</li></ul></div>
+          <div><h4>Qué recibes</h4><ul><li>Cargas migradas y validadas.</li><li>Runbooks de corte y de vuelta atrás.</li><li>Informe de costos por ola.</li></ul></div>
+          <div class="mt-ia"><h4><span class="tag-ia">IA</span>IA en esta fase</h4><p>Detección de anomalías y recomendaciones de optimización durante la migración.</p></div>
+        </div>
+      </div>
+    </li>
+    <li class="mt-step">
+      <button class="mt-btn" type="button" id="mt-azure-b5" aria-controls="mt-azure-p5" aria-expanded="false">
+        <span class="mt-dot" aria-hidden="true">5</span><span class="mt-name">Gobernar y operar</span><span class="mt-sbd">Govern · Secure · Manage</span>
+      </button>
+      <div class="mt-panel" id="mt-azure-p5" role="region" aria-labelledby="mt-azure-b5" hidden>
+        <div class="mt-panel-head"><p class="mt-linea">La nube se gobierna, se asegura y se opera todos los días.</p><span class="mt-hito">Cloud Adoption Framework · Revisión de costos y seguridad</span></div>
+        <div class="mt-cols">
+          <div><h4>Qué hacemos</h4><ul><li>Gobierno: políticas, etiquetado y control de costos (FinOps).</li><li>Seguridad continua: postura, identidades y cumplimiento.</li><li>Operación: monitoreo, respaldo, continuidad y actualizaciones.</li><li>Revisiones periódicas con el Well-Architected Framework.</li></ul></div>
+          <div><h4>Qué recibes</h4><ul><li>Operación gestionada con niveles de servicio.</li><li>Informes de costos, seguridad y cumplimiento.</li><li>Plan de mejora continua.</li></ul></div>
+          <div class="mt-ia"><h4><span class="tag-ia">IA</span>IA en esta fase</h4><p>Monitoreo inteligente y agentes de operación sobre alertas y costos.</p></div>
+        </div>
+      </div>
+    </li>
+  </ol>
+  <div class="mt-foot">
+    <span class="mt-src">Fases según el Cloud Adoption Framework de Microsoft (Strategy, Plan, Ready, Adopt, Govern, Secure, Manage). <a href="https://learn.microsoft.com/azure/cloud-adoption-framework/overview" target="_blank" rel="noopener">Cloud Adoption Framework en Microsoft Learn ↗</a></span>
+    <div class="mt-nav"><button type="button" data-mt="prev">← Anterior</button><span class="mt-count">1 / 5</span><button type="button" data-mt="next">Siguiente →</button></div>
+  </div>
+</div>
 </div></section>
 <section class="section bg-white"><div class="container stack-40">
   <div class="section-head-row"><div class="section-head"><span class="eyebrow">Resultados</span><h2 class="h2">Casos relacionados.</h2></div><a class="link-strong" href="../../casos-de-exito/">Todos los casos <span aria-hidden="true">→</span></a></div>
@@ -270,8 +355,7 @@
   </div>
   <button class="agente-fab" type="button" aria-controls="agente-panel" aria-expanded="false" aria-label="Abrir agente W-IT">
     <span class="clip-say" aria-hidden="true">¿Te ayudo?</span>
-    <span class="clip-ring" aria-hidden="true"></span>
-    <picture class="clip" aria-hidden="true"><source srcset="../../assets/img/clippy.webp" type="image/webp"><img src="../../assets/img/clippy.png" alt="" width="96" height="124"></picture>
+    <picture class="clip" aria-hidden="true"><source srcset="../../assets/img/chatbot.webp" type="image/webp"><img src="../../assets/img/chatbot.png" alt="" width="88" height="76"></picture>
   </button>
 </div>
 </body>

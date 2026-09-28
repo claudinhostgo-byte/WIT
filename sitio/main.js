@@ -220,6 +220,54 @@
     });
   }
 
+  // ---------- "Señales de que lo necesitas": el foco recorre la lista cada 3,5 s; se detiene con el mouse encima
+  $$('.senales').forEach(sec => {
+    const items = $$('.sen-item', sec);
+    if (items.length < 2) return;
+    const MS = 3500; // mismo intervalo que la barra en styles.css
+    let i = 0, t, hold = false, visible = false;
+    const activate = n => {
+      i = (n + items.length) % items.length;
+      items.forEach((el, k) => el.classList.toggle('is-on', k === i));
+      const on = items[i]; on.classList.remove('is-on'); void on.offsetWidth; on.classList.add('is-on'); // reinicia la barra
+    };
+    const loop = () => {
+      clearTimeout(t);
+      t = setTimeout(() => { if (visible && !hold && document.visibilityState === 'visible') activate(i + 1); loop(); }, MS);
+    };
+    const resume = () => { hold = false; activate(i); loop(); };
+    items.forEach((el, k) => el.addEventListener('pointerenter', () => { hold = true; if (k !== i) activate(k); }));
+    sec.addEventListener('pointerenter', () => { hold = true; });
+    sec.addEventListener('pointerleave', resume);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') resume(); });
+    new IntersectionObserver(([e]) => { const was = visible; visible = e.isIntersecting; if (visible && !was) resume(); }, { threshold: .3 }).observe(sec);
+    if (!reduceMotion) loop();
+  });
+
+  // ---------- Metodología: línea de tiempo interactiva (una fase abierta a la vez; flechas del teclado entre fases)
+  $$('[data-metodo]').forEach(m => {
+    const rail = $('.mt-rail', m), steps = $$('.mt-step', m), btns = $$('.mt-btn', m), panels = $$('.mt-panel', m), count = $('.mt-count', m);
+    if (btns.length < 2) return;
+    let i = Math.max(0, btns.findIndex(b => b.getAttribute('aria-expanded') === 'true'));
+    const show = (n, focus) => {
+      i = (n + btns.length) % btns.length;
+      btns.forEach((b, k) => { b.setAttribute('aria-expanded', String(k === i)); b.classList.toggle('is-on', k === i); b.classList.toggle('is-done', k < i); });
+      steps.forEach((s, k) => { s.classList.toggle('is-on', k === i); s.classList.toggle('is-done', k < i); });
+      panels.forEach((p, k) => { p.hidden = k !== i; });
+      rail.style.setProperty('--i', i);
+      if (count) count.textContent = `${i + 1} / ${btns.length}`;
+      if (focus) btns[i].focus();
+    };
+    btns.forEach((b, k) => b.addEventListener('click', () => show(k)));
+    $$('[data-mt]', m).forEach(b => b.addEventListener('click', () => show(i + (b.dataset.mt === 'next' ? 1 : -1))));
+    rail.addEventListener('keydown', e => {
+      if (!e.target.closest('.mt-btn')) return;
+      const to = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: btns.length - 1 }[e.key];
+      if (to !== undefined) { e.preventDefault(); show(to, true); }
+    });
+    show(i);
+  });
+
   // ---------- Agente flotante
   const fab = $('.agente-fab');
   const agentePanel = $('#agente-panel');
@@ -230,31 +278,6 @@
   };
   fab.addEventListener('click', () => { setAgente(agentePanel.hidden); fab.classList.add('used'); });
 
-  // Sonido de los golpes en la pantalla (sintetizado con Web Audio; el navegador solo permite audio tras una interacción)
-  let audio = null, audioOk = false;
-  const enableAudio = () => { audioOk = true; };
-  ['pointerdown', 'keydown', 'touchstart'].forEach(ev => document.addEventListener(ev, enableAudio, { once: true, passive: true }));
-  const knock = t => {
-    const ctx = audio || (audio = new (window.AudioContext || window.webkitAudioContext)());
-    const at = ctx.currentTime + t;
-    // golpe seco: seno grave que cae rápido + ráfaga corta de ruido (el "toc" en el vidrio)
-    const osc = ctx.createOscillator(), g = ctx.createGain();
-    osc.type = 'sine'; osc.frequency.setValueAtTime(320, at); osc.frequency.exponentialRampToValueAtTime(110, at + .07);
-    g.gain.setValueAtTime(.0001, at); g.gain.exponentialRampToValueAtTime(.5, at + .004); g.gain.exponentialRampToValueAtTime(.0001, at + .11);
-    osc.connect(g).connect(ctx.destination); osc.start(at); osc.stop(at + .12);
-    const len = Math.floor(ctx.sampleRate * .03), buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
-    const n = ctx.createBufferSource(), f = ctx.createBiquadFilter(), ng = ctx.createGain();
-    n.buffer = buf; f.type = 'bandpass'; f.frequency.value = 1800; f.Q.value = .8;
-    ng.gain.setValueAtTime(.35, at); ng.gain.exponentialRampToValueAtTime(.0001, at + .03);
-    n.connect(f).connect(ng).connect(ctx.destination); n.start(at);
-  };
-  const clipEl = $('.clip', fab);
-  const onKnock = e => {
-    if (e.animationName !== 'clip-knock' || !audioOk || fab.classList.contains('used') || document.visibilityState !== 'visible') return;
-    [0.72, 1.17, 1.62].forEach(t => knock(t)); // sincronizado con los tres toques de la animación (8 %, 13 % y 18 % de 9 s)
-  };
-  if (clipEl) { clipEl.addEventListener('animationstart', onKnock); clipEl.addEventListener('animationiteration', onKnock); }
   $$('[data-open-agente]').forEach(a => a.addEventListener('click', e => {
     e.preventDefault();
     setAgente(true);

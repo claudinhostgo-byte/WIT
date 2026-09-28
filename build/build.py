@@ -6,7 +6,7 @@ styles.css, main.js y assets/ se editan directamente en sitio/; este script solo
 import os
 from html import escape
 from PIL import Image
-from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, FASES, HERRAMIENTAS, FAQ_HOME)
+from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sitio')
 SOL = {s['slug']: s for s in SOLUCIONES}
@@ -228,8 +228,7 @@ def footer(r):
   </div>
   <button class="agente-fab" type="button" aria-controls="agente-panel" aria-expanded="false" aria-label="Abrir agente W-IT">
     <span class="clip-say" aria-hidden="true">¿Te ayudo?</span>
-    <span class="clip-ring" aria-hidden="true"></span>
-    <picture class="clip" aria-hidden="true"><source srcset="{r}assets/img/clippy.webp" type="image/webp"><img src="{r}assets/img/clippy.png" alt="" width="96" height="124"></picture>
+    <picture class="clip" aria-hidden="true"><source srcset="{r}assets/img/chatbot.webp" type="image/webp"><img src="{r}assets/img/chatbot.png" alt="" width="88" height="76"></picture>
   </button>
 </div>'''
 
@@ -338,10 +337,76 @@ def section_head(eyebrow, h2, lead='', link=''):
     return f'<div class="section-head-row">{head}{link}</div>' if link else head
 
 
-def fases_html():
-    return '<ol class="fases">' + ''.join(
-        f'<li class="fase"><h3>{n}</h3><p>{q}</p><div class="fase-ia"><span class="tag-ia">IA</span><span>{ia}</span></div></li>'
-        for n, q, ia in FASES) + '</ol>'
+# Ilustración de "Señales": dos globos de conversación (pregunta y alerta) en colores de marca, SVG propio
+SENALES_ART = """<svg class="sen-art" viewBox="0 0 160 132" aria-hidden="true" focusable="false">
+  <path d="M22 10h76a18 18 0 0 1 18 18v44a18 18 0 0 1-18 18H52L34 106V90H22A18 18 0 0 1 4 72V28a18 18 0 0 1 18-18z" fill="#1B3A50"/>
+  <text x="60" y="68" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="52" font-weight="700" fill="#fff">?</text>
+  <path d="M106 64h36a14 14 0 0 1 14 14v20a14 14 0 0 1-14 14h-8v14l-14-14h-14a14 14 0 0 1-14-14V78a14 14 0 0 1 14-14z" fill="#54BA00" stroke="#fff" stroke-width="4"/>
+  <text x="124" y="101" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="30" font-weight="700" fill="#fff">!</text>
+</svg>"""
+
+
+def senales_section(r, senales):
+    """Señales de que lo necesitas: texto e ilustración a la izquierda, lista uniforme a la derecha.
+    El foco (borde verde + barra) recorre la lista cada 3,5 s (main.js)."""
+    items = ''.join(
+        f'<li class="sen-item{" is-on" if n == 0 else ""}"><span class="sen-ico" aria-hidden="true">?</span>'
+        f'<div class="sen-txt"><h3>{escape(t)}</h3><p>{escape(d)}</p></div></li>' for n, (t, d) in enumerate(senales))
+    return f"""<section class="section bg-white senales" aria-labelledby="sen-title">
+  <div class="container senales-inner">
+    <div class="sen-head">
+      {SENALES_ART}
+      <span class="eyebrow">Señales de que lo necesitas</span>
+      <h2 class="h2" id="sen-title">¿Tienes alguno de estos inconvenientes? <em>Conversemos.</em></h2>
+      <p class="lead">Son las situaciones que más vemos al iniciar un proyecto. En un diagnóstico de 30 minutos sabemos por dónde empezar.</p>
+      <a class="btn btn-green" href="{r}contacto/">Agenda un diagnóstico</a>
+    </div>
+    <ol class="sen-list">{items}</ol>
+  </div>
+</section>"""
+
+METODO_H2 = 'La metodología se adapta al proyecto, no al revés.'
+METODO_LEAD = 'Cuatro formas de trabajar, todas ágiles y sobre marcos probados de Microsoft. Sin big bang: entregas cortas, usuarios dentro del equipo y adopción medida.'
+
+
+def metodo_html(r, m):
+    """Línea de tiempo interactiva de una metodología (acordeón vertical en móvil). Fase 1 abierta; main.js maneja el resto.
+    Los ids llevan el slug para poder mostrar varias metodologías en una misma página."""
+    def lis(xs):
+        return ''.join(f'<li>{escape(x)}</li>' for x in xs)
+    k = m['slug']
+    steps = ''.join(f"""
+    <li class="mt-step{' is-on' if n == 0 else ''}">
+      <button class="mt-btn{' is-on' if n == 0 else ''}" type="button" id="mt-{k}-b{n + 1}" aria-controls="mt-{k}-p{n + 1}" aria-expanded="{'true' if n == 0 else 'false'}">
+        <span class="mt-dot" aria-hidden="true">{n + 1}</span><span class="mt-name">{escape(f['nombre'])}</span><span class="mt-sbd">{escape(f['marco'])}</span>
+      </button>
+      <div class="mt-panel" id="mt-{k}-p{n + 1}" role="region" aria-labelledby="mt-{k}-b{n + 1}"{'' if n == 0 else ' hidden'}>
+        <div class="mt-panel-head"><p class="mt-linea">{escape(f['linea'])}</p><span class="mt-hito">{escape(m['hito_prefijo'])} · {escape(f['hito'])}</span></div>
+        <div class="mt-cols">
+          <div><h4>Qué hacemos</h4><ul>{lis(f['hacemos'])}</ul></div>
+          <div><h4>Qué recibes</h4><ul>{lis(f['recibes'])}</ul></div>
+          <div class="mt-ia"><h4><span class="tag-ia">IA</span>{escape(m['col3'])}</h4><p>{escape(f['col3'])}</p></div>
+        </div>
+      </div>
+    </li>""" for n, f in enumerate(m['fases']))
+    fuentes = ' · '.join(f'<a href="{u}" target="_blank" rel="noopener">{escape(t)} ↗</a>' for t, u in m['fuentes'])
+    return f"""<div class="metodo" data-metodo>
+  <ol class="mt-rail" style="--i:0">{steps}
+  </ol>
+  <div class="mt-foot">
+    <span class="mt-src">{escape(m['base'])} {fuentes}</span>
+    <div class="mt-nav"><button type="button" data-mt="prev">← Anterior</button><span class="mt-count">1 / {len(m['fases'])}</span><button type="button" data-mt="next">Siguiente →</button></div>
+  </div>
+</div>"""
+
+
+def metodos_cards(r):
+    """Home: las cuatro metodologías como tarjetas uniformes que llevan a /como-trabajamos/#slug."""
+    return '<div class="metodos-grid">' + ''.join(
+        f'<a class="metodo-card" href="{r}como-trabajamos/#{m["slug"]}">'
+        f'<span class="eyebrow">{escape(m["para"])}</span><h3>{escape(m["titulo"])}</h3><p>{escape(m["resumen"].split(". Sobre ")[0].rstrip(".") + ".")}</p>'
+        f'<ol class="mc-steps">{"".join(f"<li>{escape(f['nombre'])}</li>" for f in m["fases"])}</ol>'
+        f'<span class="card-cta">Ver metodología {ARROW}</span></a>' for m in METODOS) + '</div>'
 
 
 def badge_img(r, f, h=96):
@@ -590,9 +655,9 @@ def home(r):
 
 <section class="section bg-blue" id="metodo">
   <div class="container stack-48">
-    {section_head('Cómo trabajamos', 'Cinco fases. IA en cada una.', 'Metodología <span class="ph ph-white">[nombre por definir]</span>, alineada con Microsoft Success by Design.', '<span class="chip-live">Adopción medida en cada proyecto</span>')}
-    {fases_html()}
-    <a class="link-strong" href="{r}como-trabajamos/">Conoce la metodología {ARROW}</a>
+    {section_head('Cómo trabajamos', METODO_H2, METODO_LEAD, '<span class="chip-live">Adopción medida en cada proyecto</span>')}
+    {metodos_cards(r)}
+    <a class="link-strong" href="{r}como-trabajamos/">Conoce las cuatro metodologías {ARROW}</a>
   </div>
 </section>
 
@@ -729,17 +794,14 @@ def solucion_page(s):
             f'''<div class="product-card">{ms_icon(r, i, 40) if i else f'<span class="icon-slot" aria-hidden="true">{SHIELD}</span>'}
               <div><h3>{escape(MS[i]) if i else escape(d.split(':')[0])}</h3><p>{escape(d.split(': ', 1)[1] if (not i and ': ' in d) else d)}</p><p class="cuando"><strong>Cuándo conviene:</strong> {escape(c)}</p></div></div>'''
             for i, d, c in s['productos'])
-        senales = ''.join(f'<div class="signal"><h3>{escape(t)}</h3><p>{escape(d)}</p></div>' for t, d in s['senales'])
+        senales = senales_section(r, s['senales'])
         casos = [CASO[c] for c in s['casos']]
         casos_html = (f'<div class="grid grid-280">{"".join(caso_card(r, c) for c in casos)}</div>' if casos else
                       '<div class="placeholder-box" style="min-height:140px">[placeholder: caso con métrica autorizada para esta solución]</div>')
         aside = f'<div class="page-hero-aside">{"".join(f"<span class=\"hero-prod\">{ms_icon(r, i, 44)}<span>{escape(MS[i])}</span></span>" for i in s["iconos"])}</div>' if s['iconos'] else ''
         return page_hero(r, [('Soluciones', 'soluciones/'), (s['nombre'], f"soluciones/{s['slug']}/")], f"{escape(s['plataforma'])} · {escape(s['nombre'])}", s['h1'], s['bajada'],
                          h1_pe=s.get('h1_pe'), aside=aside) + f'''
-<section class="section bg-white"><div class="container stack-40">
-  {section_head('Señales de que lo necesitas', 'Si te suena alguna de estas, conversemos.')}
-  <div class="signals{' signals-5' if len(s['senales']) == 5 else ''}">{senales}</div>
-</div></section>
+{senales}
 <section class="section bg-soft"><div class="container stack-40">
   {section_head('Qué implementamos', 'Tecnología Microsoft, elegida según tu proceso.')}
   <div class="product-grid">{prods}</div>
@@ -749,8 +811,8 @@ def solucion_page(s):
 </div></section>
 {f'<section class="section bg-white"><div class="container">{jumpstart_strip(r)}</div></section>' if s['slug'] == 'ia-y-agentes' else ''}
 <section class="section bg-blue"><div class="container stack-40">
-  {section_head('Cómo lo hacemos', 'Cinco fases. IA en cada una.')}
-  {fases_html()}
+  {section_head('Cómo lo hacemos', METODO[s['metodo']]['titulo'], METODO[s['metodo']]['resumen'], f'<a class="link-strong" href="{r}como-trabajamos/">Cómo trabajamos {ARROW}</a>')}
+  {metodo_html(r, METODO[s['metodo']])}
 </div></section>
 <section class="section bg-white"><div class="container stack-40">
   {section_head('Resultados', 'Casos relacionados.', link=f'<a class="link-strong" href="{r}casos-de-exito/">Todos los casos {ARROW}</a>')}
@@ -960,9 +1022,21 @@ def herramienta_page(h):
 
 
 def como_trabajamos(r):
-    return page_hero(r, [('Cómo trabajamos', 'como-trabajamos/')], 'Cómo trabajamos', 'Cinco fases. IA en cada una.',
-                     'Metodología W-IT <span class="ph">[nombre por definir]</span>, alineada con Microsoft Success by Design.') + f'''
-<section class="section bg-blue"><div class="container stack-40">{fases_html()}</div></section>
+    principios = [('Entregas cortas', 'Olas, sprints y prototipos: algo usable en producción lo antes posible, no al final.'),
+                  ('Usuarios en el equipo', 'Los dueños del proceso participan desde el taller inicial hasta el go-live.'),
+                  ('Gobierno desde el día uno', 'Seguridad, datos y IA responsable se diseñan al inicio, no se agregan al final.'),
+                  ('Adopción medida', 'Uso real, calidad y valor se miden desde el primer día y guían la siguiente iteración.')]
+    principios_html = ''.join(f'<div class="signal"><h3>{escape(t)}</h3><p>{escape(d)}</p></div>' for t, d in principios)
+    metodos_html = ''.join(f'''
+<section class="section {'bg-blue' if n % 2 == 0 else 'bg-white'}" id="{m['slug']}"><div class="container stack-40">
+  {section_head(m['para'], m['titulo'], m['resumen'])}
+  {metodo_html(r, m)}
+</div></section>''' for n, m in enumerate(METODOS))
+    return page_hero(r, [('Cómo trabajamos', 'como-trabajamos/')], 'Cómo trabajamos', METODO_H2, METODO_LEAD) + f'''
+<section class="section bg-white"><div class="container stack-40">
+  {section_head('Principios', 'Ágil de verdad, con marcos probados.')}
+  <div class="signals">{principios_html}</div>
+</div></section>{metodos_html}
 <section class="section bg-white"><div class="container grid grid-2">
   <div class="stack-20"><span class="eyebrow">Ingeniería asistida por IA</span><h2 class="h2">Más rápido, sin cajas negras.</h2>
     <p class="lead">Usamos IA para analizar entornos, redactar diseños, acelerar personalizaciones y probar. El consumo de tokens se transparenta en la propuesta.</p></div>
