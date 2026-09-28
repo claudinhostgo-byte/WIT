@@ -632,9 +632,9 @@ a.card:hover { box-shadow: var(--shadow-8); transform: translateY(-2px); text-de
 .chip-live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
 /* Metodología: línea de tiempo interactiva de cinco fases (Success by Design); acordeón vertical en móvil */
 .metodo { display: flex; flex-direction: column; gap: 20px; }
-.mt-rail { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); row-gap: 28px; }
-.mt-rail::before, .mt-rail::after { content: ""; position: absolute; top: 21px; height: 2px; left: 10%; right: 10%; background: var(--line-strong); }
-.mt-rail::after { right: auto; width: calc(20% * var(--i, 0)); background: var(--green); transition: width .4s var(--ease); }
+.mt-rail { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); row-gap: 28px; } /* --n: número de pasos */
+.mt-rail::before, .mt-rail::after { content: ""; position: absolute; top: 21px; height: 2px; left: calc(50% / var(--n, 5)); right: calc(50% / var(--n, 5)); background: var(--line-strong); }
+.mt-rail::after { right: auto; width: calc(100% / var(--n, 5) * var(--i, 0)); background: var(--green); transition: width .4s var(--ease); }
 .mt-step { display: contents; }
 .mt-btn { grid-row: 1; position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 8px; border: 0; background: transparent; cursor: pointer; font: inherit; color: var(--navy); text-align: center; }
 .mt-dot { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; background: #fff; border: 2px solid var(--line-strong); color: var(--subtle); transition: background .3s, border-color .3s, color .3s, box-shadow .3s; }
@@ -691,6 +691,53 @@ a.card:hover { box-shadow: var(--shadow-8); transform: translateY(-2px); text-de
 .metodo-card .card-cta { margin-top: auto; padding-top: 10px; }
 @media (max-width: 1100px) { .metodos-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .metodos-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Cofinanciamiento Microsoft: programas, comparación POC/MVP y variantes de la línea de tiempo */
+.cofin-strip img { width: 144px; height: auto; flex: none; }
+.prog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.prog-card { display: flex; flex-direction: column; gap: 10px; padding: 24px; background: #fff; border: 1px solid var(--line); border-radius: 14px; }
+.prog-card h3 { margin: 0; font-size: 19px; line-height: 1.25; color: var(--navy); }
+.prog-card p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--muted); flex: 1; }
+.prog-card .pills { margin-top: 4px; }
+.tag-tu { font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 3px 6px; border-radius: 4px; background: var(--blue-tint); color: var(--navy); flex: none; }
+.tag-no { font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 3px 6px; border-radius: 4px; background: #FFF3D6; color: #8A5A00; flex: none; }
+.cmp { display: grid; grid-template-columns: 200px minmax(0, 1fr) minmax(0, 1fr); background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.cmp-head { padding: 24px; display: flex; flex-direction: column; gap: 6px; }
+.cmp-head h3 { margin: 0; font-size: 20px; line-height: 1.25; color: var(--navy); }
+.cmp-head p { margin: 0; font-size: 14px; color: var(--muted); }
+.cmp-tag { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.cmp-head.cmp-poc { background: var(--green-tint); border-bottom: 2px dashed var(--green); }
+.cmp-head.cmp-poc .cmp-tag { color: var(--green-dark); }
+.cmp-head.cmp-mvp { background: var(--blue-tint); border-bottom: 2px solid var(--navy); }
+.cmp-head.cmp-mvp .cmp-tag { color: var(--navy); }
+.cmp-corner { background: var(--bg); border-bottom: 2px solid var(--line); }
+.cmp-label { padding: 18px 24px; font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--subtle); background: var(--bg); border-top: 1px solid var(--line); }
+.cmp-cell { padding: 18px 24px; font-size: 15px; line-height: 1.5; color: var(--ink); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.cmp-mini { display: none; }
+.metodo-poc .mt-rail::before { background: repeating-linear-gradient(90deg, var(--line-strong) 0 8px, transparent 8px 16px); }
+.metodo-poc .mt-rail::after { background: repeating-linear-gradient(90deg, var(--green) 0 8px, transparent 8px 16px); }
+.metodo-poc .mt-dot { border-style: dashed; }
+.metodo-poc .mt-btn.is-on .mt-dot, .metodo-poc .mt-btn.is-done .mt-dot { border-style: solid; }
+.metodo-poc .mt-panel { border: 1px dashed var(--green); }
+.metodo-poc .mt-ia { background: #FFFBEF; }
+.metodo-mvp .mt-rail::after { background: var(--navy); }
+.metodo-mvp .mt-btn.is-on .mt-dot { background: var(--navy); border-color: var(--navy); color: #fff; box-shadow: 0 0 0 6px var(--blue-tint); }
+.metodo-mvp .mt-panel { border-top: 4px solid var(--navy); }
+.metodo-mvp .mt-hito { background: var(--blue-tint); color: var(--navy); }
+.metodo-mvp .mt-ia { background: var(--blue-tint); }
+@media (max-width: 900px) {
+  .cmp { grid-template-columns: minmax(0, 1fr); }
+  .cmp-corner { display: none; }
+  .cmp-head.cmp-poc { border-bottom: 0; }
+  .cmp-label { padding: 14px 20px 6px; border-top: 1px solid var(--line); }
+  .cmp-cell { border-left: 0; border-top: 0; padding: 8px 20px 14px; display: flex; gap: 10px; align-items: flex-start; }
+  .cmp-mini { display: inline-block; flex: none; font-size: 11px; font-weight: 700; letter-spacing: .06em; padding: 3px 7px; border-radius: 4px; }
+  .cmp-cell.cmp-poc .cmp-mini { background: var(--green-tint); color: var(--green-dark); }
+  .cmp-cell.cmp-mvp .cmp-mini { background: var(--blue-tint); color: var(--navy); }
+  .metodo-poc .mt-step::before { background: repeating-linear-gradient(180deg, var(--line-strong) 0 8px, transparent 8px 16px); }
+  .metodo-poc .mt-step.is-done::before { background: repeating-linear-gradient(180deg, var(--green) 0 8px, transparent 8px 16px); }
+  .metodo-mvp .mt-step.is-done::before { background: var(--navy); }
+}
 .tag-ia { font-size: 10px; font-weight: 700; letter-spacing: .06em; padding: 3px 6px; border-radius: 4px; background: var(--green-tint); color: var(--green-dark); flex: none; }
 
 /* ---------- Privax ---------- */

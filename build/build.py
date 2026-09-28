@@ -6,7 +6,8 @@ styles.css, main.js y assets/ se editan directamente en sitio/; este script solo
 import os
 from html import escape
 from PIL import Image
-from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME)
+from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME,
+                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sitio')
 SOL = {s['slug']: s for s in SOLUCIONES}
@@ -14,6 +15,7 @@ IND = {i['slug']: i for i in INDUSTRIAS}
 CASO = {c['slug']: c for c in CASOS}
 # Programa Microsoft Copilot Jumpstart (W-IT: Ready Tier)
 JUMPSTART_PAGE = 'microsoft-copilot-jumpstart/'
+COFIN_PAGE = 'cofinanciamiento-microsoft/'
 COPILOT_URL = 'https://www.microsoft.com/es-cl/microsoft-365/copilot'
 IND_NOMBRE = {**{i['slug']: i['nombre'] for i in INDUSTRIAS}, 'otros': 'Telecomunicaciones y otros'}
 
@@ -167,6 +169,7 @@ def header(r, active, solid):
                 <span class="eyebrow">Aprende</span>
                 <a href="{r}recursos/"><strong>Recursos</strong><span>Observatorio IA, guías y eventos.</span></a>
                 <a href="{r}nosotros/aprende/"><strong>Formación y adopción</strong><span>Nuestra unidad exclusiva para aprender y adoptar IA.</span></a>
+                <a href="{r}{COFIN_PAGE}"><strong>Cofinanciamiento Microsoft</strong><span>POC y MVP con programas de inversión de Microsoft.</span></a>
               </div>
               <div class="mega-promo mega-promo-badge">
                 <img src="{r}assets/credenciales/WIT-MicrosoftCloud-color.png" alt="Microsoft Solutions Partner for Microsoft Cloud" width="160" height="105">
@@ -204,7 +207,7 @@ def footer(r):
       </div>
       {col('Soluciones', [(s['nombre'], f"{r}soluciones/{s['slug']}/") for s in SOLUCIONES])}
       {col('Industrias', [(i['nombre'], f"{r}industrias/{i['slug']}/") for i in INDUSTRIAS])}
-      {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Equipo', f'{r}nosotros/equipo/'), ('Trabaja con nosotros', f'{r}nosotros/trabaja-con-nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Aprende', f'{r}nosotros/aprende/')])}
+      {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Equipo', f'{r}nosotros/equipo/'), ('Trabaja con nosotros', f'{r}nosotros/trabaja-con-nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}'), ('Aprende', f'{r}nosotros/aprende/')])}
       {col('Recursos', [('Casos de éxito', f'{r}casos-de-exito/'), ('Herramientas', f'{r}herramientas/'), ('Observatorio IA', f'{r}recursos/'), ('Productos', f'{r}productos/'), ('Contacto', f'{r}contacto/')])}
       <address class="footer-col"><strong>Contacto</strong><span>Av. Apoquindo 2930, of. 201, Las Condes, Santiago <span class="ph ph-footer">[verificar vs 3039]</span></span><span>+56 2 2409 6112</span><a href="mailto:info@w-it.cl">info@w-it.cl</a><a href="#">WhatsApp</a><span class="muted-footer">Perú: [placeholder: contacto Lima]</span></address>
     </div>
@@ -385,19 +388,83 @@ def metodo_html(r, m):
         <div class="mt-cols">
           <div><h4>Qué hacemos</h4><ul>{lis(f['hacemos'])}</ul></div>
           <div><h4>Qué recibes</h4><ul>{lis(f['recibes'])}</ul></div>
-          <div class="mt-ia"><h4><span class="tag-ia">IA</span>{escape(m['col3'])}</h4><p>{escape(f['col3'])}</p></div>
+          <div class="mt-ia"><h4><span class="{m.get('tag_cls', 'tag-ia')}">{escape(m.get('tag', 'IA'))}</span>{escape(m['col3'])}</h4><p>{escape(f['col3'])}</p></div>
         </div>
       </div>
     </li>""" for n, f in enumerate(m['fases']))
     fuentes = ' · '.join(f'<a href="{u}" target="_blank" rel="noopener">{escape(t)} ↗</a>' for t, u in m['fuentes'])
-    return f"""<div class="metodo" data-metodo>
-  <ol class="mt-rail" style="--i:0">{steps}
+    variante = f" metodo-{m['variante']}" if m.get('variante') else ''
+    return f"""<div class="metodo{variante}" data-metodo>
+  <ol class="mt-rail" style="--i:0;--n:{len(m['fases'])}">{steps}
   </ol>
   <div class="mt-foot">
     <span class="mt-src">{escape(m['base'])} {fuentes}</span>
     <div class="mt-nav"><button type="button" data-mt="prev">← Anterior</button><span class="mt-count">1 / {len(m['fases'])}</span><button type="button" data-mt="next">Siguiente →</button></div>
   </div>
 </div>"""
+
+
+def cofin_strip(r):
+    """Franja: Microsoft cofinancia el primer paso (misma estética que la franja Jumpstart)."""
+    return f'''
+    <div class="jumpstart cofin-strip">
+      <img src="{r}assets/credenciales/WIT-MicrosoftPartner-singleline-white.png" alt="Microsoft Partner" width="144" height="48">
+      <div class="js-txt">
+        <span class="js-tier">Cofinanciamiento Microsoft</span>
+        <strong>Microsoft cofinancia el primer paso: taller, POC o MVP.</strong>
+        <p>Como Solutions Partner estamos habilitados en los programas de inversión de Microsoft. Evaluamos si tu empresa califica y gestionamos la solicitud.</p>
+      </div>
+      <a class="btn btn-outline" href="{r}{COFIN_PAGE}">POC y MVP cofinanciados {ARROW}</a>
+    </div>'''
+
+
+def cofinanciamiento(r):
+    """Página: programas de inversión de Microsoft, cómo funciona, POC vs MVP y las etapas de cada una."""
+    programas = ''.join(
+        f'<article class="prog-card"><span class="eyebrow">{escape(p["area"])}</span><h3>{escape(p["nombre"])}</h3><p>{escape(p["que"])}</p>'
+        f'<div class="pills">{"".join(f"<span class=\"pill\">{escape(u)}</span>" for u in p["usos"])}</div>'
+        + (f'<a class="link-strong" href="{r}{p["href"]}">Conoce el programa {ARROW}</a>' if p.get('href') else '') + '</article>' for p in COFIN_PROGRAMAS)
+    filas = ''.join(
+        f'<div class="cmp-label">{escape(c)}</div><div class="cmp-cell cmp-poc"><span class="cmp-mini">POC</span>{escape(a)}</div><div class="cmp-cell cmp-mvp"><span class="cmp-mini">MVP</span>{escape(b)}</div>'
+        for c, a, b in COFIN_COMPARA)
+    faq = ''.join(
+        f'<div class="faq-item"><h3><button type="button" aria-expanded="{"true" if i == 0 else "false"}" aria-controls="faq-{i}">{escape(q)}</button></h3>'
+        f'<p id="faq-{i}"{"" if i == 0 else " hidden"}>{escape(a)}</p></div>' for i, (q, a) in enumerate(COFIN_FAQ))
+    return page_hero(r, [('Cómo trabajamos', 'como-trabajamos/'), ('Cofinanciamiento Microsoft', COFIN_PAGE)], 'Cofinanciamiento Microsoft',
+                     'Microsoft cofinancia el primer paso.',
+                     'Como Solutions Partner, W-IT está habilitado en los programas de inversión de Microsoft que financian total o parcialmente talleres, pruebas de concepto (POC) y productos mínimos viables (MVP). Estar habilitados es nuestro lado; la elegibilidad de cada cliente la evalúa Microsoft caso a caso, y lo revisamos contigo antes de prometer nada.',
+                     ctas=False, extra=f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Evalúa si tu proyecto califica</a><a class="btn btn-lg btn-outline" href="#poc-mvp">POC o MVP: la diferencia</a></div>') + f'''
+<section class="section bg-white"><div class="container stack-40">
+  {section_head('Cómo funciona', COFIN_PROCESO['titulo'], COFIN_PROCESO['resumen'])}
+  {metodo_html(r, COFIN_PROCESO)}
+</div></section>
+<section class="section bg-blue"><div class="container stack-40">
+  {section_head('Programas habilitados', 'Lo que Microsoft puede financiar contigo.', 'Familias de programas en las que W-IT está habilitado como partner. Cada uno tiene reglas de elegibilidad propias y se solicita por proyecto.')}
+  <div class="prog-grid">{programas}</div>
+  <p class="disclaimer">Los nombres, alcances y condiciones de los programas los define Microsoft y pueden cambiar. Confirmamos la elegibilidad y el financiamiento disponible por escrito antes de empezar.</p>
+</div></section>
+<section class="section bg-white" id="poc-mvp"><div class="container stack-40">
+  {section_head('POC o MVP', 'No son lo mismo, y conviene saberlo antes de empezar.', 'Una POC responde preguntas; un MVP entrega un producto. Ambos se pueden hacer con cofinanciamiento de Microsoft, pero se planifican, se ejecutan y se cierran de forma distinta.')}
+  <div class="cmp">
+    <div class="cmp-head cmp-corner" aria-hidden="true"></div>
+    <div class="cmp-head cmp-poc"><span class="cmp-tag">Laboratorio</span><h3>POC · Prueba de concepto</h3><p>Valida hipótesis antes de invertir.</p></div>
+    <div class="cmp-head cmp-mvp"><span class="cmp-tag">Producto</span><h3>MVP · Producto mínimo viable</h3><p>Pequeño, completo y en producción.</p></div>
+    {filas}
+  </div>
+</div></section>
+<section class="section bg-blue" id="poc"><div class="container stack-40">
+  {section_head('Prueba de concepto', COFIN_POC['titulo'], COFIN_POC['resumen'])}
+  {metodo_html(r, COFIN_POC)}
+</div></section>
+<section class="section bg-white" id="mvp"><div class="container stack-40">
+  {section_head('Producto mínimo viable', COFIN_MVP['titulo'], COFIN_MVP['resumen'])}
+  {metodo_html(r, COFIN_MVP)}
+</div></section>
+<section class="section bg-white faq" id="faq"><div class="container stack-32">
+  {section_head('Preguntas frecuentes', 'Lo que suelen preguntarnos.')}
+  <div>{faq}</div>
+</div></section>
+{cta_final(r, '¿Tu proyecto califica para cofinanciamiento?', 'Agenda un diagnóstico de 30 minutos. Revisamos tu escenario, los programas que aplican y si conviene partir por una POC o un MVP.')}'''
 
 
 def metodos_cards(r):
@@ -658,6 +725,7 @@ def home(r):
     {section_head('Cómo trabajamos', METODO_H2, METODO_LEAD, '<span class="chip-live">Adopción medida en cada proyecto</span>')}
     {metodos_cards(r)}
     <a class="link-strong" href="{r}como-trabajamos/">Conoce las cuatro metodologías {ARROW}</a>
+    {cofin_strip(r)}
   </div>
 </section>
 
@@ -809,10 +877,10 @@ def solucion_page(s):
   {premios_strip(r) if s['slug'] == 'ventas-servicio-y-contact-center' else ''}
   <p class="disclaimer">Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.</p>
 </div></section>
-{f'<section class="section bg-white"><div class="container">{jumpstart_strip(r)}</div></section>' if s['slug'] == 'ia-y-agentes' else ''}
 <section class="section bg-blue"><div class="container stack-40">
   {section_head('Cómo lo hacemos', METODO[s['metodo']]['titulo'], METODO[s['metodo']]['resumen'], f'<a class="link-strong" href="{r}como-trabajamos/">Cómo trabajamos {ARROW}</a>')}
   {metodo_html(r, METODO[s['metodo']])}
+  {cofin_strip(r)}
 </div></section>
 <section class="section bg-white"><div class="container stack-40">
   {section_head('Resultados', 'Casos relacionados.', link=f'<a class="link-strong" href="{r}casos-de-exito/">Todos los casos {ARROW}</a>')}
@@ -1031,7 +1099,8 @@ def como_trabajamos(r):
 <section class="section {'bg-blue' if n % 2 == 0 else 'bg-white'}" id="{m['slug']}"><div class="container stack-40">
   {section_head(m['para'], m['titulo'], m['resumen'])}
   {metodo_html(r, m)}
-</div></section>''' for n, m in enumerate(METODOS))
+</div></section>''' for n, m in enumerate(METODOS)) + f'''
+<section class="section bg-white"><div class="container">{cofin_strip(r)}</div></section>'''
     return page_hero(r, [('Cómo trabajamos', 'como-trabajamos/')], 'Cómo trabajamos', METODO_H2, METODO_LEAD) + f'''
 <section class="section bg-white"><div class="container stack-40">
   {section_head('Principios', 'Ágil de verdad, con marcos probados.')}
@@ -1380,7 +1449,8 @@ def main():
     pages.append(write('herramientas/', 'Herramientas · W-IT', 'Herramientas gratuitas de W-IT.', herramientas_index, 'productos'))
     for h in HERRAMIENTAS:
         pages.append(write(f"herramientas/{h['slug']}/", f"{h['nombre']} · W-IT", h['que'], herramienta_page(h), 'productos'))
-    pages.append(write('como-trabajamos/', 'Cómo trabajamos · W-IT', 'Metodología W-IT en cinco fases.', como_trabajamos, 'metodo'))
+    pages.append(write('como-trabajamos/', 'Cómo trabajamos · W-IT', 'Cuatro metodologías ágiles sobre marcos probados de Microsoft.', como_trabajamos, 'metodo'))
+    pages.append(write(COFIN_PAGE, 'Cofinanciamiento Microsoft: POC y MVP · W-IT', 'Programas de inversión de Microsoft que cofinancian talleres, pruebas de concepto (POC) y productos mínimos viables (MVP) con W-IT. Evaluamos tu elegibilidad.', cofinanciamiento, 'metodo'))
     pages.append(write('nosotros/', 'Nosotros · W-IT', 'Historia, valores y equipo de W-IT.', nosotros, 'nosotros'))
     pages.append(write(JUMPSTART_PAGE, 'Microsoft Copilot Jumpstart Partner · Ready Tier · W-IT', 'W-IT es partner Ready Tier del programa Microsoft Copilot Jumpstart: talleres y engagements financiados por Microsoft para adoptar Copilot y agentes.', jumpstart_page, 'nosotros'))
     pages.append(write('nosotros/aprende/', 'Aprende: formación y adopción de IA con WITEDUCA · W-IT', 'WITEDUCA es la unidad de W-IT dedicada exclusivamente a la formación y adopción de IA y tecnologías Microsoft.', aprende_page, 'nosotros'))
