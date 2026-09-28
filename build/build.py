@@ -169,7 +169,7 @@ def header(r, active, solid):
                 <a href="{r}nosotros/aprende/"><strong>Formación y adopción</strong><span>Nuestra unidad exclusiva para aprender y adoptar IA.</span></a>
               </div>
               <div class="mega-promo mega-promo-badge">
-                <img src="{r}assets/credenciales/WIT-AIBusinessSolutions-Agentic-color.png" alt="Microsoft Solutions Partner for AI Business Solutions, especialización Agentic" width="160" height="135">
+                <img src="{r}assets/credenciales/WIT-MicrosoftCloud-color.png" alt="Microsoft Solutions Partner for Microsoft Cloud" width="160" height="105">
                 <a class="mega-js" href="{r}{JUMPSTART_PAGE}">Microsoft Copilot Jumpstart Partner · Ready Tier {ARROW}</a>
                 <a href="{r}nosotros/confianza/">Ver todas las credenciales {ARROW}</a>
               </div>
@@ -345,7 +345,8 @@ def fases_html():
 
 
 def badge_img(r, f, h=96):
-    alt = {'WIT-AIBusinessSolutions-Agentic-color.png': 'Microsoft Solutions Partner for AI Business Solutions, especialización Agentic',
+    alt = {'WIT-MicrosoftCloud-color.png': 'Microsoft Solutions Partner for Microsoft Cloud',
+           'WIT-AIBusinessSolutions-Agentic-color.png': 'Microsoft Solutions Partner for AI Business Solutions, especialización Agentic',
            'WIT-CloudAIPlatforms-color.png': 'Microsoft Solutions Partner for Cloud & AI Platforms',
            'WIT-Security-color.png': 'Microsoft Solutions Partner for Security'}[f]
     w, hh = Image.open(os.path.join(ROOT, 'assets/credenciales', f)).size
@@ -353,6 +354,10 @@ def badge_img(r, f, h=96):
 
 
 VERIFICAR = 'https://marketplace.microsoft.com/en-us/partners/dcdbe467-cd53-4233-a80c-6c8510c2f60a/overview'
+# Las seis designaciones Solutions Partner (Microsoft Cloud desde 2026-09-28).
+DESIGNACIONES = ['Business Applications', 'Modern Work', 'Data &amp; AI', 'Digital &amp; App Innovation', 'Infrastructure', 'Security']
+# False mientras el perfil de Marketplace no refleje Microsoft Cloud: la tarjeta enlaza al Trust Center en vez de "Verificar".
+MS_CLOUD_EN_MARKETPLACE = True
 
 
 def hero_trust(r):
@@ -361,8 +366,8 @@ def hero_trust(r):
     <div class="hero-trust">
       <img class="ms-lockup" src="{r}assets/credenciales/WIT-MicrosoftPartner-singleline-white.png" alt="Microsoft Partner" width="312" height="104">
       <div class="ht-areas">
-        <span>Solutions Partner en</span>
-        <ul><li>AI Business Solutions</li><li>Cloud &amp; AI Platforms</li><li>Security</li></ul>
+        <span>Microsoft Cloud · 6 de 6 designaciones</span>
+        <ul>{''.join(f'<li>{d}</li>' for d in DESIGNACIONES)}</ul>
       </div>
       <div class="ht-iso">
         <img src="{r}assets/credenciales/SGS_ISO_9001_round_TCL_LR.jpg" alt="Sello SGS ISO 9001" width="48" height="48">
@@ -436,11 +441,18 @@ def credenciales_section(r):
 <section class="creds" aria-labelledby="creds-title">
   <div class="container">
     <div class="creds-head">
-      <div><span class="eyebrow">Credenciales verificables</span><h2 class="h2" id="creds-title">Microsoft validó nuestra capacidad en las tres áreas que implementamos.</h2></div>
+      <div><span class="eyebrow">Credenciales verificables</span><h2 class="h2" id="creds-title">Microsoft validó nuestra capacidad en todas sus áreas de soluciones.</h2></div>
       <a class="link-strong" href="{VERIFICAR}" target="_blank" rel="noopener">Verifícalo en Microsoft ↗</a>
     </div>
+    <article class="cred-cloud">
+      <div class="cc-img">{badge_img(r, 'WIT-MicrosoftCloud-color.png', 170)}</div>
+      <div class="cc-txt"><span class="eyebrow">6 de 6 designaciones</span><h3>Solutions Partner for Microsoft Cloud</h3>
+        <p>Tenemos las seis designaciones Solutions Partner de Microsoft. Un solo partner para todo tu ecosistema Microsoft: aplicaciones de negocio, trabajo moderno, datos e IA, aplicaciones, infraestructura y seguridad.</p>
+        <ul class="cc-desig">{''.join(f'<li>{d}</li>' for d in DESIGNACIONES)}</ul>
+        <div class="cc-meta"><span>Designación Microsoft</span>{f'<a href="{VERIFICAR}" target="_blank" rel="noopener">Verificar ↗</a>' if MS_CLOUD_EN_MARKETPLACE else f'<a href="{r}nosotros/confianza/">Ver credenciales {ARROW}</a>'}</div></div>
+    </article>
     <div class="creds-grid">
-      {card('WIT-AIBusinessSolutions-Agentic-color.png', 'AI Business Solutions', 'Dynamics 365, Power Platform y Copilot. Con especialización en soluciones agénticas.')}
+      {card('WIT-AIBusinessSolutions-Agentic-color.png', 'AI Business Solutions', 'Dynamics 365, Power Platform, Microsoft 365 y Copilot. Con especialización en soluciones agénticas.')}
       {card('WIT-CloudAIPlatforms-color.png', 'Cloud &amp; AI Platforms', 'Azure: datos e IA, innovación de aplicaciones e infraestructura.')}
       {card('WIT-Security-color.png', 'Security', 'Protección de identidades, información y amenazas con tecnología Microsoft.')}
     </div>
@@ -481,7 +493,7 @@ def home(r):
   <div class="container hero-body">
     <div class="hero-grid">
       <div class="hero-copy">
-        <span class="eyebrow">Microsoft Solutions Partner · Chile y Perú</span>
+        <span class="eyebrow">Solutions Partner for Microsoft Cloud · Chile y Perú</span>
         <h1>IA que funciona sobre tus <em>sistemas reales</em>.</h1>
         <p class="hero-lead">Implementamos Dynamics 365, Power Platform, Azure y agentes de IA en grandes empresas y organismos públicos. Con equipo propio certificado y resultados medidos.</p>
         <div class="btn-row">
@@ -537,6 +549,7 @@ def home(r):
       <div class="cifra"><dd>+400</dd><dt>proyectos implementados</dt><span class="nota">[estimación · validar con registros]</span></div>
       <div class="cifra"><dd>+200 mil</dd><dt>horas de consultoría en proyectos</dt><span class="nota">[estimación · validar con registros]</span></div>
       <div class="cifra"><dd>30</dd><dt>especialistas certificados en Dynamics 365, Power Platform, Copilot y Azure</dt><span class="nota">[estimación · validar personas únicas]</span></div>
+      <div class="cifra"><dd>6 de 6</dd><dt>designaciones Microsoft Solutions Partner</dt><span class="nota">Solutions Partner for Microsoft Cloud</span></div>
       <div class="cifra"><dd>2014</dd><dt>Partner Microsoft desde 2014</dt><span class="nota">Microsoft Partner Network</span></div>
       <div class="cifra"><dd>ISO</dd><dt>9001 · 27001, certificadas con SGS</dt><span class="nota">SGS</span></div>
     </dl>
@@ -682,9 +695,9 @@ def tool_card(r, h):
 
 
 def trust_items():
-    items = [('Microsoft', 'Solutions Partner for AI Business Solutions', 'Con especialización en Agentic Business Solutions.'),
-             ('Microsoft', 'Cloud &amp; AI Platforms', 'Data &amp; AI, Digital &amp; App Innovation e Infrastructure.'),
-             ('Microsoft', 'Security', 'Identidades, protección de la información y amenazas.'),
+    items = [('Microsoft', 'Solutions Partner for Microsoft Cloud', 'Las seis designaciones Solutions Partner de Microsoft.'),
+             ('Microsoft', 'AI Business Solutions', 'Business Applications y Modern Work, con especialización en Agentic Business Solutions.'),
+             ('Microsoft', 'Cloud &amp; AI Platforms · Security', 'Data &amp; AI, Digital &amp; App Innovation, Infrastructure y Security.'),
              ('SGS', 'ISO 9001 · ISO/IEC 27001', 'Calidad y seguridad de la información. Certificado descargable [PDF].'),
              ('Azure Chile Central', 'Datos en Chile, en tu tenant', 'Implementaciones en la región desde 2025.'),
              ('Política publicada', 'IA responsable', 'Supervisión humana, trazabilidad y datos que no entrenan modelos.')]
@@ -765,6 +778,27 @@ def industrias_index(r):
 {cta_final(r)}'''
 
 
+def industria_img(r, slug):
+    """Imagen del hero de industria. Fuente: assets/img/industrias/<slug>.png|jpg (p. ej. exportada de ChatGPT).
+    Genera <slug>-hero.webp/.jpg a 1200 px de ancho cuando la fuente es más nueva. Sin fuente: sin imagen."""
+    d = os.path.join(ROOT, 'assets', 'img', 'industrias')
+    src = next((os.path.join(d, f'{slug}.{e}') for e in ('png', 'jpg', 'jpeg', 'webp') if os.path.exists(os.path.join(d, f'{slug}.{e}'))), None)
+    if not src:
+        return ''
+    webp, jpg = (os.path.join(d, f'{slug}-hero.{e}') for e in ('webp', 'jpg'))
+    if not os.path.exists(webp) or os.path.getmtime(webp) < os.path.getmtime(src):
+        im = Image.open(src).convert('RGB')
+        if im.width > 1200:
+            im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
+        im.save(webp, 'WEBP', quality=82, method=6)
+        im.save(jpg, 'JPEG', quality=84, optimize=True, progressive=True)
+    w, h = Image.open(webp).size
+    return (f'<div class="page-hero-aside ind-hero-media"><picture>'
+            f'<source srcset="{r}assets/img/industrias/{slug}-hero.webp" type="image/webp">'
+            f'<img src="{r}assets/img/industrias/{slug}-hero.jpg" alt="" width="{w}" height="{h}" fetchpriority="high">'
+            f'</picture></div>')
+
+
 def industria_page(i):
     def body(r):
         desafios = ''.join(f'<div class="signal"><span class="signal-n">0{n}</span><p>{escape(d)}</p></div>' for n, d in enumerate(i['desafios'], 1))
@@ -772,7 +806,8 @@ def industria_page(i):
         casos_html = (f'<div class="grid grid-280">{"".join(caso_card(r, c) for c in casos)}</div>' if casos else
                       '<div class="placeholder-box" style="min-height:140px">[placeholder: casos de la industria con autorización]</div>')
         return page_hero(r, [('Industrias', 'industrias/'), (i['nombre'], f"industrias/{i['slug']}/")], i['nombre'], i['h1'],
-                         'Soluciones Microsoft implementadas por un equipo que conoce los procesos y la regulación de tu sector.') + f'''
+                         'Soluciones Microsoft implementadas por un equipo que conoce los procesos y la regulación de tu sector.',
+                         aside=industria_img(r, i['slug'])) + f'''
 <section class="section bg-white"><div class="container stack-40">
   {section_head('Desafíos típicos', 'Lo que vemos una y otra vez.')}
   <div class="signals signals-3">{desafios}</div>
@@ -944,7 +979,7 @@ def como_trabajamos(r):
 def nosotros(r):
     hitos = [('2013', 'Nace W-IT, consultora especialista en Microsoft.'), ('2014', 'W-IT se convierte en partner de Microsoft.'),
              ('2019', 'Microsoft Partner of the Year Latinoamérica y el Caribe: Dynamics 365 for Sales.'), ('2020', 'Microsoft Partner of the Year Latinoamérica y el Caribe: Proactive Customer Service.'), ('2023', 'ISO 9001 e ISO 27001 con SGS.'),
-             ('2026', 'Designaciones FY26 y especialización Agentic Business Solutions.')]
+             ('2026', 'Solutions Partner for Microsoft Cloud: las seis designaciones Microsoft y especialización Agentic Business Solutions.')]
     tl = ''.join(f'<li><span class="tl-year">{a}</span><p>{escape(b)}</p></li>' for a, b in hitos)
     valores = ['Simpleza y Calidad', 'Confianza y Cercanía', 'Competitividad e Innovación', 'Honestidad y Responsabilidad', 'Respeto y Colaboración']
     return page_hero(r, [('Nosotros', 'nosotros/')], 'Nosotros', 'Consultores Microsoft que hacen simple lo complejo.',
@@ -977,9 +1012,10 @@ def confianza(r):
   </div></div>
 </section>
 <section class="section bg-white"><div class="container stack-40">
-  {section_head('Microsoft', 'Designaciones y especialización.')}
+  {section_head('Microsoft', 'Las seis designaciones Solutions Partner y especialización.')}
   <div class="badge-row">
-    <figure>{badge_img(r, 'WIT-AIBusinessSolutions-Agentic-color.png', 150)}<figcaption>AI Business Solutions · Especialización Agentic Business Solutions</figcaption></figure>
+    <figure>{badge_img(r, 'WIT-MicrosoftCloud-color.png', 120)}<figcaption>Microsoft Cloud · Las seis designaciones Solutions Partner</figcaption></figure>
+    <figure>{badge_img(r, 'WIT-AIBusinessSolutions-Agentic-color.png', 150)}<figcaption>AI Business Solutions (Business Applications y Modern Work) · Especialización Agentic Business Solutions</figcaption></figure>
     <figure>{badge_img(r, 'WIT-CloudAIPlatforms-color.png', 120)}<figcaption>Cloud &amp; AI Platforms</figcaption></figure>
     <figure>{badge_img(r, 'WIT-Security-color.png', 120)}<figcaption>Security</figcaption></figure>
   </div>
@@ -1254,7 +1290,7 @@ def privacidad_page(r):
 def main():
     pages = []
     pages.append(write('', 'W-IT · Partner Microsoft Dynamics 365, Power Platform, Azure y Copilot en Chile y Perú',
-                       'Microsoft Solutions Partner en Chile y Perú. Implementamos Dynamics 365, Power Platform, Azure y agentes de IA.', home, solid=False))
+                       'Solutions Partner for Microsoft Cloud, con las seis designaciones Microsoft, en Chile y Perú. Implementamos Dynamics 365, Power Platform, Azure y agentes de IA.', home, solid=False))
     pages.append(write('soluciones/', 'Soluciones Microsoft Dynamics 365, Power Platform, Azure y Copilot · W-IT', 'Partner Microsoft en Chile y Perú: implementamos Dynamics 365, Power Platform, Azure y Copilot.', soluciones_index, 'soluciones'))
     for s in SOLUCIONES:
         pages.append(write(f"soluciones/{s['slug']}/", f"{s['plataforma']}: {s['nombre'].lower()} · W-IT Chile", f"{s['plataforma']}. {s['linea']}", solucion_page(s), 'soluciones'))
