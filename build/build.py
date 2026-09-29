@@ -678,14 +678,14 @@ def home(r):
 <section class="cifras" aria-label="W-IT en cifras">
   <div class="container">
     <dl class="cifras-grid">
-      <div class="cifra"><dd>+400</dd><dt>proyectos implementados</dt><span class="nota">[estimación · validar con registros]</span></div>
-      <div class="cifra"><dd>+200 mil</dd><dt>horas de consultoría en proyectos</dt><span class="nota">[estimación · validar con registros]</span></div>
-      <div class="cifra"><dd>30</dd><dt>especialistas certificados en Dynamics 365, Power Platform, Copilot y Azure</dt><span class="nota">[estimación · validar personas únicas]</span></div>
+      <div class="cifra"><dd>+400</dd><dt>proyectos implementados</dt></div>
+      <div class="cifra"><dd>+200 mil</dd><dt>horas de consultoría en proyectos</dt></div>
+      <div class="cifra"><dd>+35</dd><dt>personas certificadas en Dynamics 365, Power Platform, Copilot y Azure</dt></div>
       <div class="cifra"><dd>6 de 6</dd><dt>designaciones Microsoft Solutions Partner</dt><span class="nota">Solutions Partner for Microsoft Cloud</span></div>
       <div class="cifra"><dd>2014</dd><dt>Partner Microsoft desde 2014</dt><span class="nota">Microsoft Partner Network</span></div>
       <div class="cifra"><dd>ISO</dd><dt>9001 · 27001, certificadas con SGS</dt><span class="nota">SGS</span></div>
     </dl>
-    <p class="fuente">Datos a <span class="ph">[mes-año]</span>. Fuente: Partner Center y registros internos.</p>
+    <p class="fuente">Fuente: Partner Center y registros internos.</p>
   </div>
 </section>
 
@@ -700,7 +700,7 @@ def home(r):
 
 <section class="section bg-white" id="casos">
   <div class="container stack-32">
-    {section_head('Casos de éxito', 'Resultados medidos, no promesas.', link=f'<a class="link-strong" href="{r}casos-de-exito/">Todos los casos {ARROW}</a>')}
+    {section_head('Casos de éxito', 'Grandes clientes, grandes implementaciones.', link=f'<a class="link-strong" href="{r}casos-de-exito/">Todos los casos {ARROW}</a>')}
     <article class="caso-destacado">
       <div>
         {logo(r, destacado['cliente'], 'caso-logo-dark')}
@@ -962,7 +962,7 @@ def industria_page(i):
 def casos_index(r):
     opts_i = ''.join(f'<button type="button" data-filter="industria" data-value="{k}">{escape(v)}</button>' for k, v in IND_NOMBRE.items() if any(c['industria'] == k for c in CASOS))
     opts_s = ''.join(f'<button type="button" data-filter="solucion" data-value="{s["slug"]}">{escape(s["corto"])}</button>' for s in SOLUCIONES if any(c['solucion'] == s['slug'] for c in CASOS))
-    return page_hero(r, [('Casos de éxito', 'casos-de-exito/')], 'Casos de éxito', 'Resultados medidos, no promesas.',
+    return page_hero(r, [('Casos de éxito', 'casos-de-exito/')], 'Casos de éxito', 'Grandes clientes, grandes implementaciones.',
                      'Proyectos reales de W-IT con grandes organizaciones de Chile, sobre Microsoft Dynamics 365, Power Platform y Azure.', ctas=False) + f'''
 <section class="section bg-soft"><div class="container stack-32">
   <div class="filters" id="filtros">
