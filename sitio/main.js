@@ -217,6 +217,7 @@
       e.preventDefault();
       if (!form.reportValidity()) return;
       $('.form-msg', form).hidden = false;
+      console.info('[demo] Contexto oculto que viajaría al CRM:', Object.fromEntries([...form.querySelectorAll('input[type=hidden]')].map(i => [i.name, i.value])));
     });
   }
 
@@ -315,9 +316,10 @@
           <div class="btn-row"><a class="btn btn-primary" href="${diag.dataset.contacto}">Hablar con un especialista</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
         </div>`;
       try {
-        sessionStorage.setItem('wit-diag', `Autodiagnóstico IA: ${nivel[1]} (${pts}/10), plazo estimado ${min} a ${max} semanas.\n` +
-          resp.map((o, k) => `- ${D.preguntas[k].q} ${o.t}`).join('\n'));
-      } catch (e) { /* sin almacenamiento: el formulario queda vacío */ }
+        sessionStorage.setItem('wit-diag', JSON.stringify({ herramienta: 'Autodiagnóstico de madurez en IA y agentes',
+          resultado: `${nivel[1]} (${pts}/10), plazo estimado ${min} a ${max} semanas`,
+          detalle: resp.map((o, k) => `${D.preguntas[k].q} ${o.t}`).join('\n') }));
+      } catch (e) { /* sin almacenamiento: el formulario va sin contexto */ }
       $('.diag-reset', stage).addEventListener('click', () => { resp = []; pregunta(0); });
       $('h2', stage).focus();
     };
@@ -386,9 +388,10 @@
           <div class="btn-row"><a class="btn btn-primary" href="${erp.dataset.contacto}">Hablar con un especialista</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
         </div>`;
       try {
-        sessionStorage.setItem('wit-diag', `¿Business Central o Finance?: ${prod.nombre}, plazo típico ${m0} a ${m1} meses.\n` +
-          resp.map((o, k) => `- ${seq[k].q} ${o.t}`).join('\n'));
-      } catch (e) { /* sin almacenamiento: el formulario queda vacío */ }
+        sessionStorage.setItem('wit-diag', JSON.stringify({ herramienta: '¿Business Central o Finance?',
+          resultado: `${prod.nombre}, plazo típico ${m0} a ${m1} meses${scm ? ', considerar Supply Chain Management' : ''}`,
+          detalle: resp.map((o, k) => `${seq[k].q} ${o.t}`).join('\n') }));
+      } catch (e) { /* sin almacenamiento: el formulario va sin contexto */ }
       $('.diag-reset', stage).addEventListener('click', () => { resp = []; armar(); pregunta(0); });
       $('h2', stage).focus();
     };
@@ -446,9 +449,10 @@
           <div class="btn-row"><a class="btn btn-primary" href="${ley.dataset.contacto}">Hablar con un especialista</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
         </div>`;
       try {
-        sessionStorage.setItem('wit-diag', `Preparación Ley 21.719: ${nombre} (${pts}/16).\n` +
-          D.preguntas.map((q, k) => `- ${q.tag}: ${resp[k].t}`).join('\n'));
-      } catch (e) { /* sin almacenamiento: el formulario queda vacío */ }
+        sessionStorage.setItem('wit-diag', JSON.stringify({ herramienta: 'Preparación Ley 21.719',
+          resultado: `${nombre} (${pts}/16)`,
+          detalle: D.preguntas.map((q, k) => `${q.tag}: ${resp[k].t}`).join('\n') }));
+      } catch (e) { /* sin almacenamiento: el formulario va sin contexto */ }
       $('.diag-reset', stage).addEventListener('click', () => { resp = []; pregunta(0); });
       $('h2', stage).focus();
     };
@@ -456,10 +460,34 @@
     pregunta(0);
   }
 
-  // ---------- Contacto: si viene de una herramienta de diagnóstico, precarga el mensaje
-  const msg = $('#form-contacto textarea[name="mensaje"]');
-  if (msg && !msg.value) {
-    try { msg.value = sessionStorage.getItem('wit-diag') || ''; } catch (e) { /* nada */ }
+  // ---------- Origen del contacto (para el CRM): desde qué página y botón se llegó, diagnóstico y UTM
+  const store = {
+    get: k => { try { return JSON.parse(sessionStorage.getItem(k) || 'null'); } catch (e) { return null; } },
+    set: (k, v) => { try { sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* sin almacenamiento */ } },
+  };
+  // UTM de la primera página de la visita
+  const utm = [...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_'));
+  if (utm.length && !store.get('wit-utm')) store.set('wit-utm', utm.map(([k, v]) => `${k}=${v}`).join('&'));
+  // Último enlace hacia Contacto que se usó en el sitio
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href]');
+    if (!a || !/(^|\/)contacto\/?(#.*)?$/.test(new URL(a.href, location.href).pathname)) return;
+    const sec = a.closest('section[id], section[aria-label], header, footer');
+    store.set('wit-origen', {
+      pagina: location.pathname,
+      cta: `${a.textContent.trim().replace(/\s+/g, ' ').slice(0, 80)}${sec ? ` · ${sec.id || sec.getAttribute('aria-label') || sec.tagName.toLowerCase()}` : ''}`,
+    });
+  });
+  // En Contacto: completa los campos ocultos
+  if (form) {
+    const set = (n, v) => { if (v) form.elements[n].value = v; };
+    const origen = store.get('wit-origen');
+    const ref = document.referrer && new URL(document.referrer).origin === location.origin ? new URL(document.referrer).pathname : '';
+    set('origen_pagina', origen ? origen.pagina : ref || (document.referrer ? document.referrer : 'directo'));
+    set('origen_cta', origen && origen.cta);
+    const diag = store.get('wit-diag');
+    if (diag) { set('diagnostico_herramienta', diag.herramienta); set('diagnostico_resultado', diag.resultado); set('diagnostico_detalle', diag.detalle); }
+    set('utm', store.get('wit-utm'));
   }
 
   // ---------- Agente flotante

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contacto · W-IT</title>
-<meta name="description" content="Agenda un diagnóstico con W-IT.">
+<meta name="description" content="Contacta a W-IT: proyectos, licencias y soporte Microsoft en Chile y Perú.">
 <link rel="icon" type="image/png" href="../assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="../assets/marca/apple-touch-icon.png">
 <link rel="stylesheet" href="../styles.css">
@@ -169,51 +169,55 @@
         </li>
       </ul>
       <div class="drawer-foot">
-        <a class="btn btn-lg btn-primary" href="../contacto/">Agenda un diagnóstico</a>
+        <a class="btn btn-lg btn-primary" href="../contacto/">Contáctanos</a>
       </div>
     </nav>
     <div class="header-actions">
       <span class="presence" title="Presencia en Chile y Perú"><img src="../assets/img/chile.svg" alt="Chile" width="21" height="14"><img src="../assets/img/peru.svg" alt="Perú" width="21" height="14"></span>
-      <a class="btn header-cta" href="../contacto/">Agenda un diagnóstico</a>
+      <a class="btn header-cta" href="../contacto/">Contáctanos</a>
     </div>
     <button class="nav-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú"><span></span><span></span><span></span></button>
   </div>
 </header>
 <main id="main">
 
-<section class="page-hero">
+<section class="page-hero contact-hero">
   <div class="page-hero-trazo" aria-hidden="true"></div>
-  <div class="container page-hero-inner">
-    <div class="page-hero-copy">
+  <div class="container contact-layout">
+    <div class="contact-intro">
       <nav aria-label="Ruta"><ol class="crumbs"><li><a href="../">Inicio</a></li><li><a href="../contacto/">Contacto</a></li></ol></nav>
       <span class="eyebrow">Contacto</span>
-      <h1>Agenda un diagnóstico de 30 minutos.</h1>
-      <p class="lead">Te respondemos en menos de 1 día hábil.</p>
-      
+      <h1>Cuéntanos qué necesitas.</h1>
+      <p class="lead">Un proyecto nuevo, licencias, soporte o una consulta: te respondemos en menos de 1 día hábil.</p>
+      <ol class="contact-pasos"><li><strong>Te respondemos</strong><span>En menos de 1 día hábil, al correo que nos dejes.</span></li><li><strong>Te conectamos con un especialista</strong><span>Del área que te interesa, en una reunión breve si hace falta.</span></li><li><strong>Te proponemos un camino</strong><span>Un primer enfoque, plazos típicos y si aplica cofinanciamiento de Microsoft.</span></li></ol>
+      <div class="contact-cards">
+        <div class="contact-card"><span class="contact-pais">Chile · W-IT SpA</span><span>Av. Apoquindo 3039, Las Condes, Santiago</span></div>
+        <div class="contact-card"><span class="contact-pais">Perú · W-IT LATAM S.A.C.</span><span>Av. Circunvalación del Golf Los Incas 170, Int. 702, Santiago de Surco, Lima</span></div>
+        <div class="contact-card contact-card-links"><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a></div>
+      </div>
     </div>
+    <form class="form contact-form" id="form-contacto" novalidate>
+      <div class="form-head"><strong>Escríbenos</strong><span>Los campos con <abbr class="req" title="obligatorio">*</abbr> son obligatorios.</span></div>
+      <div class="form-row"><label><span>Nombre <abbr class="req" title="obligatorio">*</abbr></span><input name="nombre" required autocomplete="name" placeholder="Nombre y apellido"></label><label><span>Email corporativo <abbr class="req" title="obligatorio">*</abbr></span><input type="email" name="email" required autocomplete="email" placeholder="nombre@empresa.cl"></label></div>
+      <div class="form-row"><label>Empresa<input name="empresa" autocomplete="organization"></label><label>Cargo<input name="cargo" autocomplete="organization-title"></label></div>
+      <div class="form-row form-row-3"><label>Teléfono<input type="tel" name="telefono" autocomplete="tel" placeholder="+56 9"></label>
+        <label>País<select name="pais"><option>Chile</option><option>Perú</option><option>Otro</option></select></label>
+        <label>Tamaño<select name="tamano"><option>Menos de 200 personas</option><option>200 a 1.000</option><option>Más de 1.000</option></select></label></div>
+      <fieldset><legend>¿Qué te interesa?</legend><div class="chips"><label class="chip"><input type="checkbox" name="interes" value="ia-y-agentes"><span>IA y agentes</span></label><label class="chip"><input type="checkbox" name="interes" value="ventas-servicio-y-contact-center"><span>Ventas y servicio</span></label><label class="chip"><input type="checkbox" name="interes" value="contact-center"><span>Contact center</span></label><label class="chip"><input type="checkbox" name="interes" value="finanzas-y-operaciones"><span>Finanzas y operaciones</span></label><label class="chip"><input type="checkbox" name="interes" value="datos-y-analitica"><span>Datos y analítica</span></label><label class="chip"><input type="checkbox" name="interes" value="automatizacion-y-apps"><span>Automatización y apps</span></label><label class="chip"><input type="checkbox" name="interes" value="nube-azure-e-infraestructura"><span>Nube Azure</span></label><label class="chip"><input type="checkbox" name="interes" value="seguridad-y-cumplimiento"><span>Seguridad y cumplimiento</span></label><label class="chip"><input type="checkbox" name="interes" value="licencias"><span>Licencias Microsoft</span></label><label class="chip"><input type="checkbox" name="interes" value="soporte"><span>Soporte</span></label></div></fieldset>
+      <label>Mensaje<textarea name="mensaje" rows="3" placeholder="Cuéntanos brevemente tu consulta"></textarea></label>
+      <label class="check"><input type="checkbox" name="consentimiento" required> <span>Acepto la <a href="../privacidad/">política de privacidad</a> y el tratamiento de mis datos para responder esta solicitud. <abbr class="req" title="obligatorio">*</abbr></span></label>
+      <!-- Contexto para el CRM: lo completa main.js según desde dónde llegó la persona; no se muestra en pantalla -->
+      <input type="hidden" name="origen_pagina">
+      <input type="hidden" name="origen_cta">
+      <input type="hidden" name="diagnostico_herramienta">
+      <input type="hidden" name="diagnostico_resultado">
+      <input type="hidden" name="diagnostico_detalle">
+      <input type="hidden" name="utm">
+      <button class="btn btn-lg btn-primary" type="submit">Enviar solicitud</button>
+      <p class="form-msg" role="status" hidden>Formulario de demostración: aún no está conectado. <span class="ph">[conectar a Dynamics 365 y registrar el consentimiento]</span></p>
+    </form>
   </div>
 </section>
-<section class="section bg-soft"><div class="container grid grid-2 cta-grid">
-  <form class="form" id="form-contacto" novalidate>
-    <div class="form-row"><label>Nombre<input name="nombre" required autocomplete="name"></label><label>Empresa<input name="empresa" autocomplete="organization"></label></div>
-    <div class="form-row"><label>Cargo<input name="cargo" autocomplete="organization-title"></label><label>Email<input type="email" name="email" required autocomplete="email"></label></div>
-    <div class="form-row"><label>Teléfono<input type="tel" name="telefono" autocomplete="tel"></label>
-      <label>País<select name="pais"><option>Chile</option><option>Perú</option><option>Otro</option></select></label></div>
-    <label>Tamaño de la organización<select name="tamano"><option>Menos de 200 personas</option><option>200 a 1.000</option><option>Más de 1.000</option></select></label>
-    <fieldset><legend>¿Qué te interesa?</legend><div class="checks-2"><label class="check"><input type="checkbox" name="interes" value="ia-y-agentes"> IA y agentes</label><label class="check"><input type="checkbox" name="interes" value="ventas-servicio-y-contact-center"> Ventas y servicio al cliente</label><label class="check"><input type="checkbox" name="interes" value="contact-center"> Contact center omnicanal y voz</label><label class="check"><input type="checkbox" name="interes" value="finanzas-y-operaciones"> Finanzas y operaciones</label><label class="check"><input type="checkbox" name="interes" value="datos-y-analitica"> Datos y analítica</label><label class="check"><input type="checkbox" name="interes" value="automatizacion-y-apps"> Automatización y apps</label><label class="check"><input type="checkbox" name="interes" value="nube-azure-e-infraestructura"> Nube Azure e infraestructura</label><label class="check"><input type="checkbox" name="interes" value="seguridad-y-cumplimiento"> Seguridad y cumplimiento</label></div></fieldset>
-    <label>Mensaje<textarea name="mensaje" rows="4"></textarea></label>
-    <label class="check"><input type="checkbox" name="consentimiento" required> Acepto la <a href="../privacidad/">política de privacidad</a> y el tratamiento de mis datos para responder esta solicitud.</label>
-    <button class="btn btn-lg btn-primary" type="submit">Enviar</button>
-    <p class="form-msg" role="status" hidden>Formulario de demostración: aún no está conectado. <span class="ph">[conectar a Dynamics 365 y registrar el consentimiento]</span></p>
-  </form>
-  <div class="stack-20">
-    <span class="eyebrow">Datos de contacto</span>
-    <p class="lead"><strong>Chile · W-IT SpA</strong><br>Av. Apoquindo 3039, Las Condes, Santiago</p>
-    <p class="lead"><strong>Perú · W-IT LATAM S.A.C.</strong><br>Av. Circunvalación del Golf Los Incas 170, Int. 702, Santiago de Surco, Lima</p>
-    <p class="lead">+56 2 2409 6112 · <a href="mailto:info@w-it.cl">info@w-it.cl</a></p>
-    <div class="placeholder-box" style="min-height:220px">mapa estático de la oficina (sin iframe de Google, por privacidad) [placeholder]</div>
-  </div>
-</div></section>
 </main>
 
 <footer class="site-footer">

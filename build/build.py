@@ -179,12 +179,12 @@ def header(r, active, solid):
         </li>
       </ul>
       <div class="drawer-foot">
-        <a class="btn btn-lg btn-primary" href="{r}contacto/">Agenda un diagnóstico</a>
+        <a class="btn btn-lg btn-primary" href="{r}contacto/">Contáctanos</a>
       </div>
     </nav>
     <div class="header-actions">
       <span class="presence" title="Presencia en Chile y Perú"><img src="{r}assets/img/chile.svg" alt="Chile" width="21" height="14"><img src="{r}assets/img/peru.svg" alt="Perú" width="21" height="14"></span>
-      <a class="btn header-cta" href="{r}contacto/">Agenda un diagnóstico</a>
+      <a class="btn header-cta" href="{r}contacto/">Contáctanos</a>
     </div>
     <button class="nav-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú"><span></span><span></span><span></span></button>
   </div>
@@ -1220,30 +1220,50 @@ def simple_page(eyebrow, h1, bajada, crumbs, contenido):
 
 
 def contacto(r):
-    sols = ''.join(f'<label class="check"><input type="checkbox" name="interes" value="{s["slug"]}"> {escape(s["nombre"])}</label>' for s in SOLUCIONES)
-    return page_hero(r, [('Contacto', 'contacto/')], 'Contacto', 'Agenda un diagnóstico de 30 minutos.',
-                     'Te respondemos en menos de 1 día hábil.', ctas=False) + f'''
-<section class="section bg-soft"><div class="container grid grid-2 cta-grid">
-  <form class="form" id="form-contacto" novalidate>
-    <div class="form-row"><label>Nombre<input name="nombre" required autocomplete="name"></label><label>Empresa<input name="empresa" autocomplete="organization"></label></div>
-    <div class="form-row"><label>Cargo<input name="cargo" autocomplete="organization-title"></label><label>Email<input type="email" name="email" required autocomplete="email"></label></div>
-    <div class="form-row"><label>Teléfono<input type="tel" name="telefono" autocomplete="tel"></label>
-      <label>País<select name="pais"><option>Chile</option><option>Perú</option><option>Otro</option></select></label></div>
-    <label>Tamaño de la organización<select name="tamano"><option>Menos de 200 personas</option><option>200 a 1.000</option><option>Más de 1.000</option></select></label>
-    <fieldset><legend>¿Qué te interesa?</legend><div class="checks-2">{sols}</div></fieldset>
-    <label>Mensaje<textarea name="mensaje" rows="4"></textarea></label>
-    <label class="check"><input type="checkbox" name="consentimiento" required> Acepto la <a href="{r}privacidad/">política de privacidad</a> y el tratamiento de mis datos para responder esta solicitud.</label>
-    <button class="btn btn-lg btn-primary" type="submit">Enviar</button>
-    <p class="form-msg" role="status" hidden>Formulario de demostración: aún no está conectado. <span class="ph">[conectar a Dynamics 365 y registrar el consentimiento]</span></p>
-  </form>
-  <div class="stack-20">
-    <span class="eyebrow">Datos de contacto</span>
-    <p class="lead"><strong>Chile · W-IT SpA</strong><br>Av. Apoquindo 3039, Las Condes, Santiago</p>
-    <p class="lead"><strong>Perú · W-IT LATAM S.A.C.</strong><br>Av. Circunvalación del Golf Los Incas 170, Int. 702, Santiago de Surco, Lima</p>
-    <p class="lead">+56 2 2409 6112 · <a href="mailto:info@w-it.cl">info@w-it.cl</a></p>
-    <div class="placeholder-box" style="min-height:220px">mapa estático de la oficina (sin iframe de Google, por privacidad) [placeholder]</div>
+    temas = [(s['slug'], s['corto']) for s in SOLUCIONES] + [('licencias', 'Licencias Microsoft'), ('soporte', 'Soporte')]
+    sols = ''.join(f'<label class="chip"><input type="checkbox" name="interes" value="{v}"><span>{escape(t)}</span></label>' for v, t in temas)
+    pasos = [('Te respondemos', 'En menos de 1 día hábil, al correo que nos dejes.'),
+             ('Te conectamos con un especialista', 'Del área que te interesa, en una reunión breve si hace falta.'),
+             ('Te proponemos un camino', 'Un primer enfoque, plazos típicos y si aplica cofinanciamiento de Microsoft.')]
+    req = '<abbr class="req" title="obligatorio">*</abbr>'
+    return f'''
+<section class="page-hero contact-hero">
+  <div class="page-hero-trazo" aria-hidden="true"></div>
+  <div class="container contact-layout">
+    <div class="contact-intro">
+      <nav aria-label="Ruta"><ol class="crumbs"><li><a href="{r}">Inicio</a></li><li><a href="{r}contacto/">Contacto</a></li></ol></nav>
+      <span class="eyebrow">Contacto</span>
+      <h1>Cuéntanos qué necesitas.</h1>
+      <p class="lead">Un proyecto nuevo, licencias, soporte o una consulta: te respondemos en menos de 1 día hábil.</p>
+      <ol class="contact-pasos">{''.join(f'<li><strong>{escape(a)}</strong><span>{escape(b)}</span></li>' for a, b in pasos)}</ol>
+      <div class="contact-cards">
+        <div class="contact-card"><span class="contact-pais">Chile · W-IT SpA</span><span>Av. Apoquindo 3039, Las Condes, Santiago</span></div>
+        <div class="contact-card"><span class="contact-pais">Perú · W-IT LATAM S.A.C.</span><span>Av. Circunvalación del Golf Los Incas 170, Int. 702, Santiago de Surco, Lima</span></div>
+        <div class="contact-card contact-card-links"><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a></div>
+      </div>
+    </div>
+    <form class="form contact-form" id="form-contacto" novalidate>
+      <div class="form-head"><strong>Escríbenos</strong><span>Los campos con {req} son obligatorios.</span></div>
+      <div class="form-row"><label><span>Nombre {req}</span><input name="nombre" required autocomplete="name" placeholder="Nombre y apellido"></label><label><span>Email corporativo {req}</span><input type="email" name="email" required autocomplete="email" placeholder="nombre@empresa.cl"></label></div>
+      <div class="form-row"><label>Empresa<input name="empresa" autocomplete="organization"></label><label>Cargo<input name="cargo" autocomplete="organization-title"></label></div>
+      <div class="form-row form-row-3"><label>Teléfono<input type="tel" name="telefono" autocomplete="tel" placeholder="+56 9"></label>
+        <label>País<select name="pais"><option>Chile</option><option>Perú</option><option>Otro</option></select></label>
+        <label>Tamaño<select name="tamano"><option>Menos de 200 personas</option><option>200 a 1.000</option><option>Más de 1.000</option></select></label></div>
+      <fieldset><legend>¿Qué te interesa?</legend><div class="chips">{sols}</div></fieldset>
+      <label>Mensaje<textarea name="mensaje" rows="3" placeholder="Cuéntanos brevemente tu consulta"></textarea></label>
+      <label class="check"><input type="checkbox" name="consentimiento" required> <span>Acepto la <a href="{r}privacidad/">política de privacidad</a> y el tratamiento de mis datos para responder esta solicitud. {req}</span></label>
+      <!-- Contexto para el CRM: lo completa main.js según desde dónde llegó la persona; no se muestra en pantalla -->
+      <input type="hidden" name="origen_pagina">
+      <input type="hidden" name="origen_cta">
+      <input type="hidden" name="diagnostico_herramienta">
+      <input type="hidden" name="diagnostico_resultado">
+      <input type="hidden" name="diagnostico_detalle">
+      <input type="hidden" name="utm">
+      <button class="btn btn-lg btn-primary" type="submit">Enviar solicitud</button>
+      <p class="form-msg" role="status" hidden>Formulario de demostración: aún no está conectado. <span class="ph">[conectar a Dynamics 365 y registrar el consentimiento]</span></p>
+    </form>
   </div>
-</div></section>'''
+</section>'''
 
 
 
@@ -1411,13 +1431,15 @@ def privacidad_page(r):
   <p>Además, este sitio usa una cookie publicitaria de Google Ads (_gcl_au). Su único fin es saber si quien nos escribió por el formulario llegó desde un aviso nuestro en Google, y así no seguir pagando por avisos que no funcionan. No la usamos para mostrarte publicidad en otros sitios ni para armar un perfil tuyo. Si prefieres evitarla, puedes bloquear las cookies de terceros en tu navegador: el sitio y el formulario funcionan igual.</p>
   <h3>Los que tú escribes en el formulario:</h3>
   <ul class="legal-list">
-    <li>Nombre y correo electrónico. Son los únicos obligatorios, junto con el tamaño de tu organización y el tema que te interesa.</li>
-    <li>Empresa u organización, cargo y teléfono, si decides completarlos.</li>
+    <li>Nombre y correo electrónico. Son los únicos obligatorios.</li>
+    <li>Empresa u organización, cargo, teléfono, país, tamaño de tu organización y temas de interés, si decides completarlos.</li>
     <li>El mensaje que nos escribas, si escribes uno.</li>
   </ul>
   <h3>Los que el sitio registra junto a tu envío:</h3>
   <ul class="legal-list">
     <li>La página desde la que enviaste el formulario, incluidos los parámetros de campaña si llegaste por un enlace de marketing.</li>
+    <li>La página y el botón del sitio desde los que llegaste al formulario.</li>
+    <li>Si antes usaste uno de nuestros autodiagnósticos, sus respuestas y el resultado, para que el especialista llegue a la reunión con ese contexto.</li>
     <li>La dirección web desde la que llegaste a nuestro sitio, si venías de otra.</li>
     <li>Tu dirección IP, que se usa de forma temporal y solo para limitar envíos masivos automatizados. No se guarda junto a tu registro.</li>
   </ul>
@@ -1490,7 +1512,7 @@ def main():
     pages.append(write('nosotros/equipo/', 'Equipo · W-IT', 'Equipo W-IT.', simple_page('Nosotros · Equipo', 'Consultores propios y certificados.', 'Conteo agregado de certificaciones por área, sin nombres. <span class="ph">[placeholder]</span>', [('Nosotros', 'nosotros/'), ('Equipo', 'nosotros/equipo/')], '<div class="placeholder-box" style="min-height:260px">[placeholder: equipo líder y certificaciones por área]</div>'), 'nosotros'))
     pages.append(write('nosotros/trabaja-con-nosotros/', 'Trabaja con nosotros · W-IT', 'Empleos en W-IT.', simple_page('Nosotros · Talento', 'Trabaja con nosotros.', 'Certificaciones pagadas, proyectos enterprise e IA en el día a día. <span class="ph">[validar]</span>', [('Nosotros', 'nosotros/'), ('Trabaja con nosotros', 'nosotros/trabaja-con-nosotros/')], '<p class="lead">Vacantes publicadas en LinkedIn o ATS. <span class="ph">[placeholder: enlace]</span></p><div class="placeholder-box" style="min-height:220px">[placeholder: fotos reales y testimonios internos]</div>'), 'nosotros'))
     pages.append(write('recursos/', 'Recursos · W-IT', 'Observatorio IA, guías y eventos.', simple_page('Recursos', 'Análisis y guías sobre IA en Chile y Perú.', 'Observatorio IA Chile/Perú, guías descargables y eventos.', [('Recursos', 'recursos/')], '{recursos}'), 'nosotros'))
-    pages.append(write('contacto/', 'Contacto · W-IT', 'Agenda un diagnóstico con W-IT.', contacto))
+    pages.append(write('contacto/', 'Contacto · W-IT', 'Contacta a W-IT: proyectos, licencias y soporte Microsoft en Chile y Perú.', contacto))
     pages.append(write('privacidad/', 'Aviso de privacidad y tratamiento de datos · W-IT', 'Qué datos recolectamos en w-it.cl, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.', privacidad_page))
     for slug, t in [('cookies', 'Política de cookies'), ('terminos', 'Términos de uso')]:
         pages.append(write(f'{slug}/', f'{t} · W-IT', t, simple_page('Legal', t, 'Documento en redacción.', [(t, f'{slug}/')], '<p class="lead">[Redacción por Administración y Finanzas / RegulaTec]</p>')))
