@@ -268,6 +268,68 @@
     show(i);
   });
 
+  // ---------- Autodiagnóstico IA: 5 preguntas, resultado con nivel, plazo y próximo paso
+  const diag = $('#diag-ia');
+  if (diag) {
+    const D = JSON.parse($('#diag-ia-data').textContent);
+    const bar = $('.wizard-bar span', diag);
+    const stage = $('.diag-step', diag);
+    const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    let resp = [];
+
+    const pregunta = n => {
+      const p = D.preguntas[n];
+      bar.style.width = `${(n / D.preguntas.length) * 100}%`;
+      stage.innerHTML = `<span class="eyebrow">Pregunta ${n + 1} de ${D.preguntas.length}</span>
+        <h2 class="h2" tabindex="-1">${esc(p.q)}</h2>
+        <div class="wizard-opts">${p.opts.map((o, k) => `<button type="button" data-k="${k}">${esc(o.t)}</button>`).join('')}</div>
+        ${n ? '<button type="button" class="diag-back">← Anterior</button>' : ''}`;
+      $$('.wizard-opts button', stage).forEach(b => b.addEventListener('click', () => {
+        resp[n] = p.opts[+b.dataset.k];
+        n + 1 < D.preguntas.length ? pregunta(n + 1) : resultado();
+      }));
+      const back = $('.diag-back', stage);
+      if (back) back.addEventListener('click', () => pregunta(n - 1));
+      if (n) $('h2', stage).focus();
+    };
+
+    const resultado = () => {
+      const pts = resp.reduce((a, o) => a + o.pts, 0);
+      const [min, max] = resp.slice(1).reduce(([a, b], o) => [a + o.sem[0], b + o.sem[1]], resp[0].base);
+      const nivel = D.niveles.find(([m]) => pts >= m);
+      const brechas = resp.filter(o => o.brecha).map(o => o.brecha);
+      const paso = D.rutas[resp[0].ruta];
+      bar.style.width = '100%';
+      stage.innerHTML = `<span class="eyebrow">Tu resultado</span>
+        <h2 class="h2" tabindex="-1">${esc(nivel[1])}</h2>
+        <p class="lead">${esc(nivel[2])}</p>
+        <div class="diag-kpis">
+          <div><span>Plazo estimado a un primer caso en producción</span><strong>${min === max ? min : `${min} a ${max}`} semanas</strong></div>
+          <div><span>Preparación</span><strong>${pts} de 10</strong></div>
+        </div>
+        ${brechas.length ? `<div><h3 class="diag-sub">Qué resolver primero</h3><ul class="diag-list">${brechas.slice(0, 3).map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : ''}
+        <div><h3 class="diag-sub">Próximo paso sugerido</h3><p>${esc(paso)} Algunas de estas actividades pueden tener <a href="${diag.dataset.cofin}">cofinanciamiento de Microsoft</a>.</p></div>
+        <div class="diag-cta">
+          <p><strong>¿Quieres un diagnóstico completo?</strong> Un especialista revisa tu caso contigo en 30 minutos y afina el plazo y el alcance.</p>
+          <div class="btn-row"><a class="btn btn-primary" href="${diag.dataset.contacto}">Hablar con un especialista</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
+        </div>`;
+      try {
+        sessionStorage.setItem('wit-diag-ia', `Autodiagnóstico IA: ${nivel[1]} (${pts}/10), plazo estimado ${min} a ${max} semanas.\n` +
+          resp.map((o, k) => `- ${D.preguntas[k].q} ${o.t}`).join('\n'));
+      } catch (e) { /* sin almacenamiento: el formulario queda vacío */ }
+      $('.diag-reset', stage).addEventListener('click', () => { resp = []; pregunta(0); });
+      $('h2', stage).focus();
+    };
+
+    pregunta(0);
+  }
+
+  // ---------- Contacto: si viene del autodiagnóstico, precarga el mensaje
+  const msg = $('#form-contacto textarea[name="mensaje"]');
+  if (msg && !msg.value) {
+    try { msg.value = sessionStorage.getItem('wit-diag-ia') || ''; } catch (e) { /* nada */ }
+  }
+
   // ---------- Agente flotante
   const fab = $('.agente-fab');
   const agentePanel = $('#agente-panel');

@@ -3,11 +3,12 @@
 Uso:  python build/build.py
 styles.css, main.js y assets/ se editan directamente en sitio/; este script solo escribe los .html.
 """
+import json
 import os
 from html import escape
 from PIL import Image
 from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME,
-                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ)
+                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sitio')
 SOL = {s['slug']: s for s in SOLUCIONES}
@@ -1072,8 +1073,26 @@ def herramientas_index(r):
 {cta_final(r)}'''
 
 
+def diag_ia(r):
+    datos = json.dumps(DIAG_IA, ensure_ascii=False).replace('</', r'<\/')
+    return f'''
+<section class="section bg-soft"><div class="container">
+  <div class="wizard" id="diag-ia" data-contacto="{r}contacto/" data-cofin="{r}cofinanciamiento-microsoft/">
+    <div class="wizard-bar"><span style="width:0%"></span></div>
+    <div class="diag-step" aria-live="polite">
+      <noscript><p class="lead">Este autodiagnóstico necesita JavaScript. También puedes <a href="{r}contacto/">agendar un diagnóstico con un especialista</a>.</p></noscript>
+    </div>
+    <p class="disclaimer">Estimación orientativa. No es una cotización ni un compromiso de plazo.</p>
+  </div>
+  <script type="application/json" id="diag-ia-data">{datos}</script>
+</div></section>'''
+
+
 def herramienta_page(h):
     def body(r):
+        if h['slug'] == 'autodiagnostico-ia':
+            return page_hero(r, [('Herramientas', 'herramientas/'), (h['nombre'], f"herramientas/{h['slug']}/")], f"Herramienta · {h['tiempo']}",
+                             h['nombre'], escape(h['que']), ctas=False) + diag_ia(r) + cta_final(r)
         return page_hero(r, [('Herramientas', 'herramientas/'), (h['nombre'], f"herramientas/{h['slug']}/")], f"Herramienta · {h['tiempo']}",
                          h['nombre'], escape(h['que']), ctas=False) + f'''
 <section class="section bg-soft"><div class="container">

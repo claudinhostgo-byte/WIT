@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Autodiagnóstico de madurez en IA y agentes · W-IT</title>
-<meta name="description" content="Nivel, brechas y hoja de ruta en PDF.">
+<meta name="description" content="Nivel de preparación, plazo estimado y próximo paso.">
 <link rel="icon" type="image/png" href="../../assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="../../assets/marca/apple-touch-icon.png">
 <link rel="stylesheet" href="../../styles.css">
@@ -137,7 +137,7 @@
               </div>
               <div class="mega-list">
                 <span class="eyebrow">Herramientas gratuitas</span>
-                <a href="../../herramientas/calculadora-copilot/"><strong>Calculadora Copilot</strong><span>3 min</span></a><a href="../../herramientas/autodiagnostico-ia/"><strong>Autodiagnóstico de madurez en IA y agentes</strong><span>12 preguntas · 5 min</span></a><a href="../../herramientas/business-central-o-finance/"><strong>¿Business Central o Finance?</strong><span>8 preguntas</span></a><a href="../../herramientas/preparacion-ley-21719/"><strong>Preparación Ley 21.719</strong><span>10 preguntas</span></a>
+                <a href="../../herramientas/calculadora-copilot/"><strong>Calculadora Copilot</strong><span>3 min</span></a><a href="../../herramientas/autodiagnostico-ia/"><strong>Autodiagnóstico de madurez en IA y agentes</strong><span>5 preguntas · 1 min</span></a><a href="../../herramientas/business-central-o-finance/"><strong>¿Business Central o Finance?</strong><span>8 preguntas</span></a><a href="../../herramientas/preparacion-ley-21719/"><strong>Preparación Ley 21.719</strong><span>10 preguntas</span></a>
               </div>
               <div class="mega-promo">
                 <span class="eyebrow">Cuenta regresiva</span>
@@ -191,23 +191,23 @@
   <div class="container page-hero-inner">
     <div class="page-hero-copy">
       <nav aria-label="Ruta"><ol class="crumbs"><li><a href="../../">Inicio</a></li><li><a href="../../herramientas/">Herramientas</a></li><li><a href="../../herramientas/autodiagnostico-ia/">Autodiagnóstico de madurez en IA y agentes</a></li></ol></nav>
-      <span class="eyebrow">Herramienta · 12 preguntas · 5 min</span>
+      <span class="eyebrow">Herramienta · 5 preguntas · 1 min</span>
       <h1>Autodiagnóstico de madurez en IA y agentes</h1>
-      <p class="lead">Nivel, brechas y hoja de ruta en PDF.</p>
+      <p class="lead">Nivel de preparación, plazo estimado y próximo paso.</p>
       
     </div>
   </div>
 </section>
 <section class="section bg-soft"><div class="container">
-  <div class="wizard">
-    <div class="wizard-bar"><span style="width:10%"></span></div>
-    <span class="eyebrow">Paso 1</span>
-    <h2 class="h2">[placeholder: primera pregunta del wizard]</h2>
-    <div class="wizard-opts"><button type="button">Opción A</button><button type="button">Opción B</button><button type="button">Opción C</button></div>
-    <p class="disclaimer">Herramienta en construcción. Esto no es una cotización ni asesoría legal.</p>
+  <div class="wizard" id="diag-ia" data-contacto="../../contacto/" data-cofin="../../cofinanciamiento-microsoft/">
+    <div class="wizard-bar"><span style="width:0%"></span></div>
+    <div class="diag-step" aria-live="polite">
+      <noscript><p class="lead">Este autodiagnóstico necesita JavaScript. También puedes <a href="../../contacto/">agendar un diagnóstico con un especialista</a>.</p></noscript>
+    </div>
+    <p class="disclaimer">Estimación orientativa. No es una cotización ni un compromiso de plazo.</p>
   </div>
+  <script type="application/json" id="diag-ia-data">{"preguntas": [{"q": "¿Qué quieres lograr primero con IA?", "opts": [{"t": "Que las personas trabajen más rápido con Microsoft 365 Copilot", "pts": 2, "base": [4, 6], "ruta": "copilot"}, {"t": "Un agente que atienda a clientes o colaboradores", "pts": 2, "base": [6, 10], "ruta": "agente"}, {"t": "Automatizar un proceso de negocio de punta a punta", "pts": 2, "base": [8, 14], "ruta": "proceso"}, {"t": "Aún no lo tenemos definido", "pts": 0, "base": [6, 12], "ruta": "explorar", "brecha": "Elegir un primer caso de uso con impacto medible."}]}, {"q": "¿Dónde está la información que usaría la IA?", "opts": [{"t": "Ordenada en Microsoft 365, SharePoint o Dynamics 365", "pts": 2, "sem": [0, 0]}, {"t": "Repartida en varios sistemas y planillas", "pts": 1, "sem": [2, 4], "brecha": "Conectar las fuentes que usaría la IA (Dataverse, conectores o Microsoft Fabric)."}, {"t": "No lo tenemos claro", "pts": 0, "sem": [3, 6], "brecha": "Identificar qué información necesita el caso de uso y dónde vive."}]}, {"q": "¿Qué plataforma Microsoft usan hoy?", "opts": [{"t": "Microsoft 365 y además Dynamics 365 o Power Platform", "pts": 2, "sem": [0, 0]}, {"t": "Solo Microsoft 365", "pts": 1, "sem": [0, 2], "brecha": "Evaluar si Copilot Studio y Power Platform cubren el caso sobre tu Microsoft 365."}, {"t": "Principalmente otras plataformas", "pts": 0, "sem": [2, 4], "brecha": "Definir cómo se integran tus sistemas actuales con la nube de Microsoft."}]}, {"q": "¿Tienen reglas de seguridad y uso de IA?", "opts": [{"t": "Sí: permisos, etiquetas de sensibilidad y política de uso de IA", "pts": 2, "sem": [0, 0]}, {"t": "Algo hay, pero incompleto", "pts": 1, "sem": [1, 3], "brecha": "Completar permisos y etiquetas en Microsoft Purview antes de abrir datos a la IA."}, {"t": "Aún no", "pts": 0, "sem": [2, 4], "brecha": "Definir la política de uso de IA, los permisos y la clasificación de datos."}]}, {"q": "¿Quién impulsaría la iniciativa?", "opts": [{"t": "Un ejecutivo patrocinador con presupuesto", "pts": 2, "sem": [0, 0]}, {"t": "Un área interesada, sin presupuesto definido", "pts": 1, "sem": [0, 2], "brecha": "Armar un caso de negocio para asegurar el presupuesto."}, {"t": "Todavía nadie en particular", "pts": 0, "sem": [2, 4], "brecha": "Sumar a un patrocinador ejecutivo para el primer caso."}]}], "niveles": [[8, "Listo para empezar", "Tienes las bases para llevar un primer caso de IA a producción."], [5, "En preparación", "Hay una buena base, con algunas brechas que conviene cerrar antes de escalar."], [0, "Explorando", "Estás al inicio. Lo primero es ordenar el caso de uso, los datos y el gobierno."]], "rutas": {"copilot": "Un piloto de Microsoft 365 Copilot con un grupo acotado y medición de adopción.", "agente": "Una prueba de concepto de un agente en Copilot Studio sobre tus datos.", "proceso": "Mapear el proceso y validar la automatización con Power Automate y Azure AI Foundry.", "explorar": "Un taller de casos de uso para priorizar dónde la IA genera valor."}}</script>
 </div></section>
-
 <section class="cta-band">
   <div class="container cta-band-inner">
     <div><h2>¿Conversamos sobre tu caso?</h2><p>Agenda un diagnóstico de 30 minutos. Revisamos tu escenario y te decimos qué conviene y qué no.</p></div>

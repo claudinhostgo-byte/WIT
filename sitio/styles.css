@@ -1219,3 +1219,21 @@ a.mega-js:hover { color: var(--green-dark); }
 .awards-strip > a { font-size: 14px; font-weight: 600; margin-left: auto; }
 @media (max-width: 720px) { .award { padding: 24px; } .award-year { font-size: 46px; } .awards-strip > a { margin-left: 0; } }
 .bg-dark .lead { color: rgba(255,255,255,.78); }
+
+/* Autodiagnóstico IA */
+.diag-step { display: flex; flex-direction: column; gap: 20px; }
+.diag-step h2:focus { outline: none; }
+.diag-step .lead { margin: 0; }
+.wizard-bar span { transition: width .25s ease; }
+.wizard-opts button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.diag-back { align-self: flex-start; background: none; border: 0; padding: 0; font: inherit; font-size: 15px; color: var(--muted); cursor: pointer; }
+.diag-back:hover { color: var(--navy); }
+.diag-kpis { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+.diag-kpis div { background: var(--blue-tint); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.diag-kpis span { font-size: 13px; color: var(--muted); }
+.diag-kpis strong { font-size: 28px; font-weight: 600; color: var(--navy); letter-spacing: -.02em; }
+.diag-sub { margin: 0 0 8px; font-size: 16px; font-weight: 600; color: var(--navy); }
+.diag-list { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.diag-step p { margin: 0; }
+.diag-cta { border-top: 1px solid var(--line); padding-top: 20px; display: flex; flex-direction: column; gap: 14px; }
+@media (max-width: 560px) { .diag-kpis { grid-template-columns: 1fr; } }
