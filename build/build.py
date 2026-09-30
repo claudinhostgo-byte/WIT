@@ -205,7 +205,7 @@ def footer(r):
       </div>
       {col('Explora', [('Soluciones', f'{r}soluciones/'), ('Industrias', f'{r}industrias/'), ('Casos de éxito', f'{r}casos-de-exito/'), ('Productos', f'{r}productos/'), ('Herramientas', f'{r}herramientas/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}')])}
       {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Trabaja con nosotros', f'{r}nosotros/trabaja-con-nosotros/'), ('Observatorio IA', f'{r}recursos/')])}
-      <address class="footer-col"><strong>Contacto</strong><span><b class="footer-pais">Chile</b>Av. Apoquindo 3039<br>Las Condes, Santiago</span><span><b class="footer-pais">Perú</b>Av. Circunvalación del Golf Los Incas 170, Int. 702<br>Santiago de Surco, Lima</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
+      <address class="footer-col"><strong>Contacto</strong><span><b class="footer-pais"><img class="flag" src="{r}assets/img/chile.svg" alt="" width="21" height="14">Chile</b>Av. Apoquindo 3039<br>Las Condes, Santiago</span><span><b class="footer-pais"><img class="flag" src="{r}assets/img/peru.svg" alt="" width="21" height="14">Perú</b>Av. Circunvalación del Golf Los Incas 170, Int. 702<br>Santiago de Surco, Lima</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
     </div>
     <div class="footer-bottom">
       <nav aria-label="Legal"><a href="{r}privacidad/">Privacidad</a><a href="{r}cookies/">Cookies</a><a href="{r}terminos/">Términos</a></nav>
@@ -1237,8 +1237,8 @@ def contacto(r):
       <p class="lead">Un proyecto nuevo, licencias, soporte o una consulta: te respondemos en menos de 1 día hábil.</p>
       <ol class="contact-pasos">{''.join(f'<li><strong>{escape(a)}</strong><span>{escape(b)}</span></li>' for a, b in pasos)}</ol>
       <div class="contact-cards">
-        <div class="contact-card"><span class="contact-pais">Chile · W-IT SpA</span><span>Av. Apoquindo 3039, Las Condes, Santiago</span></div>
-        <div class="contact-card"><span class="contact-pais">Perú · W-IT LATAM S.A.C.</span><span>Av. Circunvalación del Golf Los Incas 170, Int. 702, Santiago de Surco, Lima</span></div>
+        <div class="contact-card"><span class="contact-pais"><img class="flag" src="{r}assets/img/chile.svg" alt="" width="21" height="14">Chile · W-IT SpA</span><span>Av. Apoquindo 3039, Las Condes, Santiago</span></div>
+        <div class="contact-card"><span class="contact-pais"><img class="flag" src="{r}assets/img/peru.svg" alt="" width="21" height="14">Perú · W-IT LATAM S.A.C.</span><span>Av. Circunvalación del Golf Los Incas 170, Int. 702, Santiago de Surco, Lima</span></div>
         <div class="contact-card contact-card-links"><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a></div>
       </div>
     </div>
