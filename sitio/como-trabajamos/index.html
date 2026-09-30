@@ -65,7 +65,7 @@
           </a>
           <a class="mega-card" href="../soluciones/seguridad-y-cumplimiento/">
             <span class="icon-slot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span>
-            <strong>Microsoft Purview y Entra + Privax</strong>
+            <strong>Microsoft Purview y Microsoft Entra</strong>
             <span>Seguridad y cumplimiento</span>
           </a>
               </div>
@@ -127,17 +127,12 @@
           </div>
         </li>
         <li class="nav-item"><a class="nav-link" href="../casos-de-exito/">Casos</a></li>
-        <li class="nav-item"><button class="nav-link" type="button" aria-expanded="false" aria-controls="mega-productos">Productos<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <div class="mega" id="mega-productos">
-            <div class="container mega-inner mega-split">
+        <li class="nav-item"><button class="nav-link" type="button" aria-expanded="false" aria-controls="mega-diagnosticos">Autodiagnósticos<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="mega" id="mega-diagnosticos">
+            <div class="container mega-inner mega-split mega-diag">
               <div class="mega-list">
-                <span class="eyebrow">Productos W-IT</span>
-                <a href="../productos/privax-consentimientos/"><strong>Privax · Plataforma de Consentimientos</strong><span>Consentimientos con evidencia auditable para la Ley 21.719.</span></a>
-                <a href="../productos/agentes-w-it/"><strong>Agentes W-IT</strong><span>Agentes y aceleradores publicados en Microsoft Marketplace.</span></a>
-              </div>
-              <div class="mega-list">
-                <span class="eyebrow">Herramientas gratuitas</span>
-                <a href="../herramientas/calculadora-copilot/"><strong>Calculadora Copilot</strong><span>3 min</span></a><a href="../herramientas/autodiagnostico-ia/"><strong>Autodiagnóstico de madurez en IA y agentes</strong><span>5 preguntas · 1 min</span></a><a href="../herramientas/business-central-o-finance/"><strong>¿Business Central o Finance?</strong><span>7 preguntas · 2 min</span></a><a href="../herramientas/preparacion-ley-21719/"><strong>Preparación Ley 21.719</strong><span>10 preguntas</span></a>
+                <span class="eyebrow">Autodiagnósticos gratuitos</span>
+                <a href="../herramientas/autodiagnostico-ia/"><strong>Autodiagnóstico de madurez en IA y agentes</strong><span>5 preguntas · 1 min · Nivel de preparación, plazo estimado y próximo paso.</span></a><a href="../herramientas/business-central-o-finance/"><strong>¿Business Central o Finance?</strong><span>7 preguntas · 2 min · Recomendación según tu perfil, con razones y plazo típico de implementación.</span></a><a href="../herramientas/preparacion-ley-21719/"><strong>Preparación Ley 21.719</strong><span>8 preguntas · 2 min · Semáforo de brechas por área, días para la vigencia y próximo paso con RegulaTec.</span></a>
               </div>
               <div class="mega-promo">
                 <span class="eyebrow">Cuenta regresiva</span>
@@ -186,24 +181,39 @@
 </header>
 <main id="main">
 
-<section class="page-hero">
+<section class="page-hero metodo-hero">
   <div class="page-hero-trazo" aria-hidden="true"></div>
-  <div class="container page-hero-inner">
+  <div class="container page-hero-inner has-aside">
     <div class="page-hero-copy">
       <nav aria-label="Ruta"><ol class="crumbs"><li><a href="../">Inicio</a></li><li><a href="../como-trabajamos/">Cómo trabajamos</a></li></ol></nav>
       <span class="eyebrow">Cómo trabajamos</span>
-      <h1>La metodología se adapta al proyecto, no al revés.</h1>
-      <p class="lead">Cuatro formas de trabajar, todas ágiles y sobre marcos probados de Microsoft. Sin big bang: entregas cortas, usuarios dentro del equipo y adopción medida.</p>
+      <h1>Cuatro marcos ágiles, uno para cada tipo de proyecto.</h1>
+      <p class="lead">Trabajamos sobre los marcos de implementación de Microsoft, con entregas cortas, los usuarios dentro del equipo y la adopción medida en cada etapa.</p>
       <div class="btn-row"><a class="btn btn-lg btn-primary" href="../contacto/">Agenda un diagnóstico de 30 min</a><a class="btn btn-lg btn-outline" href="../casos-de-exito/">Ver casos</a></div>
-    </div>
+    </div><div class="marcos"><a class="marco" href="#dynamics">
+      <span class="marco-top"><span class="marco-n">01</span><span class="marco-para">Dynamics 365</span></span>
+      <strong>Success by Design, por olas</strong>
+      <span class="marco-fases">Descubrir <i>→</i> Diseñar <i>→</i> Construir <i>→</i> Adoptar <i>→</i> Operar</span>
+    </a><a class="marco" href="#power-platform">
+      <span class="marco-top"><span class="marco-n">02</span><span class="marco-para">Power Platform y datos</span></span>
+      <strong>Fusion teams y sprints</strong>
+      <span class="marco-fases">Idear <i>→</i> Prototipar <i>→</i> Construir <i>→</i> Publicar <i>→</i> Escalar</span>
+    </a><a class="marco" href="#azure">
+      <span class="marco-top"><span class="marco-n">03</span><span class="marco-para">Azure y seguridad</span></span>
+      <strong>Cloud Adoption Framework, por olas</strong>
+      <span class="marco-fases">Estrategia <i>→</i> Planificar <i>→</i> Preparar <i>→</i> Adoptar <i>→</i> Gobernar y operar</span>
+    </a><a class="marco" href="#agentes">
+      <span class="marco-top"><span class="marco-n">04</span><span class="marco-para">Agentes de IA</span></span>
+      <strong>Del prototipo a producción, con evaluación continua</strong>
+      <span class="marco-fases">Explorar <i>→</i> Gobernar <i>→</i> Construir y evaluar <i>→</i> Desplegar <i>→</i> Operar y expandir</span>
+    </a></div>
   </div>
 </section>
-<section class="section bg-white"><div class="container stack-40">
-  <div class="section-head"><span class="eyebrow">Principios</span><h2 class="h2">Ágil de verdad, con marcos probados.</h2></div>
-  <div class="signals"><div class="signal"><h3>Entregas cortas</h3><p>Olas, sprints y prototipos: algo usable en producción lo antes posible, no al final.</p></div><div class="signal"><h3>Usuarios en el equipo</h3><p>Los dueños del proceso participan desde el taller inicial hasta el go-live.</p></div><div class="signal"><h3>Gobierno desde el día uno</h3><p>Seguridad, datos y IA responsable se diseñan al inicio, no se agregan al final.</p></div><div class="signal"><h3>Adopción medida</h3><p>Uso real, calidad y valor se miden desde el primer día y guían la siguiente iteración.</p></div></div>
+<section class="principios-band"><div class="container">
+  <ul class="principios"><li><span class="pr-n">01</span><div><strong>Entregas cortas</strong><p>Olas, sprints y prototipos: algo usable en producción lo antes posible, no al final.</p></div></li><li><span class="pr-n">02</span><div><strong>Usuarios en el equipo</strong><p>Los dueños del proceso participan desde el taller inicial hasta el go-live.</p></div></li><li><span class="pr-n">03</span><div><strong>Gobierno desde el inicio</strong><p>Seguridad, datos y IA responsable se diseñan al inicio, no se agregan al final.</p></div></li><li><span class="pr-n">04</span><div><strong>Adopción medida</strong><p>Uso real, calidad y valor se miden desde el primer día y guían la siguiente iteración.</p></div></li></ul>
 </div></section>
 <section class="section bg-blue" id="dynamics"><div class="container stack-40">
-  <div class="section-head"><span class="eyebrow">CRM, ERP y Contact Center</span><h2 class="h2">Success by Design, por olas.</h2><p class="lead">El marco de implementación de Microsoft para Dynamics 365, entregado en olas cortas: la primera sale a producción con el proceso que más duele y las siguientes construyen sobre lo que ya funciona.</p></div>
+  <div class="section-head"><span class="eyebrow">CRM, ERP y Contact Center</span><h2 class="h2">Success by Design, por olas.</h2><p class="lead">El marco de implementación de Microsoft para Dynamics 365, entregado en olas cortas: la primera sale a producción con el proceso más urgente y las siguientes amplían lo que ya está en uso.</p></div>
   <div class="metodo" data-metodo>
   <ol class="mt-rail" style="--i:0;--n:5">
     <li class="mt-step is-on">
@@ -279,7 +289,7 @@
 </div>
 </div></section>
 <section class="section bg-white" id="power-platform"><div class="container stack-40">
-  <div class="section-head"><span class="eyebrow">Apps, automatización, Power BI y Fabric</span><h2 class="h2">Fusion teams y sprints.</h2><p class="lead">Tus usuarios expertos y nuestro equipo construyen juntos: prototipo primero, sprints con demo y barandas digitales para publicar sin frenar. Sobre la guía de adopción de Power Platform y el Fabric adoption roadmap de Microsoft.</p></div>
+  <div class="section-head"><span class="eyebrow">Apps, automatización, Power BI y Fabric</span><h2 class="h2">Fusion teams y sprints.</h2><p class="lead">Tus usuarios expertos y nuestro equipo construyen juntos: prototipo primero, sprints con demo y reglas de gobierno que permiten publicar con seguridad. Sobre la guía de adopción de Power Platform y el Fabric adoption roadmap de Microsoft.</p></div>
   <div class="metodo" data-metodo>
   <ol class="mt-rail" style="--i:0;--n:5">
     <li class="mt-step is-on">
@@ -300,7 +310,7 @@
         <span class="mt-dot" aria-hidden="true">2</span><span class="mt-name">Prototipar</span><span class="mt-sbd">Prototipo funcional</span>
       </button>
       <div class="mt-panel" id="mt-power-platform-p2" role="region" aria-labelledby="mt-power-platform-b2" hidden>
-        <div class="mt-panel-head"><p class="mt-linea">Un prototipo que los usuarios prueban antes de construir en serio.</p><span class="mt-hito">Hito · Prototipo validado con usuarios</span></div>
+        <div class="mt-panel-head"><p class="mt-linea">Un prototipo que los usuarios prueban antes de construir la solución.</p><span class="mt-hito">Hito · Prototipo validado con usuarios</span></div>
         <div class="mt-cols">
           <div><h4>Qué hacemos</h4><ul><li>Prototipo en Power Apps, Power Automate o Power BI sobre datos representativos.</li><li>Sesiones de prueba con usuarios y ajuste inmediato.</li><li>Decisión de arquitectura: Dataverse, conectores, Fabric.</li><li>Validación de seguridad y cumplimiento del prototipo.</li></ul></div>
           <div><h4>Qué recibes</h4><ul><li>Prototipo validado por usuarios.</li><li>Arquitectura y alcance definitivos.</li><li>Estimación ajustada de la construcción.</li></ul></div>
@@ -402,7 +412,7 @@
         <span class="mt-dot" aria-hidden="true">4</span><span class="mt-name">Adoptar</span><span class="mt-sbd">Adopt</span>
       </button>
       <div class="mt-panel" id="mt-azure-p4" role="region" aria-labelledby="mt-azure-b4" hidden>
-        <div class="mt-panel-head"><p class="mt-linea">Migramos y modernizamos ola por ola, sin big bang.</p><span class="mt-hito">Cloud Adoption Framework · Ola migrada y validada</span></div>
+        <div class="mt-panel-head"><p class="mt-linea">Migramos y modernizamos por olas pequeñas.</p><span class="mt-hito">Cloud Adoption Framework · Ola migrada y validada</span></div>
         <div class="mt-cols">
           <div><h4>Qué hacemos</h4><ul><li>Migración con Azure Migrate y pruebas de cada ola.</li><li>Modernización donde aporta: PaaS, contenedores, Azure Virtual Desktop o Azure VMware Solution.</li><li>Corte planificado y validación con el negocio.</li><li>Optimización de costos al cierre de cada ola.</li></ul></div>
           <div><h4>Qué recibes</h4><ul><li>Cargas migradas y validadas.</li><li>Runbooks de corte y de vuelta atrás.</li><li>Informe de costos por ola.</li></ul></div>
@@ -439,7 +449,7 @@
         <span class="mt-dot" aria-hidden="true">1</span><span class="mt-name">Explorar</span><span class="mt-sbd">Plan for agents</span>
       </button>
       <div class="mt-panel" id="mt-agentes-p1" role="region" aria-labelledby="mt-agentes-b1">
-        <div class="mt-panel-head"><p class="mt-linea">Elegimos el caso de uso correcto: valor real, datos disponibles y riesgo acotado.</p><span class="mt-hito">Hito · Caso de uso y métricas aprobados</span></div>
+        <div class="mt-panel-head"><p class="mt-linea">Elegimos el caso de uso según su valor, los datos disponibles y el riesgo.</p><span class="mt-hito">Hito · Caso de uso y métricas aprobados</span></div>
         <div class="mt-cols">
           <div><h4>Qué hacemos</h4><ul><li>Taller de casos de uso: priorización por valor, factibilidad y riesgo.</li><li>Nivel de madurez de IA y barreras de adopción: de asistido a autónomo.</li><li>Tipo de agente: de productividad, de acción o de automatización.</li><li>Datos y conocimiento disponibles: calidad, permisos y brechas.</li></ul></div>
           <div><h4>Qué recibes</h4><ul><li>Casos de uso priorizados con métricas de éxito.</li><li>Definición del agente: alcance, canal y grado de autonomía.</li><li>Plan de datos y permisos.</li></ul></div>
@@ -491,7 +501,7 @@
         <span class="mt-dot" aria-hidden="true">5</span><span class="mt-name">Operar y expandir</span><span class="mt-sbd">Manage</span>
       </button>
       <div class="mt-panel" id="mt-agentes-p5" role="region" aria-labelledby="mt-agentes-b5" hidden>
-        <div class="mt-panel-head"><p class="mt-linea">Medimos calidad y valor todos los días, y ampliamos lo que funciona.</p><span class="mt-hito">Hito · Revisión periódica de calidad y valor</span></div>
+        <div class="mt-panel-head"><p class="mt-linea">Medimos calidad y valor de forma continua, y ampliamos los casos que dan resultado.</p><span class="mt-hito">Hito · Revisión periódica de calidad y valor</span></div>
         <div class="mt-cols">
           <div><h4>Qué hacemos</h4><ul><li>Evaluación continua sobre tráfico real y pruebas programadas.</li><li>Monitoreo de desvíos tras actualizaciones de modelos.</li><li>Ajuste de instrucciones, conocimiento y herramientas según el uso.</li><li>Nuevos casos de uso y mayor autonomía cuando los datos lo respaldan.</li></ul></div>
           <div><h4>Qué recibes</h4><ul><li>Informe periódico de calidad, uso y costos.</li><li>Backlog de mejoras y nuevos agentes.</li><li>Nivel de autonomía revisado.</li></ul></div>
@@ -517,11 +527,11 @@
       <a class="btn btn-outline" href="../cofinanciamiento-microsoft/">POC y MVP cofinanciados <span aria-hidden="true">→</span></a>
     </div></div></section>
 <section class="section bg-white"><div class="container grid grid-2">
-  <div class="stack-20"><span class="eyebrow">Ingeniería asistida por IA</span><h2 class="h2">Más rápido, sin cajas negras.</h2>
+  <div class="stack-20"><span class="eyebrow">Ingeniería asistida por IA</span><h2 class="h2">IA en nuestro propio trabajo.</h2>
     <p class="lead">Usamos IA para analizar entornos, redactar diseños, acelerar personalizaciones y probar. El consumo de tokens se transparenta en la propuesta.</p></div>
-  <div class="stack-20"><span class="eyebrow">Soporte y AMS</span><h2 class="h2">Después del go-live, seguimos.</h2>
+  <div class="stack-20"><span class="eyebrow">Soporte y AMS</span><h2 class="h2">Soporte después del go-live.</h2>
     <p class="lead">Soporte con SLA, portal de soporte y mejora continua. <span class="ph">[+15.400 HH de soporte, verificar]</span></p></div>
-  <div class="stack-20"><span class="eyebrow">Licenciamiento Microsoft</span><h2 class="h2">Licencias sin sorpresas.</h2>
+  <div class="stack-20"><span class="eyebrow">Licenciamiento Microsoft</span><h2 class="h2">Licencias Microsoft con un solo proveedor.</h2>
     <p class="lead">CSP como revendedor indirecto. <span class="ph">[+6.000 gestiones de licencias, verificar]</span></p></div>
   <div class="stack-20"><span class="eyebrow">Equipo propio</span><h2 class="h2">Nuestros consultores son de W-IT.</h2>
     <p class="lead">No subcontratamos tu proyecto. <span class="ph">[confirmar que es 100% cierto]</span></p></div>
@@ -546,7 +556,7 @@
       </div>
       <nav class="footer-col" aria-label="Explora"><strong>Explora</strong><a href="../soluciones/">Soluciones</a><a href="../industrias/">Industrias</a><a href="../casos-de-exito/">Casos de éxito</a><a href="../productos/">Productos</a><a href="../herramientas/">Herramientas</a><a href="../cofinanciamiento-microsoft/">Cofinanciamiento Microsoft</a></nav>
       <nav class="footer-col" aria-label="Empresa"><strong>Empresa</strong><a href="../nosotros/">Quiénes somos</a><a href="../como-trabajamos/">Cómo trabajamos</a><a href="../nosotros/confianza/">Trust Center</a><a href="../nosotros/trabaja-con-nosotros/">Trabaja con nosotros</a><a href="../recursos/">Observatorio IA</a></nav>
-      <address class="footer-col"><strong>Contacto</strong><span>Av. Apoquindo 2930, of. 201<br>Las Condes, Santiago</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="../contacto/">Escríbenos →</a></address>
+      <address class="footer-col"><strong>Contacto</strong><span><b class="footer-pais">Chile</b>Av. Apoquindo 3039<br>Las Condes, Santiago</span><span><b class="footer-pais">Perú</b>Av. Circunvalación del Golf Los Incas 170, Int. 702<br>Santiago de Surco, Lima</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="../contacto/">Escríbenos →</a></address>
     </div>
     <div class="footer-bottom">
       <nav aria-label="Legal"><a href="../privacidad/">Privacidad</a><a href="../cookies/">Cookies</a><a href="../terminos/">Términos</a></nav>

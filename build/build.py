@@ -8,7 +8,7 @@ import os
 from html import escape
 from PIL import Image
 from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME,
-                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP)
+                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP, DIAG_LEY)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sitio')
 SOL = {s['slug']: s for s in SOLUCIONES}
@@ -17,6 +17,8 @@ CASO = {c['slug']: c for c in CASOS}
 # Programa Microsoft Copilot Jumpstart (W-IT: Ready Tier)
 JUMPSTART_PAGE = 'microsoft-copilot-jumpstart/'
 COFIN_PAGE = 'cofinanciamiento-microsoft/'
+# Herramientas que aparecen en el menú «Autodiagnósticos»
+DIAGNOSTICOS = ('autodiagnostico-ia', 'business-central-o-finance', 'preparacion-ley-21719')
 COPILOT_URL = 'https://www.microsoft.com/es-cl/microsoft-365/copilot'
 IND_NOMBRE = {**{i['slug']: i['nombre'] for i in INDUSTRIAS}, 'otros': 'Telecomunicaciones y otros'}
 
@@ -135,17 +137,12 @@ def header(r, active, solid):
           </div>
         </li>
         <li class="nav-item"><a class="nav-link" href="{r}casos-de-exito/"{cur('casos')}>Casos</a></li>
-        <li class="nav-item">{btn('productos', 'Productos')}
-          <div class="mega" id="mega-productos">
-            <div class="container mega-inner mega-split">
+        <li class="nav-item">{btn('diagnosticos', 'Autodiagnósticos')}
+          <div class="mega" id="mega-diagnosticos">
+            <div class="container mega-inner mega-split mega-diag">
               <div class="mega-list">
-                <span class="eyebrow">Productos W-IT</span>
-                <a href="{r}productos/privax-consentimientos/"><strong>Privax · Plataforma de Consentimientos</strong><span>Consentimientos con evidencia auditable para la Ley 21.719.</span></a>
-                <a href="{r}productos/agentes-w-it/"><strong>Agentes W-IT</strong><span>Agentes y aceleradores publicados en Microsoft Marketplace.</span></a>
-              </div>
-              <div class="mega-list">
-                <span class="eyebrow">Herramientas gratuitas</span>
-                {''.join(f'<a href="{r}herramientas/{h["slug"]}/"><strong>{escape(h["nombre"])}</strong><span>{escape(h["tiempo"])}</span></a>' for h in HERRAMIENTAS)}
+                <span class="eyebrow">Autodiagnósticos gratuitos</span>
+                {''.join(f'<a href="{r}herramientas/{h["slug"]}/"><strong>{escape(h["nombre"])}</strong><span>{escape(h["tiempo"])} · {escape(h["que"])}</span></a>' for h in HERRAMIENTAS if h['slug'] in DIAGNOSTICOS)}
               </div>
               <div class="mega-promo">
                 <span class="eyebrow">Cuenta regresiva</span>
@@ -208,7 +205,7 @@ def footer(r):
       </div>
       {col('Explora', [('Soluciones', f'{r}soluciones/'), ('Industrias', f'{r}industrias/'), ('Casos de éxito', f'{r}casos-de-exito/'), ('Productos', f'{r}productos/'), ('Herramientas', f'{r}herramientas/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}')])}
       {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Trabaja con nosotros', f'{r}nosotros/trabaja-con-nosotros/'), ('Observatorio IA', f'{r}recursos/')])}
-      <address class="footer-col"><strong>Contacto</strong><span>Av. Apoquindo 2930, of. 201<br>Las Condes, Santiago</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
+      <address class="footer-col"><strong>Contacto</strong><span><b class="footer-pais">Chile</b>Av. Apoquindo 3039<br>Las Condes, Santiago</span><span><b class="footer-pais">Perú</b>Av. Circunvalación del Golf Los Incas 170, Int. 702<br>Santiago de Surco, Lima</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
     </div>
     <div class="footer-bottom">
       <nav aria-label="Legal"><a href="{r}privacidad/">Privacidad</a><a href="{r}cookies/">Cookies</a><a href="{r}terminos/">Términos</a></nav>
@@ -269,13 +266,13 @@ def write(path, title, desc, body, active=None, solid=True):
 
 # ---------------------------------------------------------------- componentes
 
-def page_hero(r, crumbs, eyebrow, h1, bajada, ctas=True, extra='', h1_pe=None, aside=''):
+def page_hero(r, crumbs, eyebrow, h1, bajada, ctas=True, extra='', h1_pe=None, aside='', cls=''):
     bc = ''.join(f'<li><a href="{r}{h}">{escape(l)}</a></li>' for l, h in crumbs)
     h1_attr = pais_attr(h1, h1_pe) if h1_pe else ''
     cta = (f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Agenda un diagnóstico de 30 min</a>'
            f'<a class="btn btn-lg btn-outline" href="{r}casos-de-exito/">Ver casos</a></div>') if ctas else ''
     return f'''
-<section class="page-hero">
+<section class="page-hero{(" " + cls) if cls else ""}">
   <div class="page-hero-trazo" aria-hidden="true"></div>
   <div class="container page-hero-inner{' has-aside' if aside else ''}">
     <div class="page-hero-copy">
@@ -359,7 +356,7 @@ def senales_section(r, senales):
     <div class="sen-head">
       {SENALES_ART}
       <span class="eyebrow">Señales de que lo necesitas</span>
-      <h2 class="h2" id="sen-title">¿Tienes alguno de estos inconvenientes? <em>Conversemos.</em></h2>
+      <h2 class="h2" id="sen-title">¿Te identificas con alguna de estas <em>situaciones</em>?</h2>
       <p class="lead">Son las situaciones que más vemos al iniciar un proyecto. En un diagnóstico de 30 minutos sabemos por dónde empezar.</p>
       <a class="btn btn-green" href="{r}contacto/">Agenda un diagnóstico</a>
     </div>
@@ -367,8 +364,8 @@ def senales_section(r, senales):
   </div>
 </section>"""
 
-METODO_H2 = 'La metodología se adapta al proyecto, no al revés.'
-METODO_LEAD = 'Cuatro formas de trabajar, todas ágiles y sobre marcos probados de Microsoft. Sin big bang: entregas cortas, usuarios dentro del equipo y adopción medida.'
+METODO_H2 = 'Cuatro marcos ágiles, uno para cada tipo de proyecto.'
+METODO_LEAD = 'Trabajamos sobre los marcos de implementación de Microsoft, con entregas cortas, los usuarios dentro del equipo y la adopción medida en cada etapa.'
 
 
 def metodo_html(r, m):
@@ -443,7 +440,7 @@ def cofinanciamiento(r):
   <p class="disclaimer">Los nombres, alcances y condiciones de los programas los define Microsoft y pueden cambiar. Confirmamos la elegibilidad y el financiamiento disponible por escrito antes de empezar.</p>
 </div></section>
 <section class="section bg-white" id="poc-mvp"><div class="container stack-40">
-  {section_head('POC o MVP', 'No son lo mismo, y conviene saberlo antes de empezar.', 'Una POC responde preguntas; un MVP entrega un producto. Ambos se pueden hacer con cofinanciamiento de Microsoft, pero se planifican, se ejecutan y se cierran de forma distinta.')}
+  {section_head('POC o MVP', 'Diferencias entre una POC y un MVP.', 'Una POC responde preguntas; un MVP entrega un producto. Ambos se pueden hacer con cofinanciamiento de Microsoft, pero se planifican, se ejecutan y se cierran de forma distinta.')}
   <div class="cmp">
     <div class="cmp-head cmp-corner" aria-hidden="true"></div>
     <div class="cmp-head cmp-poc"><span class="cmp-tag">Laboratorio</span><h3>POC · Prueba de concepto</h3><p>Valida hipótesis antes de invertir.</p></div>
@@ -578,7 +575,7 @@ def credenciales_section(r):
     <article class="cred-cloud">
       <div class="cc-img">{badge_img(r, 'WIT-MicrosoftCloud-color.png', 170)}</div>
       <div class="cc-txt"><span class="eyebrow">6 de 6 designaciones</span><h3>Solutions Partner for Microsoft Cloud</h3>
-        <p>Tenemos las seis designaciones Solutions Partner de Microsoft. Un solo partner para todo tu ecosistema Microsoft: aplicaciones de negocio, trabajo moderno, datos e IA, aplicaciones, infraestructura y seguridad.</p>
+        <p>Tenemos las seis designaciones Solutions Partner de Microsoft. Un solo partner para todas tus soluciones Microsoft: aplicaciones de negocio, trabajo moderno, datos e IA, aplicaciones, infraestructura y seguridad.</p>
         <ul class="cc-desig">{''.join(f'<li>{d}</li>' for d in DESIGNACIONES)}</ul>
         <div class="cc-meta"><span>Designación Microsoft</span>{f'<a href="{VERIFICAR}" target="_blank" rel="noopener">Verificar ↗</a>' if MS_CLOUD_EN_MARKETPLACE else f'<a href="{r}nosotros/confianza/">Ver credenciales {ARROW}</a>'}</div></div>
     </article>
@@ -625,7 +622,7 @@ def home(r):
     <div class="hero-grid">
       <div class="hero-copy">
         <span class="eyebrow">Solutions Partner for Microsoft Cloud · Chile y Perú</span>
-        <h1>IA que funciona sobre tus <em>sistemas reales</em>.</h1>
+        <h1>IA en producción sobre tus <em>sistemas reales</em>.</h1>
         <p class="hero-lead">Implementamos Dynamics 365, Power Platform, Azure y agentes de IA en grandes empresas y organismos públicos. Con equipo propio certificado y resultados medidos.</p>
         <div class="btn-row">
           <a class="btn btn-lg btn-green" href="{r}contacto/">Agenda un diagnóstico de 30 min</a>
@@ -728,19 +725,19 @@ def home(r):
   </div>
 </section>
 
-<section class="section bg-white" id="privax">
-  <div class="container grid grid-2 privax-grid">
+<section class="section bg-white" id="ley-21719">
+  <div class="container grid grid-2 ley-grid">
     <div class="stack-20">
-      <span class="eyebrow">Producto · Privax <span class="ph-dim">[nombre único por decidir]</span></span>
+      <span class="eyebrow">Ley 21.719 · Protección de datos personales</span>
       <h2 class="h2">La Ley 21.719 entra en vigencia el 1 de diciembre de 2026.</h2>
       <ul class="checks">
-        <li>Captura de consentimientos por API desde web, app, sucursal y call center.</li>
-        <li>Registro inmutable y evidencia auditable, en tu propio tenant.</li>
-        <li>Construido sobre Power Platform, Dataverse, Azure y Entra ID. Alianza legal con RegulaTec.</li>
+        <li>Inventario y clasificación de datos personales con Microsoft Purview.</li>
+        <li>Control de accesos y trazabilidad con Microsoft Entra ID.</li>
+        <li>Evidencia auditable junto a RegulaTec, nuestra alianza legal.</li>
       </ul>
       <div class="btn-row">
         <a class="btn btn-primary" href="{r}herramientas/preparacion-ley-21719/">Test de preparación</a>
-        <a class="btn btn-outline" href="{r}productos/privax-consentimientos/">Conocer Privax</a>
+        <a class="btn btn-outline" href="{r}soluciones/seguridad-y-cumplimiento/">Seguridad y cumplimiento</a>
       </div>
     </div>
     <div class="countdown" id="countdown" data-target="2026-12-01T00:00:00-03:00">
@@ -757,7 +754,7 @@ def home(r):
 
 <section class="section bg-green" id="herramientas">
   <div class="container stack-40">
-    {section_head('Herramientas', 'Decide con datos antes de hablar con nosotros.', link=f'<a class="link-strong" href="{r}herramientas/">Todas las herramientas {ARROW}</a>')}
+    {section_head('Herramientas', 'Estima, compara y diagnostica en pocos minutos.', link=f'<a class="link-strong" href="{r}herramientas/">Todas las herramientas {ARROW}</a>')}
     <div class="grid grid-280">{''.join(tool_card(r, h) for h in HERRAMIENTAS[:3])}
     </div>
     <p class="disclaimer">Los resultados no son una cotización ni asesoría legal.</p>
@@ -798,7 +795,7 @@ def home(r):
 
 <section class="section bg-soft">
   <div class="container stack-40">
-    {section_head('Recursos · Observatorio IA Chile/Perú', 'Contenido experto, sin relleno.', link=f'<a class="link-strong" href="{r}recursos/">Todos los recursos {ARROW}</a>')}
+    {section_head('Recursos · Observatorio IA Chile/Perú', 'Análisis y guías sobre IA en Chile y Perú.', link=f'<a class="link-strong" href="{r}recursos/">Todos los recursos {ARROW}</a>')}
     {recursos_grid(r)}
   </div>
 </section>
@@ -807,9 +804,9 @@ def home(r):
   <div class="container grid grid-2 cta-grid">
     <div class="cta">
       <h2 class="h2">Agenda un diagnóstico de 30 minutos.</h2>
-      <p class="lead">Revisamos tu escenario y te decimos qué conviene y qué no. Te respondemos en menos de 1 día hábil <span class="ph">[confirmar SLA]</span>.</p>
+      <p class="lead">Revisamos tu escenario y te decimos qué conviene y qué no. Te respondemos en menos de 1 día hábil.</p>
       <div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Agendar</a><a class="btn btn-lg btn-outline" href="#">WhatsApp</a></div>
-      <span class="cta-contacto">Av. Apoquindo 2930, of. 201, Las Condes, Santiago · +56 2 2409 6112</span>
+      <span class="cta-contacto">Av. Apoquindo 3039, Las Condes, Santiago · +56 2 2409 6112</span>
     </div>
     <div class="faq" id="faq"><span class="eyebrow">Preguntas frecuentes</span>{faq}</div>
   </div>
@@ -1022,36 +1019,12 @@ def caso_page(c):
 
 
 def productos_index(r):
-    items = [('privax-consentimientos', 'Privax · Plataforma de Consentimientos', 'Consentimientos con evidencia auditable para la Ley 21.719, en tu propio tenant.'),
-             ('agentes-w-it', 'Agentes W-IT', 'Agentes y aceleradores publicados en Microsoft Marketplace.')]
+    items = [('agentes-w-it', 'Agentes W-IT', 'Agentes y aceleradores publicados en Microsoft Marketplace.')]
     cards = ''.join(f'<a class="card" href="{r}productos/{a}/"><span class="icon-slot" aria-hidden="true">{SHIELD}</span><h3>{b}</h3><p>{c}</p><span class="card-cta">Conocer {ARROW}</span></a>' for a, b, c in items)
     return page_hero(r, [('Productos', 'productos/')], 'Productos W-IT', 'Soluciones propias sobre la nube de Microsoft.',
                      'Productos desarrollados por W-IT y publicados en Microsoft Marketplace.', ctas=False) + f'''
 <section class="section bg-soft"><div class="container"><div class="grid grid-300">{cards}</div></div></section>
 {cta_final(r)}'''
-
-
-def privax(r):
-    flujo = ''.join(f'<li><span class="flow-n">{n}</span><strong>{t}</strong><span>{d}</span></li>' for n, t, d in [
-        (1, 'Captura por API', 'Web, app, sucursal y call center.'), (2, 'Registro inmutable', 'Cada consentimiento con fecha, canal y versión.'),
-        (3, 'Consulta en línea', 'Estado actual por titular, al instante.'), (4, 'Evidencia auditable', 'Lista para fiscalización.')])
-    return page_hero(r, [('Productos', 'productos/'), ('Privax', 'productos/privax-consentimientos/')], 'Producto · Privax <span class="ph-dim">[nombre único por decidir]</span>',
-                     'Ley 21.719: consentimientos que se pueden acreditar.', 'Privax centraliza la captura, el registro y la evidencia de consentimientos. Construido sobre Power Platform, Dataverse, Azure y Entra ID, y desplegado en tu propio tenant.',
-                     h1_pe='Protección de datos personales en Perú: consentimientos que se pueden acreditar. [validar con Legal]',
-                     extra=f'<div class="btn-row" style="margin-top:12px"><a class="btn btn-outline" href="https://marketplace.microsoft.com" target="_blank" rel="noopener">Ver en Microsoft Marketplace ↗</a><a class="btn btn-outline" href="{r}herramientas/preparacion-ley-21719/">Test de preparación</a></div>') + f'''
-<section class="section bg-white"><div class="container stack-40">
-  {section_head('El problema', 'Consentimientos dispersos en web, app, sucursal, call center y papel.')}
-  <ol class="flow">{flujo}</ol>
-</div></section>
-<section class="section bg-soft"><div class="container grid grid-2">
-  <div class="stack-20"><span class="eyebrow">Capacidades</span><ul class="checks">
-    <li>Inventario y clasificación de datos personales.</li><li>Gestión de consentimiento granular.</li>
-    <li>Evaluaciones de impacto (PIA).</li><li>Monitoreo y seguimiento normativo.</li></ul></div>
-  <div class="stack-20"><span class="eyebrow">Despliegue</span><ul class="checks">
-    <li>En el tenant del cliente, con datos en Chile.</li><li>Como servicio o híbrido.</li>
-    <li>Alianza legal con RegulaTec.</li><li>Precio de referencia en Marketplace: USD 1,300 <span class="ph">[confirmar qué incluye con Comercial]</span></li></ul></div>
-</div></section>
-{cta_final(r, 'Agenda una demo de Privax')}'''
 
 
 def agentes(r):
@@ -1065,7 +1038,7 @@ def agentes(r):
 
 
 def herramientas_index(r):
-    return page_hero(r, [('Herramientas', 'herramientas/')], 'Herramientas', 'Decide con datos antes de hablar con nosotros.',
+    return page_hero(r, [('Herramientas', 'herramientas/')], 'Herramientas', 'Estima, compara y diagnostica en pocos minutos.',
                      'Herramientas gratuitas para estimar, diagnosticar y comparar. Los resultados no son una cotización ni asesoría legal.', ctas=False) + f'''
 <section class="section bg-green"><div class="container"><div class="grid grid-280">{''.join(tool_card(r, h) for h in HERRAMIENTAS)}</div></div></section>
 {cta_final(r)}'''
@@ -1113,10 +1086,20 @@ def diag_erp(r, h):
                        DIAG_ERP)
 
 
+def diag_ley(r, h):
+    return diag_layout(r, h, 'diag-ley', 'La Ley 21.719 entra en vigencia el 1 de diciembre de 2026. Responde 8 preguntas y mira si podrías demostrar cumplimiento hoy.',
+                       [('Semáforo por área', 'Verde, amarillo o rojo en las 8 áreas clave.'),
+                        ('Días para la vigencia', 'Cuánto tiempo queda y si alcanza.'),
+                        ('Qué hacer primero', 'Las brechas críticas y el próximo paso.')],
+                       DIAG_LEY, ''.join(f'<li>{escape(q["tag"])}</li>' for q in DIAG_LEY['preguntas']))
+
+
 def herramienta_page(h):
     def body(r):
         if h['slug'] == 'autodiagnostico-ia':
             return diag_ia(r, h) + cta_final(r)
+        if h['slug'] == 'preparacion-ley-21719':
+            return diag_ley(r, h) + cta_final(r)
         if h['slug'] == 'business-central-o-finance':
             return diag_erp(r, h) + cta_final(r)
         return page_hero(r, [('Herramientas', 'herramientas/'), (h['nombre'], f"herramientas/{h['slug']}/")], f"Herramienta · {h['tiempo']}",
@@ -1137,26 +1120,31 @@ def herramienta_page(h):
 def como_trabajamos(r):
     principios = [('Entregas cortas', 'Olas, sprints y prototipos: algo usable en producción lo antes posible, no al final.'),
                   ('Usuarios en el equipo', 'Los dueños del proceso participan desde el taller inicial hasta el go-live.'),
-                  ('Gobierno desde el día uno', 'Seguridad, datos y IA responsable se diseñan al inicio, no se agregan al final.'),
+                  ('Gobierno desde el inicio', 'Seguridad, datos y IA responsable se diseñan al inicio, no se agregan al final.'),
                   ('Adopción medida', 'Uso real, calidad y valor se miden desde el primer día y guían la siguiente iteración.')]
-    principios_html = ''.join(f'<div class="signal"><h3>{escape(t)}</h3><p>{escape(d)}</p></div>' for t, d in principios)
+    principios_html = ''.join(f'<li><span class="pr-n">{k:02d}</span><div><strong>{escape(t)}</strong><p>{escape(d)}</p></div></li>' for k, (t, d) in enumerate(principios, 1))
+    marcos = ''.join(f'''<a class="marco" href="#{m['slug']}">
+      <span class="marco-top"><span class="marco-n">{k:02d}</span><span class="marco-para">{escape(m['corto'])}</span></span>
+      <strong>{escape(m['titulo'].rstrip('.'))}</strong>
+      <span class="marco-fases">{' <i>→</i> '.join(escape(f['nombre']) for f in m['fases'])}</span>
+    </a>''' for k, m in enumerate(METODOS, 1))
     metodos_html = ''.join(f'''
 <section class="section {'bg-blue' if n % 2 == 0 else 'bg-white'}" id="{m['slug']}"><div class="container stack-40">
   {section_head(m['para'], m['titulo'], m['resumen'])}
   {metodo_html(r, m)}
 </div></section>''' for n, m in enumerate(METODOS)) + f'''
 <section class="section bg-white"><div class="container">{cofin_strip(r)}</div></section>'''
-    return page_hero(r, [('Cómo trabajamos', 'como-trabajamos/')], 'Cómo trabajamos', METODO_H2, METODO_LEAD) + f'''
-<section class="section bg-white"><div class="container stack-40">
-  {section_head('Principios', 'Ágil de verdad, con marcos probados.')}
-  <div class="signals">{principios_html}</div>
+    return page_hero(r, [('Cómo trabajamos', 'como-trabajamos/')], 'Cómo trabajamos', METODO_H2, METODO_LEAD,
+                     aside=f'<div class="marcos">{marcos}</div>', cls='metodo-hero') + f'''
+<section class="principios-band"><div class="container">
+  <ul class="principios">{principios_html}</ul>
 </div></section>{metodos_html}
 <section class="section bg-white"><div class="container grid grid-2">
-  <div class="stack-20"><span class="eyebrow">Ingeniería asistida por IA</span><h2 class="h2">Más rápido, sin cajas negras.</h2>
+  <div class="stack-20"><span class="eyebrow">Ingeniería asistida por IA</span><h2 class="h2">IA en nuestro propio trabajo.</h2>
     <p class="lead">Usamos IA para analizar entornos, redactar diseños, acelerar personalizaciones y probar. El consumo de tokens se transparenta en la propuesta.</p></div>
-  <div class="stack-20"><span class="eyebrow">Soporte y AMS</span><h2 class="h2">Después del go-live, seguimos.</h2>
+  <div class="stack-20"><span class="eyebrow">Soporte y AMS</span><h2 class="h2">Soporte después del go-live.</h2>
     <p class="lead">Soporte con SLA, portal de soporte y mejora continua. <span class="ph">[+15.400 HH de soporte, verificar]</span></p></div>
-  <div class="stack-20"><span class="eyebrow">Licenciamiento Microsoft</span><h2 class="h2">Licencias sin sorpresas.</h2>
+  <div class="stack-20"><span class="eyebrow">Licenciamiento Microsoft</span><h2 class="h2">Licencias Microsoft con un solo proveedor.</h2>
     <p class="lead">CSP como revendedor indirecto. <span class="ph">[+6.000 gestiones de licencias, verificar]</span></p></div>
   <div class="stack-20"><span class="eyebrow">Equipo propio</span><h2 class="h2">Nuestros consultores son de W-IT.</h2>
     <p class="lead">No subcontratamos tu proyecto. <span class="ph">[confirmar que es 100% cierto]</span></p></div>
@@ -1170,7 +1158,7 @@ def nosotros(r):
              ('2026', 'Solutions Partner for Microsoft Cloud: las seis designaciones Microsoft y especialización Agentic Business Solutions.')]
     tl = ''.join(f'<li><span class="tl-year">{a}</span><p>{escape(b)}</p></li>' for a, b in hitos)
     valores = ['Simpleza y Calidad', 'Confianza y Cercanía', 'Competitividad e Innovación', 'Honestidad y Responsabilidad', 'Respeto y Colaboración']
-    return page_hero(r, [('Nosotros', 'nosotros/')], 'Nosotros', 'Consultores Microsoft que hacen simple lo complejo.',
+    return page_hero(r, [('Nosotros', 'nosotros/')], 'Nosotros', 'Consultores especialistas en Microsoft desde 2013.',
                      'Visión: ser la consultora especialista en Microsoft de la región que aporta simpleza y calidad. <span class="ph">[validar redacción]</span>', ctas=False) + f'''
 <section class="section bg-white"><div class="container stack-40">
   {section_head('Historia', 'Nuestra trayectoria.')}
@@ -1178,12 +1166,12 @@ def nosotros(r):
 </div></section>
 {premios_section(r)}
 <section class="section bg-soft"><div class="container stack-40">
-  {section_head('Valores', 'Lo que no negociamos.')}
+  {section_head('Valores', 'Nuestros valores.')}
   <ul class="values">{''.join(f'<li>{v}</li>' for v in valores)}</ul>
 </div></section>
 <section class="section bg-white"><div class="container grid grid-2">
   <div class="stack-20"><span class="eyebrow">Liderazgo</span><div class="placeholder-box" style="min-height:220px">[placeholder: fotos y cargos del equipo líder]</div></div>
-  <div class="stack-20"><span class="eyebrow">Presencia</span><h2 class="h2">Chile y Perú</h2><p class="lead">Oficina en Las Condes, Santiago, y clientes y proyectos en Perú. <span class="ph">[decidir si se mencionan razones sociales]</span></p></div>
+  <div class="stack-20"><span class="eyebrow">Presencia</span><h2 class="h2">Chile y Perú</h2><p class="lead">W-IT SpA, en Av. Apoquindo 3039, Las Condes, Santiago, y W-IT LATAM S.A.C., en Av. Circunvalación del Golf Los Incas 170, Int. 702, Santiago de Surco, Lima.</p></div>
 </div></section>
 {cta_final(r)}'''
 
@@ -1234,7 +1222,7 @@ def simple_page(eyebrow, h1, bajada, crumbs, contenido):
 def contacto(r):
     sols = ''.join(f'<label class="check"><input type="checkbox" name="interes" value="{s["slug"]}"> {escape(s["nombre"])}</label>' for s in SOLUCIONES)
     return page_hero(r, [('Contacto', 'contacto/')], 'Contacto', 'Agenda un diagnóstico de 30 minutos.',
-                     'Te respondemos en menos de 1 día hábil <span class="ph">[confirmar SLA]</span>.', ctas=False) + f'''
+                     'Te respondemos en menos de 1 día hábil.', ctas=False) + f'''
 <section class="section bg-soft"><div class="container grid grid-2 cta-grid">
   <form class="form" id="form-contacto" novalidate>
     <div class="form-row"><label>Nombre<input name="nombre" required autocomplete="name"></label><label>Empresa<input name="empresa" autocomplete="organization"></label></div>
@@ -1246,13 +1234,13 @@ def contacto(r):
     <label>Mensaje<textarea name="mensaje" rows="4"></textarea></label>
     <label class="check"><input type="checkbox" name="consentimiento" required> Acepto la <a href="{r}privacidad/">política de privacidad</a> y el tratamiento de mis datos para responder esta solicitud.</label>
     <button class="btn btn-lg btn-primary" type="submit">Enviar</button>
-    <p class="form-msg" role="status" hidden>Formulario de demostración: aún no está conectado. <span class="ph">[conectar a Dynamics 365 / registrar consentimiento en Privax]</span></p>
+    <p class="form-msg" role="status" hidden>Formulario de demostración: aún no está conectado. <span class="ph">[conectar a Dynamics 365 y registrar el consentimiento]</span></p>
   </form>
   <div class="stack-20">
     <span class="eyebrow">Datos de contacto</span>
-    <p class="lead">Av. Apoquindo 2930, of. 201, Las Condes, Santiago</p>
+    <p class="lead"><strong>Chile · W-IT SpA</strong><br>Av. Apoquindo 3039, Las Condes, Santiago</p>
+    <p class="lead"><strong>Perú · W-IT LATAM S.A.C.</strong><br>Av. Circunvalación del Golf Los Incas 170, Int. 702, Santiago de Surco, Lima</p>
     <p class="lead">+56 2 2409 6112 · <a href="mailto:info@w-it.cl">info@w-it.cl</a></p>
-    <p class="lead">Horario <span class="ph">[placeholder]</span></p>
     <div class="placeholder-box" style="min-height:220px">mapa estático de la oficina (sin iframe de Google, por privacidad) [placeholder]</div>
   </div>
 </div></section>'''
@@ -1314,7 +1302,7 @@ def jumpstart_page(r):
   </div>
 </div></section>
 <section class="section bg-soft"><div class="container stack-40">
-  {section_head('Qué gana tu organización', 'IA que llega a producción, no solo a una demo.')}
+  {section_head('Qué gana tu organización', 'De la evaluación a la puesta en producción.')}
   <div class="signals signals-5">{beneficios_html}</div>
 </div></section>
 <section class="section bg-blue"><div class="container stack-40">
@@ -1420,7 +1408,7 @@ def privacidad_page(r):
 
   <h2>Qué datos recolectamos</h2>
   <p>Medimos cuánta gente visita el sitio con Cloudflare Web Analytics, que no usa cookies ni identifica personas: cuenta páginas vistas, país aproximado, tipo de dispositivo y desde qué sitio llegaste. Datos personales solo recolectamos cuando tú decides enviarnos un formulario.</p>
-  <p>Además, este sitio usa una cookie publicitaria de Google Ads (_gcl_au). Sirve para una sola cosa: saber si quien nos escribió por el formulario llegó desde un aviso nuestro en Google, y así no seguir pagando por avisos que no funcionan. No la usamos para mostrarte publicidad en otros sitios ni para armar un perfil tuyo. Si prefieres evitarla, puedes bloquear las cookies de terceros en tu navegador: el sitio y el formulario funcionan igual.</p>
+  <p>Además, este sitio usa una cookie publicitaria de Google Ads (_gcl_au). Su único fin es saber si quien nos escribió por el formulario llegó desde un aviso nuestro en Google, y así no seguir pagando por avisos que no funcionan. No la usamos para mostrarte publicidad en otros sitios ni para armar un perfil tuyo. Si prefieres evitarla, puedes bloquear las cookies de terceros en tu navegador: el sitio y el formulario funcionan igual.</p>
   <h3>Los que tú escribes en el formulario:</h3>
   <ul class="legal-list">
     <li>Nombre y correo electrónico. Son los únicos obligatorios, junto con el tamaño de tu organización y el tema que te interesa.</li>
@@ -1462,7 +1450,7 @@ def privacidad_page(r):
     <li>Oponerte a que los sigamos usando para contacto comercial.</li>
     <li>Una copia de lo que nos entregaste, en un formato que puedas reutilizar.</li>
   </ul>
-  <p>Escribe a {mail} indicando qué necesitas. Te respondemos al mismo correo desde el que nos escribas, y si es otro te vamos a pedir cómo verificar que los datos son tuyos — para no entregárselos a quien no corresponde.</p>
+  <p>Escribe a {mail} indicando qué necesitas. Te respondemos al mismo correo desde el que nos escribas, y si es otro te vamos a pedir cómo verificar que los datos son tuyos, para no entregárselos a quien no corresponde.</p>
 
   <h2>Cambios a este aviso</h2>
   <p>Si cambiamos cómo tratamos los datos, actualizamos este aviso y la fecha del encabezado. Si el cambio es relevante para quienes ya nos escribieron, se los avisamos por correo.</p>
@@ -1489,11 +1477,10 @@ def main():
     for c in CASOS:
         pages.append(write(f"casos-de-exito/{c['slug']}/", f"{CLIENTES[c['cliente']]}: {c['titulo']} · W-IT", c['titulo'], caso_page(c), 'casos'))
     pages.append(write('productos/', 'Productos · W-IT', 'Productos W-IT en Microsoft Marketplace.', productos_index, 'productos'))
-    pages.append(write('productos/privax-consentimientos/', 'Privax · Plataforma de Consentimientos · W-IT', 'Consentimientos con evidencia para la Ley 21.719.', privax, 'productos'))
     pages.append(write('productos/agentes-w-it/', 'Agentes W-IT', 'Agentes y aceleradores de W-IT.', agentes, 'productos'))
-    pages.append(write('herramientas/', 'Herramientas · W-IT', 'Herramientas gratuitas de W-IT.', herramientas_index, 'productos'))
+    pages.append(write('herramientas/', 'Herramientas · W-IT', 'Herramientas gratuitas de W-IT.', herramientas_index, 'diagnosticos'))
     for h in HERRAMIENTAS:
-        pages.append(write(f"herramientas/{h['slug']}/", f"{h['nombre']} · W-IT", h['que'], herramienta_page(h), 'productos'))
+        pages.append(write(f"herramientas/{h['slug']}/", f"{h['nombre']} · W-IT", h['que'], herramienta_page(h), 'diagnosticos'))
     pages.append(write('como-trabajamos/', 'Cómo trabajamos · W-IT', 'Cuatro metodologías ágiles sobre marcos probados de Microsoft.', como_trabajamos, 'metodo'))
     pages.append(write(COFIN_PAGE, 'Cofinanciamiento Microsoft: POC y MVP · W-IT', 'Programas de inversión de Microsoft que cofinancian talleres, pruebas de concepto (POC) y productos mínimos viables (MVP) con W-IT. Evaluamos tu elegibilidad.', cofinanciamiento, 'metodo'))
     pages.append(write('nosotros/', 'Nosotros · W-IT', 'Historia, valores y equipo de W-IT.', nosotros, 'nosotros'))
@@ -1502,7 +1489,7 @@ def main():
     pages.append(write('nosotros/confianza/', 'Trust Center · W-IT', 'Credenciales verificables de W-IT.', confianza, 'nosotros'))
     pages.append(write('nosotros/equipo/', 'Equipo · W-IT', 'Equipo W-IT.', simple_page('Nosotros · Equipo', 'Consultores propios y certificados.', 'Conteo agregado de certificaciones por área, sin nombres. <span class="ph">[placeholder]</span>', [('Nosotros', 'nosotros/'), ('Equipo', 'nosotros/equipo/')], '<div class="placeholder-box" style="min-height:260px">[placeholder: equipo líder y certificaciones por área]</div>'), 'nosotros'))
     pages.append(write('nosotros/trabaja-con-nosotros/', 'Trabaja con nosotros · W-IT', 'Empleos en W-IT.', simple_page('Nosotros · Talento', 'Trabaja con nosotros.', 'Certificaciones pagadas, proyectos enterprise e IA en el día a día. <span class="ph">[validar]</span>', [('Nosotros', 'nosotros/'), ('Trabaja con nosotros', 'nosotros/trabaja-con-nosotros/')], '<p class="lead">Vacantes publicadas en LinkedIn o ATS. <span class="ph">[placeholder: enlace]</span></p><div class="placeholder-box" style="min-height:220px">[placeholder: fotos reales y testimonios internos]</div>'), 'nosotros'))
-    pages.append(write('recursos/', 'Recursos · W-IT', 'Observatorio IA, guías y eventos.', simple_page('Recursos', 'Contenido experto, sin relleno.', 'Observatorio IA Chile/Perú, guías descargables y eventos.', [('Recursos', 'recursos/')], '{recursos}'), 'nosotros'))
+    pages.append(write('recursos/', 'Recursos · W-IT', 'Observatorio IA, guías y eventos.', simple_page('Recursos', 'Análisis y guías sobre IA en Chile y Perú.', 'Observatorio IA Chile/Perú, guías descargables y eventos.', [('Recursos', 'recursos/')], '{recursos}'), 'nosotros'))
     pages.append(write('contacto/', 'Contacto · W-IT', 'Agenda un diagnóstico con W-IT.', contacto))
     pages.append(write('privacidad/', 'Aviso de privacidad y tratamiento de datos · W-IT', 'Qué datos recolectamos en w-it.cl, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.', privacidad_page))
     for slug, t in [('cookies', 'Política de cookies'), ('terminos', 'Términos de uso')]:

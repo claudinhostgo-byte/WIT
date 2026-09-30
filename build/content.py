@@ -49,8 +49,8 @@ PLATAFORMAS = [
 # (slug, nombre, ícono oficial o None, qué es, cuándo conviene)
 SOLUCIONES = [
     dict(slug='ia-y-agentes', metodo='agentes', plataforma='Microsoft 365 Copilot y agentes de IA', nombre='IA y agentes', corto='IA y agentes',
-         linea='Copilot y agentes que trabajan sobre tus datos, con gobierno desde el día uno.',
-         h1='Copilot y agentes no se compran: se implementan.',
+         linea='Copilot y agentes que trabajan sobre tus datos, con gobierno desde el inicio.',
+         h1='Implementamos Copilot y agentes de IA.',
          bajada='Llevamos Copilot y agentes de IA a producción sobre tus sistemas y datos reales, con gobierno, seguridad y medición de uso desde el primer día.',
          iconos=['m365-copilot', 'copilot-studio', 'azure-ai-foundry'],
          pills=['M365 Copilot', 'Copilot Studio', 'Azure AI Foundry'],
@@ -123,8 +123,8 @@ SOLUCIONES = [
          herramienta=('¿Business Central o Finance?', 'herramientas/business-central-o-finance/'),
          casos=['arauco']),
     dict(slug='datos-y-analitica', metodo='power-platform', plataforma='Microsoft Fabric y Power BI', nombre='Datos y analítica', corto='Datos y analítica',
-         linea='Una sola verdad para decidir.',
-         h1='Una sola verdad para decidir.',
+         linea='Datos unificados para decidir.',
+         h1='Datos unificados para decidir.',
          bajada='Unificamos tus datos en Microsoft Fabric y Dataverse para que los reportes y la IA trabajen sobre la misma información.',
          iconos=['fabric', 'dataverse', 'azure-sql'],
          pills=['Fabric', 'Power BI', 'Dataverse'],
@@ -160,7 +160,7 @@ SOLUCIONES = [
          casos=['la-araucana', 'mutual-de-seguridad']),
     dict(slug='nube-azure-e-infraestructura', metodo='azure', plataforma='Microsoft Azure', nombre='Nube Azure e infraestructura', corto='Nube Azure',
          linea='Migración, modernización y operación en Azure, con costos bajo control.',
-         h1='Tu infraestructura en Azure, sin sobresaltos.',
+         h1='Tu infraestructura en Azure, gobernada y bajo control.',
          bajada='Migramos, modernizamos y gobernamos tus cargas de trabajo en Azure: servidores, aplicaciones, escritorios virtuales y entornos VMware, con seguridad y costos bajo control desde el primer día.',
          iconos=['azure', 'azure-migrate', 'azure-kubernetes-service'],
          pills=['Migración IaaS', 'Modernización PaaS', 'FinOps'],
@@ -180,20 +180,19 @@ SOLUCIONES = [
          alianza='<strong>Programas financiados por Microsoft.</strong> Algunos proyectos de migración, datos, IA y seguridad en Azure pueden contar con financiamiento de Microsoft (programas Azure Accelerate), previa evaluación de elegibilidad. <span class="ph">[confirmar elegibilidad de W-IT y criterios con Comercial]</span>',
          herramienta=('Autodiagnóstico de madurez en IA', 'herramientas/autodiagnostico-ia/'),
          casos=['coopeuch', 'universidad-mayor']),
-    dict(slug='seguridad-y-cumplimiento', metodo='azure', plataforma='Microsoft Purview y Entra + Privax', nombre='Seguridad y cumplimiento', corto='Seguridad y cumplimiento',
+    dict(slug='seguridad-y-cumplimiento', metodo='azure', plataforma='Microsoft Purview y Microsoft Entra', nombre='Seguridad y cumplimiento', corto='Seguridad y cumplimiento',
          linea='Ley 21.719 lista antes del 1 de diciembre de 2026.',
          linea_pe='Ley 29733 y protección de datos personales, con evidencia acreditable. [validar con Legal]',
-         h1='Ley 21.719: consentimientos que se pueden acreditar.',
-         h1_pe='Protección de datos personales en Perú: consentimientos que se pueden acreditar. [validar con Legal]',
-         bajada='Privax, protección de la información y gestión de identidades para cumplir la normativa con evidencia auditable.',
+         h1='Ley 21.719: cumplimiento que se puede demostrar.',
+         h1_pe='Protección de datos personales en Perú: cumplimiento que se puede demostrar. [validar con Legal]',
+         bajada='Protección de la información y gestión de identidades para cumplir la normativa con evidencia auditable.',
          iconos=[],
-         pills=['Privax', 'Purview', 'Entra ID'],
+         pills=['Purview', 'Entra ID', 'Defender'],
          senales=[('Consentimientos dispersos', 'Web, app, sucursal, call center y papel, sin un registro único.'),
                   ('Sin evidencia', 'No podrías demostrar hoy qué consintió cada titular y cuándo.'),
                   ('Datos sin clasificar', 'No hay inventario de dónde están los datos personales.'),
                   ('Accesos sin control', 'Cuentas y permisos que nadie revisa periódicamente.')],
-         productos=[(None, 'Privax: captura, registro inmutable y evidencia de consentimientos.', 'Cuando necesitas cumplir la Ley 21.719 con evidencia.'),
-                    (None, 'Microsoft Purview: clasificación y etiquetado, prevención de pérdida de datos (DLP), catálogo y linaje, auditoría y políticas, incluidos escenarios con IA.', 'Cuando hay que saber dónde están los datos sensibles y controlar su uso.'),
+         productos=[(None, 'Microsoft Purview: clasificación y etiquetado, prevención de pérdida de datos (DLP), catálogo y linaje, auditoría y políticas, incluidos escenarios con IA.', 'Cuando hay que saber dónde están los datos sensibles y controlar su uso.'),
                     (None, 'Microsoft Entra ID: identidades y acceso condicional.', 'Cuando el control de accesos es un riesgo.'),
                     (None, 'Microsoft Defender for Cloud: postura de seguridad (CSPM) y protección de cargas de trabajo en la nube.', 'Cuando tus cargas en Azure deben cumplir estándares y reducir riesgo.'),
                     (None, 'Zero Trust y gobierno: acceso condicional, mínimo privilegio y auditoría continua.', 'Cuando necesitas un modelo de seguridad que escale con la nube.')],
@@ -266,7 +265,7 @@ INDUSTRIAS = [
          clientes=['puntoticket', 'anfp', 'udechile', 'audax-italiano'],
          casos=[], regulacion=None),
     dict(slug='forestal-y-recursos-naturales', nombre='Forestal y recursos naturales',
-         h1='Forestal, alimentos y recursos naturales con procesos integrados de punta a punta.',
+         h1='Forestal, alimentos y recursos naturales con procesos integrados.',
          desafios=['Pedidos, clientes y postventa integrados con SAP y el ERP.', 'Operaciones distribuidas en múltiples unidades de negocio.', 'Automatización de procesos comerciales clave.'],
          soluciones=['ventas-servicio-y-contact-center', 'finanzas-y-operaciones', 'automatizacion-y-apps'],
          clientes=['arauco', 'cermaq', 'parque-del-recuerdo', 'agrosuper'],
@@ -317,7 +316,7 @@ CASOS = [
          metricas=[('+1.600', 'usuarios licenciados'), ('+1M', 'contactos')],
          stack=[]),
     dict(slug='arauco', cliente='arauco', industria='forestal-y-recursos-naturales', solucion='ventas-servicio-y-contact-center',
-         titulo='Evolución continua del ecosistema CRM en cuatro unidades de negocio',
+         titulo='Soporte y evolución del CRM en cuatro unidades de negocio',
          metrica='4', metrica_txt='unidades de negocio: Celulosa, Maderas, Forestal y Corporativo',
          resumen='Soporte, evolución y proyectos especializados sobre el CRM, con integraciones con SAP y automatización de procesos clave.',
          texto='W-IT mantiene una relación de largo plazo con Arauco, con servicios continuos de soporte, evolución y proyectos especializados sobre su ecosistema CRM, en las unidades de Celulosa, Maderas, Forestal y Corporativo. El trabajo incluye estabilización técnica, mejoras funcionales, integraciones con SAP, automatización de procesos clave y soluciones específicas como Rebates, Order Entry, variables ARAS y flujos de pedidos, además de pruebas de concepto y proyectos de Customer Service para Maderas.',
@@ -325,7 +324,7 @@ CASOS = [
          metricas=[('+50', 'usuarios licenciados'), ('+500', 'contactos')],
          stack=['dynamics-365']),
     dict(slug='la-araucana', cliente='la-araucana', industria='sector-publico', solucion='ventas-servicio-y-contact-center',
-         titulo='Un ecosistema moderno de atención y gestión para afiliados',
+         titulo='Plataforma de atención y gestión para afiliados',
          metrica='+8.000', metrica_txt='horas de trabajo en un proceso sostenido de transformación digital',
          resumen='Soluciones para afiliados, agentes internos y áreas de negocio, con más trazabilidad, automatización y mejor experiencia de atención.',
          texto='W-IT ha acompañado a La Araucana en un proceso sostenido de transformación digital, con más de 8.000 horas de trabajo y soluciones de alto impacto para afiliados, agentes internos y áreas de negocio. Los proyectos han fortalecido la trazabilidad, la automatización, la experiencia de atención y la gestión operativa de la caja, consolidando un ecosistema moderno basado en Microsoft Dynamics 365 y Power Platform.',
@@ -354,7 +353,7 @@ CASOS = [
 # Estructura común: 5 fases con línea, hito, "hacemos" (4), "recibes" (3) y una tercera columna (`col3`: IA en esta fase / IA responsable).
 METODOS = [
     dict(slug='dynamics', corto='Dynamics 365', para='CRM, ERP y Contact Center', titulo='Success by Design, por olas.',
-         resumen='El marco de implementación de Microsoft para Dynamics 365, entregado en olas cortas: la primera sale a producción con el proceso que más duele y las siguientes construyen sobre lo que ya funciona.',
+         resumen='El marco de implementación de Microsoft para Dynamics 365, entregado en olas cortas: la primera sale a producción con el proceso más urgente y las siguientes amplían lo que ya está en uso.',
          base='Fases y revisiones según Microsoft Success by Design.', hito_prefijo='Success by Design', col3='IA en esta fase',
          fuentes=[('Success by Design en Microsoft Learn', 'https://learn.microsoft.com/dynamics365/guidance/implementation-guide/success-by-design')],
          fases=[
@@ -400,7 +399,7 @@ METODOS = [
                   col3='Agentes en producción con monitoreo continuo y evaluaciones periódicas.'),
          ]),
     dict(slug='power-platform', corto='Power Platform y datos', para='Apps, automatización, Power BI y Fabric', titulo='Fusion teams y sprints.',
-         resumen='Tus usuarios expertos y nuestro equipo construyen juntos: prototipo primero, sprints con demo y barandas digitales para publicar sin frenar. Sobre la guía de adopción de Power Platform y el Fabric adoption roadmap de Microsoft.',
+         resumen='Tus usuarios expertos y nuestro equipo construyen juntos: prototipo primero, sprints con demo y reglas de gobierno que permiten publicar con seguridad. Sobre la guía de adopción de Power Platform y el Fabric adoption roadmap de Microsoft.',
          base='Prácticas según la guía de adopción de Power Platform y el Fabric adoption roadmap de Microsoft.', hito_prefijo='Hito', col3='IA en esta fase',
          fuentes=[('Guía de adopción de Power Platform', 'https://learn.microsoft.com/power-platform/guidance/adoption/methodology'),
                   ('Fabric adoption roadmap', 'https://learn.microsoft.com/power-bi/guidance/fabric-adoption-roadmap')],
@@ -413,7 +412,7 @@ METODOS = [
                   recibes=['Backlog priorizado.', 'Métricas de éxito acordadas.', 'Entorno listo para prototipar.'],
                   hito='Backlog y métricas acordados',
                   col3='Análisis del proceso y de los datos existentes para proponer alternativas de diseño.'),
-             dict(nombre='Prototipar', marco='Prototipo funcional', linea='Un prototipo que los usuarios prueban antes de construir en serio.',
+             dict(nombre='Prototipar', marco='Prototipo funcional', linea='Un prototipo que los usuarios prueban antes de construir la solución.',
                   hacemos=['Prototipo en Power Apps, Power Automate o Power BI sobre datos representativos.',
                            'Sesiones de prueba con usuarios y ajuste inmediato.',
                            'Decisión de arquitectura: Dataverse, conectores, Fabric.',
@@ -475,7 +474,7 @@ METODOS = [
                   recibes=['Landing zone operativa.', 'Políticas y controles de seguridad activos.', 'Plantillas de infraestructura reutilizables.'],
                   hito='Landing zone lista',
                   col3='Revisión asistida de la configuración contra las recomendaciones de Azure.'),
-             dict(nombre='Adoptar', marco='Adopt', linea='Migramos y modernizamos ola por ola, sin big bang.',
+             dict(nombre='Adoptar', marco='Adopt', linea='Migramos y modernizamos por olas pequeñas.',
                   hacemos=['Migración con Azure Migrate y pruebas de cada ola.',
                            'Modernización donde aporta: PaaS, contenedores, Azure Virtual Desktop o Azure VMware Solution.',
                            'Corte planificado y validación con el negocio.',
@@ -498,7 +497,7 @@ METODOS = [
          fuentes=[('Adopción de agentes de IA (Cloud Adoption Framework)', 'https://learn.microsoft.com/azure/cloud-adoption-framework/ai-agents/'),
                   ('Observabilidad y evaluación en Microsoft Foundry', 'https://learn.microsoft.com/azure/foundry/concepts/observability')],
          fases=[
-             dict(nombre='Explorar', marco='Plan for agents', linea='Elegimos el caso de uso correcto: valor real, datos disponibles y riesgo acotado.',
+             dict(nombre='Explorar', marco='Plan for agents', linea='Elegimos el caso de uso según su valor, los datos disponibles y el riesgo.',
                   hacemos=['Taller de casos de uso: priorización por valor, factibilidad y riesgo.',
                            'Nivel de madurez de IA y barreras de adopción: de asistido a autónomo.',
                            'Tipo de agente: de productividad, de acción o de automatización.',
@@ -530,7 +529,7 @@ METODOS = [
                   recibes=['Agente en producción con monitoreo.', 'Tablero de uso, calidad y costos.', 'Plan de respuesta a incidentes.'],
                   hito='Go-live con aprobación de IA responsable',
                   col3='Aprobación documentada de los responsables del negocio antes de salir a producción.'),
-             dict(nombre='Operar y expandir', marco='Manage', linea='Medimos calidad y valor todos los días, y ampliamos lo que funciona.',
+             dict(nombre='Operar y expandir', marco='Manage', linea='Medimos calidad y valor de forma continua, y ampliamos los casos que dan resultado.',
                   hacemos=['Evaluación continua sobre tráfico real y pruebas programadas.',
                            'Monitoreo de desvíos tras actualizaciones de modelos.',
                            'Ajuste de instrucciones, conocimiento y herramientas según el uso.',
@@ -558,8 +557,8 @@ COFIN_PROGRAMAS = [
          que='Programa oficial de Microsoft para acelerar la adopción de Copilot y agentes, con talleres y engagements financiados para evaluar, planificar e implementar.'),
 ]
 
-COFIN_PROCESO = dict(slug='proceso', corto='Cómo funciona', para='Cofinanciamiento', titulo='Cuatro pasos, sin trámites para ti.',
-                     resumen='W-IT evalúa, solicita y cierra el cofinanciamiento con Microsoft. Tu equipo participa en las decisiones y en la ejecución, no en la burocracia.',
+COFIN_PROCESO = dict(slug='proceso', corto='Cómo funciona', para='Cofinanciamiento', titulo='Cuatro pasos para acceder al cofinanciamiento.',
+                     resumen='W-IT evalúa, solicita y cierra el cofinanciamiento con Microsoft. Tu equipo participa en las decisiones y en la ejecución; los trámites los hacemos nosotros.',
                      base='Proceso W-IT para solicitar y cerrar programas de inversión de Microsoft.', hito_prefijo='Hito', col3='Qué necesitamos de ti', tag='TÚ', tag_cls='tag-tu', fuentes=[],
                      fases=[
                          dict(nombre='Elegibilidad', marco='Evaluación', linea='Revisamos tu escenario y los criterios de Microsoft antes de prometer nada.',
@@ -609,7 +608,7 @@ COFIN_COMPARA = [
 ]
 
 COFIN_POC = dict(slug='poc', variante='poc', corto='POC', para='Prueba de concepto', titulo='Etapas de una POC.',
-                 resumen='Una prueba de concepto responde preguntas, no construye productos. Se definen los conceptos a probar, se cuantifica el éxito y se declara desde el inicio qué pasa cuando las hipótesis se validan.',
+                 resumen='Una prueba de concepto sirve para validar hipótesis. Se definen los conceptos a probar, se cuantifica el éxito y se declara desde el inicio qué pasa cuando las hipótesis se validan.',
                  base='Etapas definidas por W-IT para pruebas de concepto cofinanciadas por Microsoft.', hito_prefijo='Hito', col3='Qué no hacemos', tag='NO', tag_cls='tag-no', fuentes=[],
                  fases=[
                      dict(nombre='Hipótesis', marco='Qué probar', linea='Definimos qué conceptos hay que probar y por qué importan al negocio.',
@@ -655,7 +654,7 @@ COFIN_POC = dict(slug='poc', variante='poc', corto='POC', para='Prueba de concep
                  ])
 
 COFIN_MVP = dict(slug='mvp', variante='mvp', corto='MVP', para='Producto mínimo viable', titulo='Etapas de un MVP.',
-                 resumen='Un MVP es un miniproyecto: tiene alcance cerrado, pasa por QA y por la revisión de seguridad del cliente, y sale a producción con usuarios reales. Pequeño, pero completo.',
+                 resumen='Un MVP es un miniproyecto: tiene alcance cerrado, pasa por QA y por la revisión de seguridad del cliente, y sale a producción con usuarios reales.',
                  base='Etapas definidas por W-IT para productos mínimos viables cofinanciados por Microsoft.', hito_prefijo='Hito', col3='Calidad y seguridad', tag='QA', tag_cls='tag-ia', fuentes=[],
                  fases=[
                      dict(nombre='Alcance mínimo', marco='Qué entra', linea='Definimos el producto mínimo: pocas funciones, pero completas y usables.',
@@ -665,7 +664,7 @@ COFIN_MVP = dict(slug='mvp', variante='mvp', corto='MVP', para='Producto mínimo
                                    'Métricas de adopción y de valor.'],
                           recibes=['Alcance del MVP y backlog priorizado.', 'Plan del miniproyecto: fases, roles y fechas.', 'Criterios de aceptación.'],
                           hito='Alcance aprobado',
-                          col3='Los requisitos de seguridad y cumplimiento del cliente entran desde el día uno.'),
+                          col3='Los requisitos de seguridad y cumplimiento del cliente se incorporan desde el inicio.'),
                      dict(nombre='Diseño', marco='Cómo se construye', linea='Diseñamos una arquitectura que pueda crecer después del MVP.',
                           hacemos=['Arquitectura, modelo de datos e integraciones necesarias.',
                                    'Seguridad: identidades, roles y acceso a datos.',
@@ -714,8 +713,8 @@ HERRAMIENTAS = [
          que='Nivel de preparación, plazo estimado y próximo paso.'),
     dict(slug='business-central-o-finance', nombre='¿Business Central o Finance?', tiempo='7 preguntas · 2 min', estado='Nuevo',
          que='Recomendación según tu perfil, con razones y plazo típico de implementación.'),
-    dict(slug='preparacion-ley-21719', nombre='Preparación Ley 21.719', tiempo='10 preguntas', estado='Nuevo',
-         que='Semáforo de brechas y contacto con RegulaTec/Privax.'),
+    dict(slug='preparacion-ley-21719', nombre='Preparación Ley 21.719', tiempo='8 preguntas · 2 min', estado='Nuevo',
+         que='Semáforo de brechas por área, días para la vigencia y próximo paso con RegulaTec.'),
 ]
 
 # Autodiagnóstico IA: 5 preguntas. pts = preparación (0-2); sem = semanas [mín, máx] que suma la respuesta;
@@ -877,12 +876,53 @@ DIAG_ERP = dict(
     ),
 )
 
+# Preparación Ley 21.719: 8 áreas, cada respuesta es verde (2), amarilla (1) o roja (0).
+# accion = qué hacer cuando el área no está en verde. Enfoque y plazos tomados de regulatec.cl
+# (programa básico de 3 a 4 meses en empresa mediana, hasta 9 en organizaciones complejas).
+_LEY_OPTS = lambda si, parcial, no: [dict(t=si, pts=2), dict(t=parcial, pts=1), dict(t=no, pts=0)]
+DIAG_LEY = dict(
+    vigencia='2026-12-01',
+    preguntas=[
+        dict(tag='Inventario', q='¿Saben qué datos personales tratan, dónde están y para qué se usan?',
+             opts=_LEY_OPTS('Sí, con un inventario actualizado', 'En parte, sin un registro formal', 'No lo tenemos claro'),
+             accion='Levantar el inventario de datos personales: qué datos, en qué sistemas, con qué finalidad y quién los usa.'),
+        dict(tag='Consentimiento', q='¿Pueden demostrar el consentimiento o la base legal de cada tratamiento?',
+             opts=_LEY_OPTS('Sí, queda registrado y se puede acreditar', 'Solo en algunos casos o en papel', 'No'),
+             accion='Registrar consentimientos y bases de licitud de forma que se puedan acreditar.'),
+        dict(tag='Derechos', q='¿Pueden responder a tiempo si una persona pide acceder, corregir o eliminar sus datos?',
+             opts=_LEY_OPTS('Sí, con un proceso definido', 'De forma manual, caso a caso', 'No tenemos un proceso'),
+             accion='Definir un proceso trazable para las solicitudes de los titulares (acceso, rectificación, supresión, oposición y portabilidad).'),
+        dict(tag='Accesos', q='¿Saben quién accede a los datos de clientes y cuándo?',
+             opts=_LEY_OPTS('Sí, con registro auditable', 'Sabemos quién tiene permisos, pero no hay registro', 'No'),
+             accion='Controlar y registrar quién accede a qué datos, cuándo y para qué, en el CRM y los demás sistemas.'),
+        dict(tag='Proveedores', q='¿Los contratos con proveedores que acceden a datos incluyen cláusulas de tratamiento?',
+             opts=_LEY_OPTS('Sí, en todos', 'En algunos', 'No, o no lo sabemos'),
+             accion='Revisar los contratos con proveedores y terceros e incluir cláusulas de tratamiento auditables.'),
+        dict(tag='Incidentes', q='¿Tienen un procedimiento para detectar y notificar una filtración de datos?',
+             opts=_LEY_OPTS('Sí, y lo hemos probado', 'Existe, pero no se ha probado', 'No'),
+             accion='Definir y probar el procedimiento de gestión y notificación de incidentes de seguridad.'),
+        dict(tag='Gobierno', q='¿Hay un responsable de protección de datos que reporte al directorio?',
+             opts=_LEY_OPTS('Sí, con reportes periódicos', 'Hay un responsable, sin reportes', 'No'),
+             accion='Designar un responsable (interno o DPO as a Service) y reportar el cumplimiento al directorio.'),
+        dict(tag='Evidencia', q='Si hubiera una fiscalización esta semana, ¿podrían mostrar evidencia de cumplimiento?',
+             opts=_LEY_OPTS('Sí, está lista', 'Parte de ella, reuniéndola a mano', 'No'),
+             accion='Pasar del documento a la evidencia: trazabilidad y reportes listos para auditoría.'),
+    ],
+    # Nivel según puntaje total (máx. 16): [puntaje mínimo, color, nombre, descripción]
+    niveles=[
+        [13, 'verde', 'Bien encaminado', 'Tienes las bases. El foco está en sostener la evidencia en la operación diaria.'],
+        [7, 'amarillo', 'Con brechas importantes', 'Hay avances, pero todavía no podrías demostrar cumplimiento en todas las áreas.'],
+        [0, 'rojo', 'Exposición alta', 'Hoy sería difícil demostrar cumplimiento ante una fiscalización. Conviene partir ya por lo crítico.'],
+    ],
+    plazo='Según la experiencia de RegulaTec, un programa básico toma de 3 a 4 meses en una empresa mediana y hasta 9 meses en organizaciones más complejas.',
+)
+
 FAQ_HOME = [
     ('¿Cuánto demora una implementación de Dynamics 365?', '[placeholder: rangos típicos por alcance, validar con delivery]'),
     ('¿Trabajan con equipo propio o subcontratan?', 'Nuestros consultores son de W-IT. No subcontratamos tu proyecto. [confirmar que es 100% cierto]'),
-    ('¿Los agentes de IA funcionan en producción o son demos?', 'Implementamos agentes sobre Copilot Studio y Azure AI Foundry que operan sobre los datos y sistemas del cliente, con gobierno desde el día uno. No todo caso de uso justifica IA. Parte del trabajo es decir cuáles no.'),
+    ('¿Los agentes de IA funcionan en producción o son demos?', 'Implementamos agentes sobre Copilot Studio y Azure AI Foundry que operan sobre los datos y sistemas del cliente, con gobierno desde el inicio. Antes de construir, evaluamos si cada caso de uso justifica usar IA.'),
     ('¿Cómo controlan el costo de Copilot y de los agentes?', 'Con estimación previa por perfiles (Calculadora Copilot), consumo transparentado en la propuesta y medición del uso real tras el go-live.'),
     ('¿Dónde quedan nuestros datos?', 'En el tenant del cliente. Las implementaciones se realizan en la región Azure Chile Central desde 2025.'),
-    ('¿Trabajan en Perú?', 'Sí, tenemos clientes y proyectos en Perú. [confirmar dirección y equipo local antes de publicar]'),
+    ('¿Trabajan en Perú?', 'Sí. Operamos en Perú a través de W-IT LATAM S.A.C., con oficina en Santiago de Surco, Lima.'),
     ('¿Qué pasa después del go-live?', 'Soporte y AMS con SLA, portal de soporte y mejora continua. [+15.400 HH de soporte, verificar]'),
 ]

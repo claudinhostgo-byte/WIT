@@ -396,6 +396,66 @@
     resp = []; armar(); pregunta(0);
   }
 
+  // ---------- Preparación Ley 21.719: 8 áreas → semáforo, días para la vigencia y prioridades
+  const ley = $('#diag-ley');
+  if (ley) {
+    const D = JSON.parse($('#diag-ley-data').textContent);
+    const steps = $$('.diag-steps li', ley);
+    const stage = $('.diag-step', ley);
+    const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const marca = n => steps.forEach((li, k) => { li.classList.toggle('is-done', k < n); li.classList.toggle('is-on', k === n); });
+    const COLOR = ['rojo', 'amarillo', 'verde'];
+    let resp = [];
+
+    const pregunta = n => {
+      const p = D.preguntas[n];
+      marca(n);
+      stage.innerHTML = `<span class="eyebrow">Pregunta ${n + 1} de ${D.preguntas.length} · ${esc(p.tag)}</span>
+        <h2 class="h2" tabindex="-1">${esc(p.q)}</h2>
+        <div class="wizard-opts diag-opts diag-opts-3">${p.opts.map((o, k) => `<button type="button" data-k="${k}"${resp[n] === o ? ' class="is-sel"' : ''}><span class="diag-key">${'ABC'[k]}</span>${esc(o.t)}</button>`).join('')}</div>
+        ${n ? '<button type="button" class="diag-back">← Anterior</button>' : ''}`;
+      $$('.wizard-opts button', stage).forEach(b => b.addEventListener('click', () => {
+        resp[n] = p.opts[+b.dataset.k];
+        n + 1 < D.preguntas.length ? pregunta(n + 1) : resultado();
+      }));
+      const back = $('.diag-back', stage);
+      if (back) back.addEventListener('click', () => pregunta(n - 1));
+      if (n) $('h2', stage).focus();
+    };
+
+    const resultado = () => {
+      const pts = resp.reduce((a, o) => a + o.pts, 0);
+      const [, color, nombre, texto] = D.niveles.find(([m]) => pts >= m);
+      const dias = Math.floor((new Date(`${D.vigencia}T00:00:00-03:00`) - new Date()) / 864e5);
+      const prioridades = D.preguntas.map((q, k) => ({ q, v: resp[k].pts })).filter(x => x.v < 2)
+        .sort((a, b) => a.v - b.v).slice(0, 3);
+      marca(D.preguntas.length);
+      stage.innerHTML = `<span class="eyebrow">Tu semáforo</span>
+        <h2 class="h2 diag-semaforo" data-color="${color}" tabindex="-1"><span class="sem-dot"></span>${esc(nombre)}</h2>
+        <p class="lead">${esc(texto)}</p>
+        <div class="diag-kpis">
+          <div><span>${dias > 0 ? 'Días para la entrada en vigencia' : 'Estado de la ley'}</span><strong>${dias > 0 ? dias : 'Vigente'}</strong></div>
+          <div><span>Preparación</span><strong>${pts} de 16</strong></div>
+        </div>
+        <ul class="sem-grid">${D.preguntas.map((q, k) => `<li data-color="${COLOR[resp[k].pts]}"><span class="sem-dot"></span>${esc(q.tag)}</li>`).join('')}</ul>
+        ${prioridades.length ? `<div><h3 class="diag-sub">Qué resolver primero</h3><ul class="diag-list">${prioridades.map(x => `<li>${esc(x.q.accion)}</li>`).join('')}</ul></div>` : ''}
+        <p class="diag-note">${esc(D.plazo)}${dias > 0 && dias < 120 && prioridades.length ? ' Con el tiempo que queda, conviene partir por las áreas en rojo.' : ''}</p>
+        <div><h3 class="diag-sub">Próximo paso sugerido</h3><p>Un Assessment TecnoLegal con <a href="https://www.regulatec.cl" target="_blank" rel="noopener">RegulaTec</a> para convertir estas brechas en un plan de acción con evidencia auditable.</p></div>
+        <div class="diag-cta">
+          <p><strong>¿Quieres un diagnóstico completo?</strong> Un especialista revisa tus brechas contigo en 30 minutos y te propone una hoja de ruta.</p>
+          <div class="btn-row"><a class="btn btn-primary" href="${ley.dataset.contacto}">Hablar con un especialista</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
+        </div>`;
+      try {
+        sessionStorage.setItem('wit-diag', `Preparación Ley 21.719: ${nombre} (${pts}/16).\n` +
+          D.preguntas.map((q, k) => `- ${q.tag}: ${resp[k].t}`).join('\n'));
+      } catch (e) { /* sin almacenamiento: el formulario queda vacío */ }
+      $('.diag-reset', stage).addEventListener('click', () => { resp = []; pregunta(0); });
+      $('h2', stage).focus();
+    };
+
+    pregunta(0);
+  }
+
   // ---------- Contacto: si viene de una herramienta de diagnóstico, precarga el mensaje
   const msg = $('#form-contacto textarea[name="mensaje"]');
   if (msg && !msg.value) {
