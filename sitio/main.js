@@ -272,17 +272,18 @@
   const diag = $('#diag-ia');
   if (diag) {
     const D = JSON.parse($('#diag-ia-data').textContent);
-    const bar = $('.wizard-bar span', diag);
+    const steps = $$('.diag-steps li', diag);
+    const marca = n => steps.forEach((li, k) => { li.classList.toggle('is-done', k < n); li.classList.toggle('is-on', k === n); });
     const stage = $('.diag-step', diag);
     const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     let resp = [];
 
     const pregunta = n => {
       const p = D.preguntas[n];
-      bar.style.width = `${(n / D.preguntas.length) * 100}%`;
+      marca(n);
       stage.innerHTML = `<span class="eyebrow">Pregunta ${n + 1} de ${D.preguntas.length}</span>
         <h2 class="h2" tabindex="-1">${esc(p.q)}</h2>
-        <div class="wizard-opts">${p.opts.map((o, k) => `<button type="button" data-k="${k}">${esc(o.t)}</button>`).join('')}</div>
+        <div class="wizard-opts diag-opts">${p.opts.map((o, k) => `<button type="button" data-k="${k}"${resp[n] === o ? ' class="is-sel"' : ''}><span class="diag-key">${'ABCD'[k]}</span>${esc(o.t)}</button>`).join('')}</div>
         ${n ? '<button type="button" class="diag-back">← Anterior</button>' : ''}`;
       $$('.wizard-opts button', stage).forEach(b => b.addEventListener('click', () => {
         resp[n] = p.opts[+b.dataset.k];
@@ -299,7 +300,7 @@
       const nivel = D.niveles.find(([m]) => pts >= m);
       const brechas = resp.filter(o => o.brecha).map(o => o.brecha);
       const paso = D.rutas[resp[0].ruta];
-      bar.style.width = '100%';
+      marca(D.preguntas.length);
       stage.innerHTML = `<span class="eyebrow">Tu resultado</span>
         <h2 class="h2" tabindex="-1">${esc(nivel[1])}</h2>
         <p class="lead">${esc(nivel[2])}</p>
@@ -314,7 +315,7 @@
           <div class="btn-row"><a class="btn btn-primary" href="${diag.dataset.contacto}">Hablar con un especialista</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
         </div>`;
       try {
-        sessionStorage.setItem('wit-diag-ia', `Autodiagnóstico IA: ${nivel[1]} (${pts}/10), plazo estimado ${min} a ${max} semanas.\n` +
+        sessionStorage.setItem('wit-diag', `Autodiagnóstico IA: ${nivel[1]} (${pts}/10), plazo estimado ${min} a ${max} semanas.\n` +
           resp.map((o, k) => `- ${D.preguntas[k].q} ${o.t}`).join('\n'));
       } catch (e) { /* sin almacenamiento: el formulario queda vacío */ }
       $('.diag-reset', stage).addEventListener('click', () => { resp = []; pregunta(0); });
@@ -324,10 +325,81 @@
     pregunta(0);
   }
 
-  // ---------- Contacto: si viene del autodiagnóstico, precarga el mensaje
+  // ---------- ¿Business Central o Finance?: perfil → preguntas del área → recomendación
+  const erp = $('#diag-erp');
+  if (erp) {
+    const D = JSON.parse($('#diag-erp-data').textContent);
+    const stepsEl = $('.diag-steps', erp);
+    const stage = $('.diag-step', erp);
+    const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    let seq, resp;
+
+    const armar = rol => {
+      seq = [D.perfil, ...D.comunes, ...(rol ? D.roles[rol] : [{ tag: 'Tu área' }, { tag: 'Tu área' }, { tag: 'Tu área' }]), D.final];
+      stepsEl.innerHTML = seq.map(q => `<li>${esc(q.tag)}</li>`).join('');
+    };
+    const marca = n => $$('li', stepsEl).forEach((li, k) => { li.classList.toggle('is-done', k < n); li.classList.toggle('is-on', k === n); });
+
+    const pregunta = n => {
+      const p = seq[n];
+      marca(n);
+      stage.innerHTML = `<span class="eyebrow">Pregunta ${n + 1} de ${seq.length}</span>
+        <h2 class="h2" tabindex="-1">${esc(p.q)}</h2>
+        <div class="wizard-opts diag-opts">${p.opts.map((o, k) => `<button type="button" data-k="${k}"${resp[n] === o ? ' class="is-sel"' : ''}><span class="diag-key">${'ABCD'[k]}</span>${esc(o.t)}</button>`).join('')}</div>
+        ${n ? '<button type="button" class="diag-back">← Anterior</button>' : ''}`;
+      $$('.wizard-opts button', stage).forEach(b => b.addEventListener('click', () => {
+        const o = p.opts[+b.dataset.k];
+        if (n === 0 && resp[0] !== o) { resp = [o]; armar(o.rol); } else resp[n] = o;
+        n + 1 < seq.length ? pregunta(n + 1) : resultado();
+      }));
+      const back = $('.diag-back', stage);
+      if (back) back.addEventListener('click', () => pregunta(n - 1));
+      if (n) $('h2', stage).focus();
+    };
+
+    const resultado = () => {
+      const pts = resp.reduce((a, o) => a + (o.v || 0), 0);
+      const key = pts <= -3 ? 'bc' : pts >= 3 ? 'fin' : 'ambos';
+      const prod = D.productos[key];
+      const razones = resp.filter(o => o.por && (key === 'ambos' || (key === 'bc' ? o.v < 0 : o.v > 0)))
+        .sort((a, b) => Math.abs(b.v) - Math.abs(a.v)).slice(0, 3).map(o => o.por);
+      const scm = key !== 'bc' && resp.some(o => o.scm);
+      const urg = resp[resp.length - 1].meses;
+      const [m0, m1] = prod.meses;
+      const calce = !urg ? '' : m1 <= urg ? 'Tu fecha objetivo calza con el plazo típico.'
+        : m0 > urg ? 'Tu fecha objetivo es más corta que el plazo típico: conviene partir por etapas y priorizar lo esencial.'
+        : 'Tu fecha objetivo es exigente: se puede lograr con un alcance acotado en la primera etapa.';
+      marca(seq.length);
+      stage.innerHTML = `<span class="eyebrow">Nuestra recomendación</span>
+        <h2 class="h2" tabindex="-1">${esc(prod.nombre)}</h2>
+        <p class="lead">${esc(prod.texto)}</p>
+        <div class="diag-kpis">
+          <div><span>Plazo típico de implementación</span><strong>${m0} a ${m1} meses</strong></div>
+          <div><span>Perfil</span><strong class="diag-kpi-txt">${esc(resp[0].t)}</strong></div>
+        </div>
+        ${calce ? `<p class="diag-note">${esc(calce)}</p>` : ''}
+        ${razones.length ? `<div><h3 class="diag-sub">${key === 'ambos' ? 'Lo que pesa en tu caso' : 'Por qué'}</h3><ul class="diag-list">${razones.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : ''}
+        ${scm ? '<p class="diag-note">Por tu operación, considera sumar <strong>Dynamics 365 Supply Chain Management</strong>.</p>' : ''}
+        <div><h3 class="diag-sub">Próximo paso sugerido</h3><p>Una demo sobre tus procesos reales para confirmar la elección. Conoce más en <a href="${erp.dataset.sol}">Finanzas y operaciones</a>.</p></div>
+        <div class="diag-cta">
+          <p><strong>¿Quieres un diagnóstico completo?</strong> Un especialista revisa tu caso contigo en 30 minutos y afina la recomendación, el alcance y el plazo.</p>
+          <div class="btn-row"><a class="btn btn-primary" href="${erp.dataset.contacto}">Hablar con un especialista</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
+        </div>`;
+      try {
+        sessionStorage.setItem('wit-diag', `¿Business Central o Finance?: ${prod.nombre}, plazo típico ${m0} a ${m1} meses.\n` +
+          resp.map((o, k) => `- ${seq[k].q} ${o.t}`).join('\n'));
+      } catch (e) { /* sin almacenamiento: el formulario queda vacío */ }
+      $('.diag-reset', stage).addEventListener('click', () => { resp = []; armar(); pregunta(0); });
+      $('h2', stage).focus();
+    };
+
+    resp = []; armar(); pregunta(0);
+  }
+
+  // ---------- Contacto: si viene de una herramienta de diagnóstico, precarga el mensaje
   const msg = $('#form-contacto textarea[name="mensaje"]');
   if (msg && !msg.value) {
-    try { msg.value = sessionStorage.getItem('wit-diag-ia') || ''; } catch (e) { /* nada */ }
+    try { msg.value = sessionStorage.getItem('wit-diag') || ''; } catch (e) { /* nada */ }
   }
 
   // ---------- Agente flotante

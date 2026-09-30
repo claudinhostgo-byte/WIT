@@ -712,8 +712,8 @@ HERRAMIENTAS = [
          que='Estima créditos y presupuesto mensual por perfiles de usuario.'),
     dict(slug='autodiagnostico-ia', nombre='Autodiagnóstico de madurez en IA y agentes', tiempo='5 preguntas · 1 min', estado='Nuevo',
          que='Nivel de preparación, plazo estimado y próximo paso.'),
-    dict(slug='business-central-o-finance', nombre='¿Business Central o Finance?', tiempo='8 preguntas', estado='Nuevo',
-         que='Recomendación razonada y plazos típicos. [validar rangos con delivery]'),
+    dict(slug='business-central-o-finance', nombre='¿Business Central o Finance?', tiempo='7 preguntas · 2 min', estado='Nuevo',
+         que='Recomendación según tu perfil, con razones y plazo típico de implementación.'),
     dict(slug='preparacion-ley-21719', nombre='Preparación Ley 21.719', tiempo='10 preguntas', estado='Nuevo',
          que='Semáforo de brechas y contacto con RegulaTec/Privax.'),
 ]
@@ -723,35 +723,35 @@ HERRAMIENTAS = [
 # Los rangos son orientativos: validar con delivery.
 DIAG_IA = dict(
     preguntas=[
-        dict(q='¿Qué quieres lograr primero con IA?', opts=[
+        dict(q='¿Qué quieres lograr primero con IA?', tag='Objetivo', opts=[
             dict(t='Que las personas trabajen más rápido con Microsoft 365 Copilot', pts=2, base=[4, 6], ruta='copilot'),
             dict(t='Un agente que atienda a clientes o colaboradores', pts=2, base=[6, 10], ruta='agente'),
             dict(t='Automatizar un proceso de negocio de punta a punta', pts=2, base=[8, 14], ruta='proceso'),
             dict(t='Aún no lo tenemos definido', pts=0, base=[6, 12], ruta='explorar',
                  brecha='Elegir un primer caso de uso con impacto medible.'),
         ]),
-        dict(q='¿Dónde está la información que usaría la IA?', opts=[
+        dict(q='¿Dónde está la información que usaría la IA?', tag='Datos', opts=[
             dict(t='Ordenada en Microsoft 365, SharePoint o Dynamics 365', pts=2, sem=[0, 0]),
             dict(t='Repartida en varios sistemas y planillas', pts=1, sem=[2, 4],
                  brecha='Conectar las fuentes que usaría la IA (Dataverse, conectores o Microsoft Fabric).'),
             dict(t='No lo tenemos claro', pts=0, sem=[3, 6],
                  brecha='Identificar qué información necesita el caso de uso y dónde vive.'),
         ]),
-        dict(q='¿Qué plataforma Microsoft usan hoy?', opts=[
+        dict(q='¿Qué plataforma Microsoft usan hoy?', tag='Plataforma', opts=[
             dict(t='Microsoft 365 y además Dynamics 365 o Power Platform', pts=2, sem=[0, 0]),
             dict(t='Solo Microsoft 365', pts=1, sem=[0, 2],
                  brecha='Evaluar si Copilot Studio y Power Platform cubren el caso sobre tu Microsoft 365.'),
             dict(t='Principalmente otras plataformas', pts=0, sem=[2, 4],
                  brecha='Definir cómo se integran tus sistemas actuales con la nube de Microsoft.'),
         ]),
-        dict(q='¿Tienen reglas de seguridad y uso de IA?', opts=[
+        dict(q='¿Tienen reglas de seguridad y uso de IA?', tag='Gobierno', opts=[
             dict(t='Sí: permisos, etiquetas de sensibilidad y política de uso de IA', pts=2, sem=[0, 0]),
             dict(t='Algo hay, pero incompleto', pts=1, sem=[1, 3],
                  brecha='Completar permisos y etiquetas en Microsoft Purview antes de abrir datos a la IA.'),
             dict(t='Aún no', pts=0, sem=[2, 4],
                  brecha='Definir la política de uso de IA, los permisos y la clasificación de datos.'),
         ]),
-        dict(q='¿Quién impulsaría la iniciativa?', opts=[
+        dict(q='¿Quién impulsaría la iniciativa?', tag='Patrocinio', opts=[
             dict(t='Un ejecutivo patrocinador con presupuesto', pts=2, sem=[0, 0]),
             dict(t='Un área interesada, sin presupuesto definido', pts=1, sem=[0, 2],
                  brecha='Armar un caso de negocio para asegurar el presupuesto.'),
@@ -770,6 +770,110 @@ DIAG_IA = dict(
         agente='Una prueba de concepto de un agente en Copilot Studio sobre tus datos.',
         proceso='Mapear el proceso y validar la automatización con Power Automate y Azure AI Foundry.',
         explorar='Un taller de casos de uso para priorizar dónde la IA genera valor.',
+    ),
+)
+
+# ¿Business Central o Finance?: la 1ª pregunta define el perfil y, con él, 3 preguntas específicas.
+# v = puntaje (negativo = Business Central, positivo = Finance); por = razón que se muestra si la respuesta pesa;
+# scm = sugiere sumar Supply Chain Management. Plazos típicos orientativos: validar con delivery.
+_ERP_TAMANO = dict(tag='Usuarios', q='¿Cuántas personas usarían el ERP?', opts=[
+    dict(t='Menos de 50', v=-2, por='Un equipo de menos de 50 usuarios calza con el alcance de Business Central.'),
+    dict(t='Entre 50 y 250', v=0),
+    dict(t='Más de 250', v=2, por='Más de 250 usuarios apunta a la escala de Dynamics 365 Finance.'),
+])
+_ERP_ESTRUCTURA = dict(tag='Estructura', q='¿Cómo está organizada la empresa?', opts=[
+    dict(t='Una sociedad en un país', v=-2, por='Una sola sociedad en un país se resuelve bien con Business Central.'),
+    dict(t='Varias sociedades en un país', v=0),
+    dict(t='Varias sociedades en varios países', v=2, por='Operar varias sociedades en varios países favorece a Finance: multi-empresa, multi-moneda y localizaciones.'),
+])
+_ERP_PLAZO = dict(tag='Plazo', q='¿Para cuándo necesitan el ERP operando?', opts=[
+    dict(t='En menos de 6 meses', meses=6),
+    dict(t='Entre 6 y 12 meses', meses=12),
+    dict(t='En más de un año', meses=24),
+    dict(t='Aún no hay fecha', meses=None),
+])
+
+DIAG_ERP = dict(
+    perfil=dict(tag='Perfil', q='¿Desde qué rol estás evaluando el ERP?', opts=[
+        dict(t='Gerencia general o dirección', rol='gerencia'),
+        dict(t='Finanzas o contraloría', rol='finanzas'),
+        dict(t='Tecnología (TI)', rol='ti'),
+        dict(t='Operaciones, logística o producción', rol='operaciones'),
+    ]),
+    comunes=[_ERP_TAMANO, _ERP_ESTRUCTURA],
+    final=_ERP_PLAZO,
+    roles=dict(
+        gerencia=[
+            dict(tag='Motivo', q='¿Qué impulsa el cambio de ERP?', opts=[
+                dict(t='Ordenar la operación y dejar las planillas', v=-2, por='Ordenar la operación y dejar las planillas es el caso típico de Business Central.'),
+                dict(t='Reemplazar un sistema que quedó chico', v=0),
+                dict(t='Crecer con adquisiciones o nuevos países', v=2, por='Un plan de crecimiento con adquisiciones o nuevos países necesita la escala de Finance.'),
+            ]),
+            dict(tag='Enfoque', q='¿Qué tipo de proyecto prefieren?', opts=[
+                dict(t='Rápido y lo más estándar posible', v=-2, por='Buscar un proyecto rápido y estándar favorece a Business Central.'),
+                dict(t='Por etapas, adaptado a procesos propios', v=2, por='Un proyecto por etapas y adaptado a procesos propios es el terreno de Finance.'),
+            ]),
+            dict(tag='Procesos', q='¿Qué tan distintos son los procesos entre áreas o filiales?', opts=[
+                dict(t='Similares en toda la empresa', v=-1),
+                dict(t='Algunas diferencias', v=0),
+                dict(t='Muy distintos, con reglas propias', v=2, por='Procesos muy distintos entre filiales requieren la flexibilidad de Finance.'),
+            ]),
+        ],
+        finanzas=[
+            dict(tag='Consolidación', q='¿Cómo consolidan los estados financieros?', opts=[
+                dict(t='No consolidamos', v=-2, por='Sin necesidad de consolidar, Business Central cubre bien la contabilidad.'),
+                dict(t='En planillas, entre pocas sociedades', v=0),
+                dict(t='Multi-moneda, con eliminaciones intercompañía', v=2, por='La consolidación multi-moneda con eliminaciones intercompañía es una fortaleza de Finance.'),
+            ]),
+            dict(tag='Normas', q='¿Llevan contabilidad bajo más de una norma, por ejemplo IFRS y local?', opts=[
+                dict(t='No, una sola norma', v=-1),
+                dict(t='Sí, con libros paralelos', v=2, por='Los libros paralelos para IFRS y norma local se gestionan mejor en Finance.'),
+            ]),
+            dict(tag='Control', q='¿Qué nivel de control presupuestario necesitan?', opts=[
+                dict(t='Presupuesto y centros de costo básicos', v=-1),
+                dict(t='Control con aprobaciones y compromisos', v=1, por='El control presupuestario con aprobaciones y compromisos favorece a Finance.'),
+            ]),
+        ],
+        ti=[
+            dict(tag='Sistema actual', q='¿Qué ERP tienen hoy?', opts=[
+                dict(t='Planillas o un sistema contable local', v=-2, por='Partir desde planillas o un sistema contable local es la entrada típica a Business Central.'),
+                dict(t='Un ERP de gama media', v=0),
+                dict(t='Un ERP corporativo (SAP, Oracle u otro)', v=2, por='Reemplazar un ERP corporativo apunta a Finance.'),
+            ]),
+            dict(tag='Integraciones', q='¿Cuántas integraciones necesitaría el ERP?', opts=[
+                dict(t='Pocas y estándar: banco, facturación electrónica', v=-1),
+                dict(t='Varias, con sistemas propios', v=0),
+                dict(t='Muchas, con alto volumen de transacciones', v=2, por='Muchas integraciones con alto volumen de transacciones requieren la escala de Finance.'),
+            ]),
+            dict(tag='Equipo TI', q='¿Cómo es el equipo de TI que administraría el ERP?', opts=[
+                dict(t='Pequeño: preferimos SaaS estándar', v=-2, por='Un equipo de TI pequeño administra con menos esfuerzo un SaaS estándar como Business Central.'),
+                dict(t='Con capacidad para un ERP complejo', v=1),
+            ]),
+        ],
+        operaciones=[
+            dict(tag='Operación', q='¿Qué tipo de operación tienen?', opts=[
+                dict(t='Comercialización o servicios', v=-2, por='Una operación de comercialización o servicios calza con Business Central.'),
+                dict(t='Distribución o manufactura simple', v=-1),
+                dict(t='Manufactura compleja o varias plantas', v=2, scm=True, por='La manufactura compleja o con varias plantas se resuelve con Finance y Supply Chain Management.'),
+            ]),
+            dict(tag='Bodegas', q='¿Cómo gestionan bodegas y centros de distribución?', opts=[
+                dict(t='Una a tres bodegas, gestión simple', v=-1),
+                dict(t='Varias bodegas con ubicaciones y picking', v=1, scm=True, por='La gestión avanzada de bodegas favorece a Supply Chain Management.'),
+            ]),
+            dict(tag='Planificación', q='¿Necesitan planificación de demanda o de producción?', opts=[
+                dict(t='No, o de forma básica', v=-1),
+                dict(t='Sí, con planificación avanzada', v=2, scm=True, por='La planificación avanzada de demanda y producción es parte de Supply Chain Management.'),
+            ]),
+        ],
+    ),
+    # Recomendación: puntaje <= -3 Business Central, >= 3 Finance, entre medio evaluar ambos
+    productos=dict(
+        bc=dict(nombre='Dynamics 365 Business Central', meses=[3, 6],
+                texto='El ERP de Microsoft para pymes y empresas medianas: finanzas, ventas, compras e inventario en un solo sistema SaaS.'),
+        fin=dict(nombre='Dynamics 365 Finance', meses=[9, 18],
+                 texto='El ERP de Microsoft para organizaciones grandes, con varias sociedades, países y procesos complejos.'),
+        ambos=dict(nombre='Conviene evaluar ambos', meses=[3, 18],
+                   texto='Tu escenario está en la zona intermedia. Un especialista puede definirlo contigo con una demo sobre tus procesos.'),
     ),
 )
 

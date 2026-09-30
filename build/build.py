@@ -8,7 +8,7 @@ import os
 from html import escape
 from PIL import Image
 from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME,
-                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA)
+                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sitio')
 SOL = {s['slug']: s for s in SOLUCIONES}
@@ -202,15 +202,13 @@ def footer(r):
     <div class="footer-grid">
       <div class="footer-col footer-brand">
         <img class="footer-logo" src="{r}assets/marca/logo-white-mark.png" alt="W-IT" width="64" height="48">
-        <span class="claim">We Make It Simple <span class="ph">[confirmar claim]</span></span>
+        <span class="claim">We Make It Simple</span>
         <img src="{r}assets/credenciales/WIT-MicrosoftPartner-singleline-white.png" alt="Microsoft Partner" width="200" height="40">
         <span>ISO 9001 · ISO 27001 (SGS)</span>
       </div>
-      {col('Soluciones', [(s['nombre'], f"{r}soluciones/{s['slug']}/") for s in SOLUCIONES])}
-      {col('Industrias', [(i['nombre'], f"{r}industrias/{i['slug']}/") for i in INDUSTRIAS])}
-      {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Equipo', f'{r}nosotros/equipo/'), ('Trabaja con nosotros', f'{r}nosotros/trabaja-con-nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}'), ('Aprende', f'{r}nosotros/aprende/')])}
-      {col('Recursos', [('Casos de éxito', f'{r}casos-de-exito/'), ('Herramientas', f'{r}herramientas/'), ('Observatorio IA', f'{r}recursos/'), ('Productos', f'{r}productos/'), ('Contacto', f'{r}contacto/')])}
-      <address class="footer-col"><strong>Contacto</strong><span>Av. Apoquindo 2930, of. 201, Las Condes, Santiago <span class="ph ph-footer">[verificar vs 3039]</span></span><span>+56 2 2409 6112</span><a href="mailto:info@w-it.cl">info@w-it.cl</a><a href="#">WhatsApp</a><span class="muted-footer">Perú: [placeholder: contacto Lima]</span></address>
+      {col('Explora', [('Soluciones', f'{r}soluciones/'), ('Industrias', f'{r}industrias/'), ('Casos de éxito', f'{r}casos-de-exito/'), ('Productos', f'{r}productos/'), ('Herramientas', f'{r}herramientas/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}')])}
+      {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Trabaja con nosotros', f'{r}nosotros/trabaja-con-nosotros/'), ('Observatorio IA', f'{r}recursos/')])}
+      <address class="footer-col"><strong>Contacto</strong><span>Av. Apoquindo 2930, of. 201<br>Las Condes, Santiago</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
     </div>
     <div class="footer-bottom">
       <nav aria-label="Legal"><a href="{r}privacidad/">Privacidad</a><a href="{r}cookies/">Cookies</a><a href="{r}terminos/">Términos</a></nav>
@@ -1073,26 +1071,54 @@ def herramientas_index(r):
 {cta_final(r)}'''
 
 
-def diag_ia(r):
-    datos = json.dumps(DIAG_IA, ensure_ascii=False).replace('</', r'<\/')
+def diag_layout(r, h, wid, lead, obtienes, datos, steps=''):
+    """Hero de herramienta interactiva: intro a la izquierda y wizard a la derecha (lo dibuja main.js)."""
+    datos = json.dumps(datos, ensure_ascii=False).replace('</', r'<\/')
     return f'''
-<section class="section bg-soft"><div class="container">
-  <div class="wizard" id="diag-ia" data-contacto="{r}contacto/" data-cofin="{r}cofinanciamiento-microsoft/">
-    <div class="wizard-bar"><span style="width:0%"></span></div>
-    <div class="diag-step" aria-live="polite">
-      <noscript><p class="lead">Este autodiagnóstico necesita JavaScript. También puedes <a href="{r}contacto/">agendar un diagnóstico con un especialista</a>.</p></noscript>
+<section class="page-hero diag-hero">
+  <div class="page-hero-trazo" aria-hidden="true"></div>
+  <div class="container diag-layout">
+    <div class="diag-intro">
+      <nav aria-label="Ruta"><ol class="crumbs"><li><a href="{r}">Inicio</a></li><li><a href="{r}herramientas/">Herramientas</a></li><li><a href="{r}herramientas/{h['slug']}/">{escape(h['nombre'])}</a></li></ol></nav>
+      <span class="eyebrow">Herramienta · {escape(h['tiempo'])}</span>
+      <h1>{escape(h['nombre'])}</h1>
+      <p class="lead">{lead}</p>
+      <ul class="diag-gets">{''.join(f'<li><strong>{escape(a)}</strong><span>{escape(b)}</span></li>' for a, b in obtienes)}</ul>
+      <p class="disclaimer">Estimación orientativa. No es una cotización ni un compromiso de plazo.</p>
     </div>
-    <p class="disclaimer">Estimación orientativa. No es una cotización ni un compromiso de plazo.</p>
+    <div class="wizard diag-wizard" id="{wid}" data-contacto="{r}contacto/" data-cofin="{r}{COFIN_PAGE}" data-sol="{r}soluciones/finanzas-y-operaciones/">
+      <ol class="diag-steps" aria-hidden="true">{steps}</ol>
+      <div class="diag-step" aria-live="polite">
+        <noscript><p class="lead">Esta herramienta necesita JavaScript. También puedes <a href="{r}contacto/">hablar con un especialista</a>.</p></noscript>
+      </div>
+    </div>
   </div>
-  <script type="application/json" id="diag-ia-data">{datos}</script>
-</div></section>'''
+  <script type="application/json" id="{wid}-data">{datos}</script>
+</section>'''
+
+
+def diag_ia(r, h):
+    return diag_layout(r, h, 'diag-ia', 'Responde 5 preguntas y obtén una primera lectura de tu punto de partida.',
+                       [('Nivel de preparación', 'Dónde estás hoy, de 0 a 10.'),
+                        ('Plazo estimado', 'Semanas hasta un primer caso en producción.'),
+                        ('Próximo paso', 'Qué resolver primero y por dónde partir.')],
+                       DIAG_IA, ''.join(f'<li>{escape(q["tag"])}</li>' for q in DIAG_IA['preguntas']))
+
+
+def diag_erp(r, h):
+    return diag_layout(r, h, 'diag-erp', 'Cuéntanos desde qué rol evalúas el ERP y te hacemos las preguntas que importan para tu área.',
+                       [('Recomendación', 'Dynamics 365 Business Central, Finance o evaluar ambos.'),
+                        ('Por qué', 'Las razones detrás, según tus respuestas.'),
+                        ('Plazo típico', 'Meses de implementación y si calza con tu fecha.')],
+                       DIAG_ERP)
 
 
 def herramienta_page(h):
     def body(r):
         if h['slug'] == 'autodiagnostico-ia':
-            return page_hero(r, [('Herramientas', 'herramientas/'), (h['nombre'], f"herramientas/{h['slug']}/")], f"Herramienta · {h['tiempo']}",
-                             h['nombre'], escape(h['que']), ctas=False) + diag_ia(r) + cta_final(r)
+            return diag_ia(r, h) + cta_final(r)
+        if h['slug'] == 'business-central-o-finance':
+            return diag_erp(r, h) + cta_final(r)
         return page_hero(r, [('Herramientas', 'herramientas/'), (h['nombre'], f"herramientas/{h['slug']}/")], f"Herramienta · {h['tiempo']}",
                          h['nombre'], escape(h['que']), ctas=False) + f'''
 <section class="section bg-soft"><div class="container">

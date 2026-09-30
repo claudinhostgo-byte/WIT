@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>¿Business Central o Finance? · W-IT</title>
-<meta name="description" content="Recomendación razonada y plazos típicos. [validar rangos con delivery]">
+<meta name="description" content="Recomendación según tu perfil, con razones y plazo típico de implementación.">
 <link rel="icon" type="image/png" href="../../assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="../../assets/marca/apple-touch-icon.png">
 <link rel="stylesheet" href="../../styles.css">
@@ -137,7 +137,7 @@
               </div>
               <div class="mega-list">
                 <span class="eyebrow">Herramientas gratuitas</span>
-                <a href="../../herramientas/calculadora-copilot/"><strong>Calculadora Copilot</strong><span>3 min</span></a><a href="../../herramientas/autodiagnostico-ia/"><strong>Autodiagnóstico de madurez en IA y agentes</strong><span>5 preguntas · 1 min</span></a><a href="../../herramientas/business-central-o-finance/"><strong>¿Business Central o Finance?</strong><span>8 preguntas</span></a><a href="../../herramientas/preparacion-ley-21719/"><strong>Preparación Ley 21.719</strong><span>10 preguntas</span></a>
+                <a href="../../herramientas/calculadora-copilot/"><strong>Calculadora Copilot</strong><span>3 min</span></a><a href="../../herramientas/autodiagnostico-ia/"><strong>Autodiagnóstico de madurez en IA y agentes</strong><span>5 preguntas · 1 min</span></a><a href="../../herramientas/business-central-o-finance/"><strong>¿Business Central o Finance?</strong><span>7 preguntas · 2 min</span></a><a href="../../herramientas/preparacion-ley-21719/"><strong>Preparación Ley 21.719</strong><span>10 preguntas</span></a>
               </div>
               <div class="mega-promo">
                 <span class="eyebrow">Cuenta regresiva</span>
@@ -186,28 +186,26 @@
 </header>
 <main id="main">
 
-<section class="page-hero">
+<section class="page-hero diag-hero">
   <div class="page-hero-trazo" aria-hidden="true"></div>
-  <div class="container page-hero-inner">
-    <div class="page-hero-copy">
+  <div class="container diag-layout">
+    <div class="diag-intro">
       <nav aria-label="Ruta"><ol class="crumbs"><li><a href="../../">Inicio</a></li><li><a href="../../herramientas/">Herramientas</a></li><li><a href="../../herramientas/business-central-o-finance/">¿Business Central o Finance?</a></li></ol></nav>
-      <span class="eyebrow">Herramienta · 8 preguntas</span>
+      <span class="eyebrow">Herramienta · 7 preguntas · 2 min</span>
       <h1>¿Business Central o Finance?</h1>
-      <p class="lead">Recomendación razonada y plazos típicos. [validar rangos con delivery]</p>
-      
+      <p class="lead">Cuéntanos desde qué rol evalúas el ERP y te hacemos las preguntas que importan para tu área.</p>
+      <ul class="diag-gets"><li><strong>Recomendación</strong><span>Dynamics 365 Business Central, Finance o evaluar ambos.</span></li><li><strong>Por qué</strong><span>Las razones detrás, según tus respuestas.</span></li><li><strong>Plazo típico</strong><span>Meses de implementación y si calza con tu fecha.</span></li></ul>
+      <p class="disclaimer">Estimación orientativa. No es una cotización ni un compromiso de plazo.</p>
+    </div>
+    <div class="wizard diag-wizard" id="diag-erp" data-contacto="../../contacto/" data-cofin="../../cofinanciamiento-microsoft/" data-sol="../../soluciones/finanzas-y-operaciones/">
+      <ol class="diag-steps" aria-hidden="true"></ol>
+      <div class="diag-step" aria-live="polite">
+        <noscript><p class="lead">Esta herramienta necesita JavaScript. También puedes <a href="../../contacto/">hablar con un especialista</a>.</p></noscript>
+      </div>
     </div>
   </div>
+  <script type="application/json" id="diag-erp-data">{"perfil": {"tag": "Perfil", "q": "¿Desde qué rol estás evaluando el ERP?", "opts": [{"t": "Gerencia general o dirección", "rol": "gerencia"}, {"t": "Finanzas o contraloría", "rol": "finanzas"}, {"t": "Tecnología (TI)", "rol": "ti"}, {"t": "Operaciones, logística o producción", "rol": "operaciones"}]}, "comunes": [{"tag": "Usuarios", "q": "¿Cuántas personas usarían el ERP?", "opts": [{"t": "Menos de 50", "v": -2, "por": "Un equipo de menos de 50 usuarios calza con el alcance de Business Central."}, {"t": "Entre 50 y 250", "v": 0}, {"t": "Más de 250", "v": 2, "por": "Más de 250 usuarios apunta a la escala de Dynamics 365 Finance."}]}, {"tag": "Estructura", "q": "¿Cómo está organizada la empresa?", "opts": [{"t": "Una sociedad en un país", "v": -2, "por": "Una sola sociedad en un país se resuelve bien con Business Central."}, {"t": "Varias sociedades en un país", "v": 0}, {"t": "Varias sociedades en varios países", "v": 2, "por": "Operar varias sociedades en varios países favorece a Finance: multi-empresa, multi-moneda y localizaciones."}]}], "final": {"tag": "Plazo", "q": "¿Para cuándo necesitan el ERP operando?", "opts": [{"t": "En menos de 6 meses", "meses": 6}, {"t": "Entre 6 y 12 meses", "meses": 12}, {"t": "En más de un año", "meses": 24}, {"t": "Aún no hay fecha", "meses": null}]}, "roles": {"gerencia": [{"tag": "Motivo", "q": "¿Qué impulsa el cambio de ERP?", "opts": [{"t": "Ordenar la operación y dejar las planillas", "v": -2, "por": "Ordenar la operación y dejar las planillas es el caso típico de Business Central."}, {"t": "Reemplazar un sistema que quedó chico", "v": 0}, {"t": "Crecer con adquisiciones o nuevos países", "v": 2, "por": "Un plan de crecimiento con adquisiciones o nuevos países necesita la escala de Finance."}]}, {"tag": "Enfoque", "q": "¿Qué tipo de proyecto prefieren?", "opts": [{"t": "Rápido y lo más estándar posible", "v": -2, "por": "Buscar un proyecto rápido y estándar favorece a Business Central."}, {"t": "Por etapas, adaptado a procesos propios", "v": 2, "por": "Un proyecto por etapas y adaptado a procesos propios es el terreno de Finance."}]}, {"tag": "Procesos", "q": "¿Qué tan distintos son los procesos entre áreas o filiales?", "opts": [{"t": "Similares en toda la empresa", "v": -1}, {"t": "Algunas diferencias", "v": 0}, {"t": "Muy distintos, con reglas propias", "v": 2, "por": "Procesos muy distintos entre filiales requieren la flexibilidad de Finance."}]}], "finanzas": [{"tag": "Consolidación", "q": "¿Cómo consolidan los estados financieros?", "opts": [{"t": "No consolidamos", "v": -2, "por": "Sin necesidad de consolidar, Business Central cubre bien la contabilidad."}, {"t": "En planillas, entre pocas sociedades", "v": 0}, {"t": "Multi-moneda, con eliminaciones intercompañía", "v": 2, "por": "La consolidación multi-moneda con eliminaciones intercompañía es una fortaleza de Finance."}]}, {"tag": "Normas", "q": "¿Llevan contabilidad bajo más de una norma, por ejemplo IFRS y local?", "opts": [{"t": "No, una sola norma", "v": -1}, {"t": "Sí, con libros paralelos", "v": 2, "por": "Los libros paralelos para IFRS y norma local se gestionan mejor en Finance."}]}, {"tag": "Control", "q": "¿Qué nivel de control presupuestario necesitan?", "opts": [{"t": "Presupuesto y centros de costo básicos", "v": -1}, {"t": "Control con aprobaciones y compromisos", "v": 1, "por": "El control presupuestario con aprobaciones y compromisos favorece a Finance."}]}], "ti": [{"tag": "Sistema actual", "q": "¿Qué ERP tienen hoy?", "opts": [{"t": "Planillas o un sistema contable local", "v": -2, "por": "Partir desde planillas o un sistema contable local es la entrada típica a Business Central."}, {"t": "Un ERP de gama media", "v": 0}, {"t": "Un ERP corporativo (SAP, Oracle u otro)", "v": 2, "por": "Reemplazar un ERP corporativo apunta a Finance."}]}, {"tag": "Integraciones", "q": "¿Cuántas integraciones necesitaría el ERP?", "opts": [{"t": "Pocas y estándar: banco, facturación electrónica", "v": -1}, {"t": "Varias, con sistemas propios", "v": 0}, {"t": "Muchas, con alto volumen de transacciones", "v": 2, "por": "Muchas integraciones con alto volumen de transacciones requieren la escala de Finance."}]}, {"tag": "Equipo TI", "q": "¿Cómo es el equipo de TI que administraría el ERP?", "opts": [{"t": "Pequeño: preferimos SaaS estándar", "v": -2, "por": "Un equipo de TI pequeño administra con menos esfuerzo un SaaS estándar como Business Central."}, {"t": "Con capacidad para un ERP complejo", "v": 1}]}], "operaciones": [{"tag": "Operación", "q": "¿Qué tipo de operación tienen?", "opts": [{"t": "Comercialización o servicios", "v": -2, "por": "Una operación de comercialización o servicios calza con Business Central."}, {"t": "Distribución o manufactura simple", "v": -1}, {"t": "Manufactura compleja o varias plantas", "v": 2, "scm": true, "por": "La manufactura compleja o con varias plantas se resuelve con Finance y Supply Chain Management."}]}, {"tag": "Bodegas", "q": "¿Cómo gestionan bodegas y centros de distribución?", "opts": [{"t": "Una a tres bodegas, gestión simple", "v": -1}, {"t": "Varias bodegas con ubicaciones y picking", "v": 1, "scm": true, "por": "La gestión avanzada de bodegas favorece a Supply Chain Management."}]}, {"tag": "Planificación", "q": "¿Necesitan planificación de demanda o de producción?", "opts": [{"t": "No, o de forma básica", "v": -1}, {"t": "Sí, con planificación avanzada", "v": 2, "scm": true, "por": "La planificación avanzada de demanda y producción es parte de Supply Chain Management."}]}]}, "productos": {"bc": {"nombre": "Dynamics 365 Business Central", "meses": [3, 6], "texto": "El ERP de Microsoft para pymes y empresas medianas: finanzas, ventas, compras e inventario en un solo sistema SaaS."}, "fin": {"nombre": "Dynamics 365 Finance", "meses": [9, 18], "texto": "El ERP de Microsoft para organizaciones grandes, con varias sociedades, países y procesos complejos."}, "ambos": {"nombre": "Conviene evaluar ambos", "meses": [3, 18], "texto": "Tu escenario está en la zona intermedia. Un especialista puede definirlo contigo con una demo sobre tus procesos."}}}</script>
 </section>
-<section class="section bg-soft"><div class="container">
-  <div class="wizard">
-    <div class="wizard-bar"><span style="width:10%"></span></div>
-    <span class="eyebrow">Paso 1</span>
-    <h2 class="h2">[placeholder: primera pregunta del wizard]</h2>
-    <div class="wizard-opts"><button type="button">Opción A</button><button type="button">Opción B</button><button type="button">Opción C</button></div>
-    <p class="disclaimer">Herramienta en construcción. Esto no es una cotización ni asesoría legal.</p>
-  </div>
-</div></section>
-
 <section class="cta-band">
   <div class="container cta-band-inner">
     <div><h2>¿Conversamos sobre tu caso?</h2><p>Agenda un diagnóstico de 30 minutos. Revisamos tu escenario y te decimos qué conviene y qué no.</p></div>
@@ -221,15 +219,13 @@
     <div class="footer-grid">
       <div class="footer-col footer-brand">
         <img class="footer-logo" src="../../assets/marca/logo-white-mark.png" alt="W-IT" width="64" height="48">
-        <span class="claim">We Make It Simple <span class="ph">[confirmar claim]</span></span>
+        <span class="claim">We Make It Simple</span>
         <img src="../../assets/credenciales/WIT-MicrosoftPartner-singleline-white.png" alt="Microsoft Partner" width="200" height="40">
         <span>ISO 9001 · ISO 27001 (SGS)</span>
       </div>
-      <nav class="footer-col" aria-label="Soluciones"><strong>Soluciones</strong><a href="../../soluciones/ia-y-agentes/">IA y agentes</a><a href="../../soluciones/ventas-servicio-y-contact-center/">Ventas y servicio al cliente</a><a href="../../soluciones/contact-center/">Contact center omnicanal y voz</a><a href="../../soluciones/finanzas-y-operaciones/">Finanzas y operaciones</a><a href="../../soluciones/datos-y-analitica/">Datos y analítica</a><a href="../../soluciones/automatizacion-y-apps/">Automatización y apps</a><a href="../../soluciones/nube-azure-e-infraestructura/">Nube Azure e infraestructura</a><a href="../../soluciones/seguridad-y-cumplimiento/">Seguridad y cumplimiento</a></nav>
-      <nav class="footer-col" aria-label="Industrias"><strong>Industrias</strong><a href="../../industrias/servicios-financieros/">Servicios financieros</a><a href="../../industrias/salud-y-seguros/">Seguros y salud</a><a href="../../industrias/educacion/">Educación</a><a href="../../industrias/mineria/">Minería</a><a href="../../industrias/bienes-de-consumo/">Bienes de consumo</a><a href="../../industrias/tecnologia-y-comunicaciones/">Tecnología y comunicaciones</a><a href="../../industrias/sector-publico/">Sector público y corporaciones</a><a href="../../industrias/transporte-vehiculos-y-maquinaria/">Transporte, vehículos y maquinaria</a><a href="../../industrias/proyectos-e-ingenieria/">Proyectos e ingeniería</a><a href="../../industrias/deportes/">Deportes</a><a href="../../industrias/forestal-y-recursos-naturales/">Forestal y recursos naturales</a></nav>
-      <nav class="footer-col" aria-label="Empresa"><strong>Empresa</strong><a href="../../nosotros/">Quiénes somos</a><a href="../../nosotros/confianza/">Trust Center</a><a href="../../nosotros/equipo/">Equipo</a><a href="../../nosotros/trabaja-con-nosotros/">Trabaja con nosotros</a><a href="../../como-trabajamos/">Cómo trabajamos</a><a href="../../cofinanciamiento-microsoft/">Cofinanciamiento Microsoft</a><a href="../../nosotros/aprende/">Aprende</a></nav>
-      <nav class="footer-col" aria-label="Recursos"><strong>Recursos</strong><a href="../../casos-de-exito/">Casos de éxito</a><a href="../../herramientas/">Herramientas</a><a href="../../recursos/">Observatorio IA</a><a href="../../productos/">Productos</a><a href="../../contacto/">Contacto</a></nav>
-      <address class="footer-col"><strong>Contacto</strong><span>Av. Apoquindo 2930, of. 201, Las Condes, Santiago <span class="ph ph-footer">[verificar vs 3039]</span></span><span>+56 2 2409 6112</span><a href="mailto:info@w-it.cl">info@w-it.cl</a><a href="#">WhatsApp</a><span class="muted-footer">Perú: [placeholder: contacto Lima]</span></address>
+      <nav class="footer-col" aria-label="Explora"><strong>Explora</strong><a href="../../soluciones/">Soluciones</a><a href="../../industrias/">Industrias</a><a href="../../casos-de-exito/">Casos de éxito</a><a href="../../productos/">Productos</a><a href="../../herramientas/">Herramientas</a><a href="../../cofinanciamiento-microsoft/">Cofinanciamiento Microsoft</a></nav>
+      <nav class="footer-col" aria-label="Empresa"><strong>Empresa</strong><a href="../../nosotros/">Quiénes somos</a><a href="../../como-trabajamos/">Cómo trabajamos</a><a href="../../nosotros/confianza/">Trust Center</a><a href="../../nosotros/trabaja-con-nosotros/">Trabaja con nosotros</a><a href="../../recursos/">Observatorio IA</a></nav>
+      <address class="footer-col"><strong>Contacto</strong><span>Av. Apoquindo 2930, of. 201<br>Las Condes, Santiago</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="../../contacto/">Escríbenos →</a></address>
     </div>
     <div class="footer-bottom">
       <nav aria-label="Legal"><a href="../../privacidad/">Privacidad</a><a href="../../cookies/">Cookies</a><a href="../../terminos/">Términos</a></nav>
