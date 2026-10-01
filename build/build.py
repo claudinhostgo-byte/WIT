@@ -4,11 +4,12 @@ Uso:  python build/build.py
 styles.css, main.js y assets/ se editan directamente en sitio/; este script solo escribe los .html.
 """
 import json
+from urllib.parse import quote
 import os
 from html import escape
 from PIL import Image
 from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME,
-                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP)
+                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP, DIAG_CRM)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sitio')
 SOL = {s['slug']: s for s in SOLUCIONES}
@@ -18,7 +19,7 @@ CASO = {c['slug']: c for c in CASOS}
 JUMPSTART_PAGE = 'microsoft-copilot-jumpstart/'
 COFIN_PAGE = 'cofinanciamiento-microsoft/'
 # Herramientas que aparecen en el menú «Autodiagnósticos»
-DIAGNOSTICOS = ('autodiagnostico-ia', 'business-central-o-finance')
+DIAGNOSTICOS = ('autodiagnostico-ia', 'business-central-o-finance', 'atencion-y-ventas')
 COPILOT_URL = 'https://www.microsoft.com/es-cl/microsoft-365/copilot'
 IND_NOMBRE = {**{i['slug']: i['nombre'] for i in INDUSTRIAS}, 'otros': 'Telecomunicaciones y otros'}
 
@@ -157,14 +158,11 @@ def header(r, active, solid):
             <div class="container mega-inner mega-split">
               <div class="mega-list">
                 <span class="eyebrow">Empresa</span>
-                <a href="{r}nosotros/"><strong>Quiénes somos</strong><span>Historia, misión y valores.</span></a>
+                <a href="{r}nosotros/"><strong>Quiénes somos</strong><span>Historia, misión, visión y presencia.</span></a>
                 <a href="{r}nosotros/confianza/"><strong>Trust Center</strong><span>Credenciales verificables, ISO y datos en Chile.</span></a>
-                <a href="{r}nosotros/equipo/"><strong>Equipo</strong><span>Consultores propios y certificados.</span></a>
-                <a href="{r}nosotros/trabaja-con-nosotros/"><strong>Trabaja con nosotros</strong><span>Proyectos enterprise e IA en el día a día.</span></a>
               </div>
               <div class="mega-list">
                 <span class="eyebrow">Aprende</span>
-                <a href="{r}recursos/"><strong>Recursos</strong><span>Observatorio IA, guías y eventos.</span></a>
                 <a href="{r}nosotros/aprende/"><strong>Formación y adopción</strong><span>Nuestra unidad exclusiva para aprender y adoptar IA.</span></a>
                 <a href="{r}{COFIN_PAGE}"><strong>Cofinanciamiento Microsoft</strong><span>POC y MVP con programas de inversión de Microsoft.</span></a>
               </div>
@@ -203,7 +201,7 @@ def footer(r):
         <span>ISO 9001 · ISO 27001 (SGS)</span>
       </div>
       {col('Explora', [('Soluciones', f'{r}soluciones/'), ('Clientes por industria', f'{r}industrias/'), ('Productos', f'{r}productos/'), ('Herramientas', f'{r}herramientas/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}')])}
-      {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Trabaja con nosotros', f'{r}nosotros/trabaja-con-nosotros/'), ('Observatorio IA', f'{r}recursos/')])}
+      {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Trust Center', f'{r}nosotros/confianza/')])}
       <address class="footer-col"><strong>Contacto</strong><span><b class="footer-pais"><img class="flag" src="{r}assets/img/chile.svg" alt="" width="21" height="14">Chile</b>Av. Apoquindo 3039<br>Las Condes, Santiago</span><span><b class="footer-pais"><img class="flag" src="{r}assets/img/peru.svg" alt="" width="21" height="14">Perú</b>Av. Circunvalación del Golf Los Incas 170, Int. 702<br>Santiago de Surco, Lima</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
     </div>
     <div class="footer-bottom">
@@ -268,7 +266,7 @@ def write(path, title, desc, body, active=None, solid=True):
 def page_hero(r, crumbs, eyebrow, h1, bajada, ctas=True, extra='', h1_pe=None, aside='', cls='', ver_href=None):
     bc = ''.join(f'<li><a href="{r}{h}">{escape(l)}</a></li>' for l, h in crumbs)
     h1_attr = pais_attr(h1, h1_pe) if h1_pe else ''
-    cta = (f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Agenda un diagnóstico de 30 min</a>'
+    cta = (f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Conversemos</a>'
            f'<a class="btn btn-lg btn-outline" href="{ver_href or r + 'industrias/'}">Ver clientes</a></div>') if ctas else ''
     return f'''
 <section class="page-hero{(" " + cls) if cls else ""}">
@@ -285,12 +283,12 @@ def page_hero(r, crumbs, eyebrow, h1, bajada, ctas=True, extra='', h1_pe=None, a
 </section>'''
 
 
-def cta_final(r, titulo='¿Conversamos sobre tu caso?', texto='Agenda un diagnóstico de 30 minutos. Revisamos tu escenario y te decimos qué conviene y qué no.'):
+def cta_final(r, titulo='¿Conversamos sobre tu caso?', texto='Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.'):
     return f'''
 <section class="cta-band">
   <div class="container cta-band-inner">
     <div><h2>{escape(titulo)}</h2><p>{texto}</p></div>
-    <div class="btn-row"><a class="btn btn-lg btn-green" href="{r}contacto/">Agenda un diagnóstico</a><a class="btn btn-lg btn-ghost-light" href="#agente" data-open-agente>Conversa con nuestro agente</a></div>
+    <div class="btn-row"><a class="btn btn-lg btn-green" href="{r}contacto/">Conversemos</a><a class="btn btn-lg btn-ghost-light" href="#agente" data-open-agente>Conversa con nuestro agente</a></div>
   </div>
 </section>'''
 
@@ -356,8 +354,8 @@ def senales_section(r, senales):
       {SENALES_ART}
       <span class="eyebrow">Señales de que lo necesitas</span>
       <h2 class="h2" id="sen-title">¿Te identificas con alguna de estas <em>situaciones</em>?</h2>
-      <p class="lead">Son las situaciones que más vemos al iniciar un proyecto. En un diagnóstico de 30 minutos sabemos por dónde empezar.</p>
-      <a class="btn btn-green" href="{r}contacto/">Agenda un diagnóstico</a>
+      <p class="lead">Son las situaciones que más vemos al iniciar un proyecto. Si te identificas con alguna, conversemos.</p>
+      <a class="btn btn-green" href="{r}contacto/">Conversemos</a>
     </div>
     <ol class="sen-list">{items}</ol>
   </div>
@@ -428,7 +426,7 @@ def cofinanciamiento(r):
     return page_hero(r, [('Cómo trabajamos', 'como-trabajamos/'), ('Cofinanciamiento Microsoft', COFIN_PAGE)], 'Cofinanciamiento Microsoft',
                      'Microsoft cofinancia el primer paso.',
                      'Como Solutions Partner, W-IT está habilitado en los programas de inversión de Microsoft que financian total o parcialmente talleres, pruebas de concepto (POC) y productos mínimos viables (MVP). Estar habilitados es nuestro lado; la elegibilidad de cada cliente la evalúa Microsoft caso a caso, y lo revisamos contigo antes de prometer nada.',
-                     ctas=False, extra=f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Evalúa si tu proyecto califica</a><a class="btn btn-lg btn-outline" href="#poc-mvp">POC o MVP: la diferencia</a></div>') + f'''
+                     ctas=False, extra=f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Conversemos sobre tu proyecto</a><a class="btn btn-lg btn-outline" href="#poc-mvp">POC o MVP: la diferencia</a></div>') + f'''
 <section class="section bg-white"><div class="container stack-40">
   {section_head('Cómo funciona', COFIN_PROCESO['titulo'], COFIN_PROCESO['resumen'])}
   {metodo_html(r, COFIN_PROCESO)}
@@ -459,7 +457,7 @@ def cofinanciamiento(r):
   {section_head('Preguntas frecuentes', 'Lo que suelen preguntarnos.')}
   <div>{faq}</div>
 </div></section>
-{cta_final(r, '¿Tu proyecto califica para cofinanciamiento?', 'Agenda un diagnóstico de 30 minutos. Revisamos tu escenario, los programas que aplican y si conviene partir por una POC o un MVP.')}'''
+{cta_final(r, '¿Tu proyecto califica para cofinanciamiento?', 'Conversemos sobre tu proyecto, los programas de Microsoft que podrían aplicar y si conviene partir por una POC o un MVP.')}'''
 
 
 def metodos_cards(r):
@@ -622,7 +620,7 @@ def home(r):
         <h1>IA en producción sobre tus <em>sistemas reales</em>.</h1>
         <p class="hero-lead">Implementamos Dynamics 365, Power Platform, Azure y agentes de IA en grandes empresas y organismos públicos. Con equipo propio certificado y resultados medidos.</p>
         <div class="btn-row">
-          <a class="btn btn-lg btn-green" href="{r}contacto/">Agenda un diagnóstico de 30 min</a>
+          <a class="btn btn-lg btn-green" href="{r}contacto/">Conversemos</a>
           <a class="btn btn-lg btn-ghost-light" href="#agente" data-open-agente>Conversa con nuestro agente</a>
         </div>
       </div>
@@ -724,36 +722,12 @@ def home(r):
   </div>
 </section>
 
-<section class="section bg-white">
-  <div class="container grid grid-2">
-    <figure class="testimonio">
-      <div class="placeholder-box">video testimonial 60–90 s [placeholder + autorización]</div>
-      <blockquote>“[placeholder: cita del cliente, 1–2 frases, con autorización escrita]”</blockquote>
-      <figcaption><span class="avatar"></span><span><strong>[Nombre Apellido]</strong>[Cargo], [Empresa]</span></figcaption>
-    </figure>
-    <div class="presencia">
-      <span class="eyebrow">Presencia</span>
-      <h2 class="h2">Proyectos en Chile y Perú</h2>
-      <div class="placeholder-box mapa">mapa SVG Chile–Perú, puntos por región e industria<br>[placeholder de datos internos]
-        <i style="left:38%;top:22%"></i><i style="left:52%;top:58%"></i><i style="left:55%;top:78%"></i>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section bg-soft">
-  <div class="container stack-40">
-    {section_head('Recursos · Observatorio IA Chile/Perú', 'Análisis y guías sobre IA en Chile y Perú.', link=f'<a class="link-strong" href="{r}recursos/">Todos los recursos {ARROW}</a>')}
-    {recursos_grid(r)}
-  </div>
-</section>
-
 <section class="section bg-white" id="contacto">
   <div class="container grid grid-2 cta-grid">
     <div class="cta">
-      <h2 class="h2">Agenda un diagnóstico de 30 minutos.</h2>
-      <p class="lead">Revisamos tu escenario y te decimos qué conviene y qué no. Te respondemos en menos de 1 día hábil.</p>
-      <div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Agendar</a><a class="btn btn-lg btn-outline" href="#">WhatsApp</a></div>
+      <h2 class="h2">Conversemos sobre tu proyecto.</h2>
+      <p class="lead">Cuéntanos qué tienes en mente y te respondemos en menos de 1 día hábil.</p>
+      <div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Escríbenos</a></div>
       <span class="cta-contacto">Av. Apoquindo 3039, Las Condes, Santiago · +56 2 2409 6112</span>
     </div>
     <div class="faq" id="faq"><span class="eyebrow">Preguntas frecuentes</span>{faq}</div>
@@ -775,7 +749,7 @@ def trust_items():
     items = [('Microsoft', 'Solutions Partner for Microsoft Cloud', 'Las seis designaciones Solutions Partner de Microsoft.'),
              ('Microsoft', 'AI Business Solutions', 'Business Applications y Modern Work, con especialización en Agentic Business Solutions.'),
              ('Microsoft', 'Cloud &amp; AI Platforms · Security', 'Data &amp; AI, Digital &amp; App Innovation, Infrastructure y Security.'),
-             ('SGS', 'ISO 9001 · ISO/IEC 27001', 'Calidad y seguridad de la información. Certificado descargable [PDF].'),
+             ('SGS', 'ISO 9001 · ISO/IEC 27001', 'Calidad y seguridad de la información, certificadas por SGS.'),
              ('Azure Chile Central', 'Datos en Chile, en tu tenant', 'Implementaciones en la región desde 2025.'),
              ('Política publicada', 'IA responsable', 'Supervisión humana, trazabilidad y datos que no entrenan modelos.')]
     return '<div class="trust-items">' + ''.join(
@@ -968,9 +942,9 @@ def productos_index(r):
 def agentes(r):
     items = [('Agente CV – Recruit Intelligence', 'Live'), ('Gestor de Puestos W-it', 'Live'),
              ('Implementación Rápida de Automatización con Power Automate', 'Live')]
-    cards = ''.join(f'<div class="card"><div class="tool-top"><span>Microsoft Marketplace</span><span class="pill">{e}</span></div><h3>{escape(n)}</h3><p>[placeholder: descripción breve de la ficha]</p><a class="card-cta" href="https://marketplace.microsoft.com" target="_blank" rel="noopener">Ver ficha ↗</a></div>' for n, e in items)
+    cards = ''.join(f'<div class="card"><div class="tool-top"><span>Microsoft Marketplace</span><span class="pill">{e}</span></div><h3>{escape(n)}</h3><a class="card-cta" href="{VERIFICAR}" target="_blank" rel="noopener">Ver ficha ↗</a></div>' for n, e in items)
     return page_hero(r, [('Productos', 'productos/'), ('Agentes W-IT', 'productos/agentes-w-it/')], 'Productos · Agentes W-IT',
-                     'Agentes y aceleradores listos para tu tenant.', 'Publicados en Microsoft Marketplace. <span class="ph">[confirmar el resto del catálogo]</span>', ctas=False) + f'''
+                     'Agentes y aceleradores listos para tu tenant.', 'Publicados en Microsoft Marketplace.', ctas=False) + f'''
 <section class="section bg-soft"><div class="container"><div class="grid grid-280">{cards}</div></div></section>
 {cta_final(r)}'''
 
@@ -1024,12 +998,60 @@ def diag_erp(r, h):
                        DIAG_ERP)
 
 
+def diag_crm(r, h):
+    return diag_layout(r, h, 'diag-crm', 'Responde 7 preguntas sobre tus canales, tu volumen y tu equipo, y te decimos con qué aplicación de Dynamics 365 conviene partir.',
+                       [('Punto de partida', 'Dynamics 365 Contact Center, Sales o Customer Service.'),
+                        ('Por qué', 'Las razones detrás, según tus respuestas.'),
+                        ('Complementos', 'Qué sumar después y cómo aplicar IA.')],
+                       DIAG_CRM, ''.join(f'<li>{escape(q["tag"])}</li>' for q in DIAG_CRM['preguntas']))
+
+
+ESTIMADOR_URL = 'https://microsoft.github.io/copilot-studio-estimator/'
+ESTIMADOR_DOC = 'https://learn.microsoft.com/microsoft-copilot-studio/agent-usage-estimator'
+
+
+def estimador_copilot(r, h):
+    """Estimador oficial de Microsoft embebido (GitHub Pages permite iframe), con contexto de W-IT en español."""
+    pasos = [('Elige las categorías', 'Copilot Studio, Dynamics 365 Sales, Customer Service, Contact Center, Finance o Supply Chain Management.'),
+             ('Agrega tus agentes', 'Con el botón + de cada tarjeta. Puedes sumar varios y duplicarlos para comparar escenarios.'),
+             ('Ingresa tus volúmenes', 'Conversaciones, casos o leads al mes. Mejor si usas datos de los últimos tres a seis meses.'),
+             ('Revisa y descarga', 'El total mensual de créditos, el detalle por agente y un PDF para tu equipo.')]
+    return f'''
+<section class="page-hero diag-hero">
+  <div class="page-hero-trazo" aria-hidden="true"></div>
+  <div class="container diag-layout est-layout">
+    <div class="diag-intro">
+      <nav aria-label="Ruta"><ol class="crumbs"><li><a href="{r}">Inicio</a></li><li><a href="{r}herramientas/">Herramientas</a></li><li><a href="{r}herramientas/{h['slug']}/">{escape(h['nombre'])}</a></li></ol></nav>
+      <span class="eyebrow">Herramienta oficial de Microsoft</span>
+      <h1>{escape(h['nombre'])}</h1>
+      <p class="lead">El <strong>Microsoft agent usage estimator</strong> proyecta los Copilot Credits que consumirán al mes tus agentes de Microsoft Copilot Studio y de Dynamics 365. Lo publica Microsoft y lo mostramos aquí para que lo uses sin salir del sitio.</p>
+    </div>
+    <ol class="est-pasos">{''.join(f'<li><strong>{escape(a)}</strong><span>{escape(b)}</span></li>' for a, b in pasos)}</ol>
+  </div>
+</section>
+<section class="section bg-soft est-section"><div class="container stack-20">
+  <div class="est-frame">
+    <div class="est-frame-bar"><span>Microsoft agent usage estimator · en inglés</span><a class="link-strong" href="{ESTIMADOR_URL}" target="_blank" rel="noopener">Abrir en ventana completa ↗</a></div>
+    <iframe src="{ESTIMADOR_URL}" title="Microsoft agent usage estimator" loading="lazy" referrerpolicy="no-referrer"></iframe>
+  </div>
+  <div class="grid grid-2 est-notas">
+    <div class="note"><strong>Qué estima.</strong> Créditos de agentes de Copilot Studio (internos y de cara al cliente) y de los agentes de Dynamics 365 Sales, Customer Service, Contact Center, Finance y Supply Chain Management. No calcula licencias por usuario de Microsoft 365 Copilot.</div>
+    <div class="note"><strong>Cómo leer el resultado.</strong> Microsoft lo define como una estimación informativa, sin garantía de costo final, y recomienda sumar entre 10 % y 20 % de holgura. <a href="{ESTIMADOR_DOC}" target="_blank" rel="noopener">Guía de Microsoft ↗</a></div>
+  </div>
+  <p class="disclaimer">Herramienta desarrollada y mantenida por Microsoft. W-IT no controla sus cálculos ni sus tarifas; el resultado no es una cotización.</p>
+</div></section>'''
+
+
 def herramienta_page(h):
     def body(r):
         if h['slug'] == 'autodiagnostico-ia':
             return diag_ia(r, h) + cta_final(r)
         if h['slug'] == 'business-central-o-finance':
             return diag_erp(r, h) + cta_final(r)
+        if h['slug'] == 'atencion-y-ventas':
+            return diag_crm(r, h) + cta_final(r)
+        if h['slug'] == 'calculadora-copilot':
+            return estimador_copilot(r, h) + cta_final(r, '¿Conversamos sobre tus agentes?', 'Te ayudamos a definir los volúmenes y a leer la estimación en el contexto de tu proyecto, sin compromiso.')
         return page_hero(r, [('Herramientas', 'herramientas/'), (h['nombre'], f"herramientas/{h['slug']}/")], f"Herramienta · {h['tiempo']}",
                          h['nombre'], escape(h['que']), ctas=False) + f'''
 <section class="section bg-soft"><div class="container">
@@ -1071,13 +1093,20 @@ def como_trabajamos(r):
   <div class="stack-20"><span class="eyebrow">Ingeniería asistida por IA</span><h2 class="h2">IA en nuestro propio trabajo.</h2>
     <p class="lead">Usamos IA para analizar entornos, redactar diseños, acelerar personalizaciones y probar. El consumo de tokens se transparenta en la propuesta.</p></div>
   <div class="stack-20"><span class="eyebrow">Soporte y AMS</span><h2 class="h2">Soporte después del go-live.</h2>
-    <p class="lead">Soporte con SLA, portal de soporte y mejora continua. <span class="ph">[+15.400 HH de soporte, verificar]</span></p></div>
+    <p class="lead">Soporte con SLA, portal de soporte y mejora continua.</p></div>
   <div class="stack-20"><span class="eyebrow">Licenciamiento Microsoft</span><h2 class="h2">Licencias Microsoft con un solo proveedor.</h2>
-    <p class="lead">CSP como revendedor indirecto. <span class="ph">[+6.000 gestiones de licencias, verificar]</span></p></div>
-  <div class="stack-20"><span class="eyebrow">Equipo propio</span><h2 class="h2">Nuestros consultores son de W-IT.</h2>
-    <p class="lead">No subcontratamos tu proyecto. <span class="ph">[confirmar que es 100% cierto]</span></p></div>
+    <p class="lead">Licenciamiento Microsoft como revendedor indirecto CSP.</p></div>
 </div></section>
 {cta_final(r)}'''
+
+
+# Misión y visión: panel a la derecha del hero de Nosotros (íconos de trazo, mismo estilo que el resto del sitio)
+_ICO_MISION = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>'
+_ICO_VISION = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>'
+MISION_VISION = f'''<aside class="page-hero-aside mv-panel" aria-label="Misión y visión">
+      <div class="mv-item"><span class="mv-ico">{_ICO_MISION}</span><div><span class="eyebrow">Misión</span><p>Transformar negocios mediante soluciones Microsoft que impulsen el crecimiento, la innovación y la eficiencia de nuestros clientes.</p></div></div>
+      <div class="mv-item"><span class="mv-ico">{_ICO_VISION}</span><div><span class="eyebrow">Visión</span><p>Ser la consultora líder en Microsoft Business Applications e IA de Latinoamérica, reconocida por la calidad, simpleza e impacto de nuestras soluciones.</p></div></div>
+    </aside>'''
 
 
 def nosotros(r):
@@ -1085,21 +1114,25 @@ def nosotros(r):
              ('2019', 'Microsoft Partner of the Year Latinoamérica y el Caribe: Dynamics 365 for Sales.'), ('2020', 'Microsoft Partner of the Year Latinoamérica y el Caribe: Proactive Customer Service.'), ('2023', 'ISO 9001 e ISO 27001 con SGS.'),
              ('2026', 'Solutions Partner for Microsoft Cloud: las seis designaciones Microsoft y especialización Agentic Business Solutions.')]
     tl = ''.join(f'<li><span class="tl-year">{a}</span><p>{escape(b)}</p></li>' for a, b in hitos)
-    valores = ['Simpleza y Calidad', 'Confianza y Cercanía', 'Competitividad e Innovación', 'Honestidad y Responsabilidad', 'Respeto y Colaboración']
+    sedes = [('chile', 'Chile', 'W-IT SpA', ['Av. Apoquindo 3039', 'Las Condes, Santiago'], 'Av. Apoquindo 3039, Las Condes, Santiago, Chile'),
+             ('peru', 'Perú', 'W-IT LATAM S.A.C.', ['Av. Circunvalación del Golf Los Incas 170, Int. 702', 'Santiago de Surco, Lima'], 'Av. Circunvalación del Golf Los Incas 170, Santiago de Surco, Lima, Perú')]
+    oficinas = ''.join(f'''
+    <article class="oficina">
+      <div class="oficina-top"><img class="oficina-flag" src="{r}assets/img/{f}.svg" alt="" width="42" height="28"><div><h3>{pais}</h3><span>{razon}</span></div></div>
+      <address>{'<br>'.join(escape(l) for l in lineas)}</address>
+      <a class="link-strong" href="https://www.google.com/maps/search/?api=1&amp;query={quote(q)}" target="_blank" rel="noopener" data-mapa="{escape(q)}" data-mapa-titulo="{escape(razon)} · {escape(pais)}">Ver en el mapa</a>
+    </article>''' for f, pais, razon, lineas, q in sedes)
     return page_hero(r, [('Nosotros', 'nosotros/')], 'Nosotros', 'Consultores especialistas en Microsoft desde 2013.',
-                     'Visión: ser la consultora especialista en Microsoft de la región que aporta simpleza y calidad. <span class="ph">[validar redacción]</span>', ctas=False) + f'''
+                     'Implementamos Microsoft Dynamics 365, Power Platform, Azure e IA para grandes empresas y organismos públicos de Chile y Perú.', ctas=False,
+                     aside=MISION_VISION) + f'''
 <section class="section bg-white"><div class="container stack-40">
   {section_head('Historia', 'Nuestra trayectoria.')}
   <ol class="timeline">{tl}</ol>
 </div></section>
 {premios_section(r)}
 <section class="section bg-soft"><div class="container stack-40">
-  {section_head('Valores', 'Nuestros valores.')}
-  <ul class="values">{''.join(f'<li>{v}</li>' for v in valores)}</ul>
-</div></section>
-<section class="section bg-white"><div class="container grid grid-2">
-  <div class="stack-20"><span class="eyebrow">Liderazgo</span><div class="placeholder-box" style="min-height:220px">[placeholder: fotos y cargos del equipo líder]</div></div>
-  <div class="stack-20"><span class="eyebrow">Presencia</span><h2 class="h2">Chile y Perú</h2><p class="lead">W-IT SpA, en Av. Apoquindo 3039, Las Condes, Santiago, y W-IT LATAM S.A.C., en Av. Circunvalación del Golf Los Incas 170, Int. 702, Santiago de Surco, Lima.</p></div>
+  {section_head('Presencia', 'Oficinas en Chile y Perú.', 'Atendemos a nuestros clientes desde Santiago y Lima.')}
+  <div class="grid grid-2 oficinas">{oficinas}</div>
 </div></section>
 {cta_final(r)}'''
 
@@ -1128,7 +1161,7 @@ def confianza(r):
 {premios_section(r, fotos=False, bg='bg-blue')}
 <section class="section bg-soft"><div class="container grid grid-2 aligned">
   <div class="stack-20"><span class="eyebrow">ISO · SGS</span><h2 class="h2">ISO 9001 e ISO/IEC 27001</h2>
-    <p class="lead">Calidad y seguridad de la información, certificadas por SGS. Certificado descargable <span class="ph">[PDF]</span>.</p></div>
+    <p class="lead">Calidad y seguridad de la información, certificadas por SGS.</p></div>
   <div class="iso-row"><img src="{r}assets/credenciales/SGS_ISO_9001_round_TCL_LR.jpg" alt="SGS ISO 9001" width="140" height="136"><img src="{r}assets/credenciales/SGS_ISO-IEC_27001_TCL_LR.jpg" alt="SGS ISO/IEC 27001" width="140" height="137"></div>
 </div></section>
 <section class="section bg-dark"><div class="container stack-40">
@@ -1136,9 +1169,8 @@ def confianza(r):
   {trust_items()}
   <div class="trust-ley">
     <h3>Protección de datos personales en cada implementación</h3>
-    <p>La protección de datos forma parte de nuestra forma de implementar. En cada proyecto consideramos la Ley 21.719 en Chile y la Ley 29733 en Perú: accedemos solo a los datos personales que el proyecto necesita, preferimos ambientes de prueba sin datos reales y acordamos con el cliente los permisos, la retención y la trazabilidad de la solución. Cuando el cliente necesita asesoría legal, la complementamos con <a href="https://www.regulatec.cl" target="_blank" rel="noopener">RegulaTec</a>, empresa legal aliada. <span class="ph">[validar con Legal y con el Encargado de Plataforma y Seguridad]</span></p>
+    <p>La protección de datos forma parte de nuestra forma de implementar. En cada proyecto consideramos la Ley 21.719 en Chile y la Ley 29733 en Perú: accedemos solo a los datos personales que el proyecto necesita, preferimos ambientes de prueba sin datos reales y acordamos con el cliente los permisos, la retención y la trazabilidad de la solución. Cuando el cliente necesita asesoría legal, la complementamos con <a href="https://www.regulatec.cl" target="_blank" rel="noopener">RegulaTec</a>, empresa legal aliada.</p>
   </div>
-  <p class="disclaimer" style="color:rgba(255,255,255,.7)">Encargado de datos <span class="ph">[placeholder]</span>. Certificaciones del equipo: conteo agregado por área <span class="ph">[placeholder]</span>.</p>
 </div></section>
 {cta_final(r)}'''
 
@@ -1156,7 +1188,7 @@ def contacto(r):
     sols = ''.join(f'<label class="chip"><input type="checkbox" name="interes" value="{v}"><span>{escape(t)}</span></label>' for v, t in temas)
     pasos = [('Te respondemos', 'En menos de 1 día hábil, al correo que nos dejes.'),
              ('Te conectamos con un especialista', 'Del área que te interesa, en una reunión breve si hace falta.'),
-             ('Te proponemos un camino', 'Un primer enfoque, plazos típicos y si aplica cofinanciamiento de Microsoft.')]
+             ('Conversamos sobre tu escenario', 'Las alternativas que vemos y si podría aplicar cofinanciamiento de Microsoft.')]
     req = '<abbr class="req" title="obligatorio">*</abbr>'
     return f'''
 <section class="page-hero contact-hero">
@@ -1182,7 +1214,8 @@ def contacto(r):
         <label>País<select name="pais"><option>Chile</option><option>Perú</option><option>Otro</option></select></label>
         <label>Tamaño<select name="tamano"><option>Menos de 200 personas</option><option>200 a 1.000</option><option>Más de 1.000</option></select></label></div>
       <fieldset><legend>¿Qué te interesa?</legend><div class="chips">{sols}</div></fieldset>
-      <label>Mensaje<textarea name="mensaje" rows="3" placeholder="Cuéntanos brevemente tu consulta"></textarea></label>
+      <label>Mensaje<textarea name="mensaje" rows="3" placeholder="Cuéntanos brevemente tu consulta"></textarea>
+        <span class="msg-ctx" hidden>Escribe tu consulta arriba. Bajo la línea «--» incluimos tus respuestas del autodiagnóstico para que no tengas que repetirlas; puedes editarlas o borrarlas.</span></label>
       <label class="check"><input type="checkbox" name="consentimiento" required> <span>Acepto la <a href="{r}privacidad/">política de privacidad</a> y el tratamiento de mis datos para responder esta solicitud. {req}</span></label>
       <!-- Contexto para el CRM: lo completa main.js según desde dónde llegó la persona; no se muestra en pantalla -->
       <input type="hidden" name="origen_pagina">
@@ -1216,7 +1249,7 @@ def jumpstart_page(r):
         ('Medición y mejora', 'Uso, impacto y siguientes casos de uso.'),
     ]
     faq = [
-        ('¿Mi organización califica para el financiamiento?', 'La elegibilidad y los montos los define Microsoft para cada cliente y proyecto. En la evaluación inicial revisamos tu caso y te decimos qué aplica. [validar criterios con Comercial]'),
+        ('¿Mi organización califica para el financiamiento?', 'La elegibilidad y los montos los define Microsoft para cada cliente y proyecto. Revisamos tu caso contigo y te decimos qué podría aplicar.'),
         ('¿Qué es la asociación CPOR / PAL?', 'Es el mecanismo con que Microsoft reconoce la participación de W-IT en tu proyecto: CPOR para soluciones como Microsoft 365, Dynamics 365 y Power Platform, y PAL para suscripciones de Azure. Habilita los beneficios del programa, incluido el financiamiento.'),
         ('¿Tiene costo asociar a W-IT como partner?', 'No. La asociación no tiene costo, no implica contrato ni compromiso comercial adicional, y la configura tu equipo con nuestro apoyo.'),
         ('¿Reemplaza a mi partner actual?', 'No. La asociación es exclusiva para el proyecto y no reemplaza ni invalida a otros partners que ya trabajen con tu organización.'),
@@ -1264,8 +1297,8 @@ def jumpstart_page(r):
 <section class="section bg-white"><div class="container grid grid-2 cta-grid">
   <div class="cta">
     <h2 class="h2">¿Tu organización puede aprovechar el programa?</h2>
-    <p class="lead">Agenda una evaluación de 30 minutos. Revisamos tu escenario, los casos de uso candidatos y qué beneficios del programa pueden aplicar.</p>
-    <div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Agenda una evaluación</a><a class="btn btn-lg btn-outline" href="{r}soluciones/ia-y-agentes/">IA y agentes</a></div>
+    <p class="lead">Conversemos sobre tu escenario, los casos de uso que tienes en mente y qué beneficios del programa podrían aplicar.</p>
+    <div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Conversemos</a><a class="btn btn-lg btn-outline" href="{r}soluciones/ia-y-agentes/">IA y agentes</a></div>
     <a class="link-strong" href="{COPILOT_URL}" target="_blank" rel="noopener">Más sobre Microsoft 365 Copilot en microsoft.com ↗</a>
   </div>
   <div class="faq" id="faq"><span class="eyebrow">Preguntas frecuentes</span>{faq_html}</div>
@@ -1436,21 +1469,15 @@ def main():
         pages.append(write(f"herramientas/{h['slug']}/", f"{h['nombre']} · W-IT", h['que'], herramienta_page(h), 'diagnosticos'))
     pages.append(write('como-trabajamos/', 'Cómo trabajamos · W-IT', 'Cuatro metodologías ágiles sobre marcos probados de Microsoft.', como_trabajamos, 'metodo'))
     pages.append(write(COFIN_PAGE, 'Cofinanciamiento Microsoft: POC y MVP · W-IT', 'Programas de inversión de Microsoft que cofinancian talleres, pruebas de concepto (POC) y productos mínimos viables (MVP) con W-IT. Evaluamos tu elegibilidad.', cofinanciamiento, 'metodo'))
-    pages.append(write('nosotros/', 'Nosotros · W-IT', 'Historia, valores y equipo de W-IT.', nosotros, 'nosotros'))
+    pages.append(write('nosotros/', 'Nosotros · W-IT', 'Historia, misión, visión y presencia de W-IT en Chile y Perú.', nosotros, 'nosotros'))
     pages.append(write(JUMPSTART_PAGE, 'Microsoft Copilot Jumpstart Partner · Ready Tier · W-IT', 'W-IT es partner Ready Tier del programa Microsoft Copilot Jumpstart: talleres y engagements financiados por Microsoft para adoptar Copilot y agentes.', jumpstart_page, 'nosotros'))
     pages.append(write('nosotros/aprende/', 'Aprende: formación y adopción de IA con WITEDUCA · W-IT', 'WITEDUCA es la unidad de W-IT dedicada exclusivamente a la formación y adopción de IA y tecnologías Microsoft.', aprende_page, 'nosotros'))
     pages.append(write('nosotros/confianza/', 'Trust Center · W-IT', 'Credenciales verificables de W-IT.', confianza, 'nosotros'))
-    pages.append(write('nosotros/equipo/', 'Equipo · W-IT', 'Equipo W-IT.', simple_page('Nosotros · Equipo', 'Consultores propios y certificados.', 'Conteo agregado de certificaciones por área, sin nombres. <span class="ph">[placeholder]</span>', [('Nosotros', 'nosotros/'), ('Equipo', 'nosotros/equipo/')], '<div class="placeholder-box" style="min-height:260px">[placeholder: equipo líder y certificaciones por área]</div>'), 'nosotros'))
-    pages.append(write('nosotros/trabaja-con-nosotros/', 'Trabaja con nosotros · W-IT', 'Empleos en W-IT.', simple_page('Nosotros · Talento', 'Trabaja con nosotros.', 'Certificaciones pagadas, proyectos enterprise e IA en el día a día. <span class="ph">[validar]</span>', [('Nosotros', 'nosotros/'), ('Trabaja con nosotros', 'nosotros/trabaja-con-nosotros/')], '<p class="lead">Vacantes publicadas en LinkedIn o ATS. <span class="ph">[placeholder: enlace]</span></p><div class="placeholder-box" style="min-height:220px">[placeholder: fotos reales y testimonios internos]</div>'), 'nosotros'))
-    pages.append(write('recursos/', 'Recursos · W-IT', 'Observatorio IA, guías y eventos.', simple_page('Recursos', 'Análisis y guías sobre IA en Chile y Perú.', 'Observatorio IA Chile/Perú, guías descargables y eventos.', [('Recursos', 'recursos/')], '{recursos}'), 'nosotros'))
     pages.append(write('contacto/', 'Contacto · W-IT', 'Contacta a W-IT: proyectos, licencias y soporte Microsoft en Chile y Perú.', contacto))
     pages.append(write('privacidad/', 'Aviso de privacidad y tratamiento de datos · W-IT', 'Qué datos recolectamos en w-it.cl, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.', privacidad_page))
     for slug, t in [('cookies', 'Política de cookies'), ('terminos', 'Términos de uso')]:
         pages.append(write(f'{slug}/', f'{t} · W-IT', t, simple_page('Legal', t, 'Documento en redacción.', [(t, f'{slug}/')], '<p class="lead">[Redacción por Administración y Finanzas]</p>')))
-    # recursos: grilla real
-    p = os.path.join(ROOT, 'recursos', 'index.html')
-    s = open(p, encoding='utf-8').read().replace('{recursos}', recursos_grid('../'))
-    open(p, 'w', encoding='utf-8', newline='\n').write(s)
+    # Equipo, Trabaja con nosotros y Recursos/Observatorio IA: ocultos hasta tener contenido real (2026-10-01)
     print(f'{len(pages)} páginas generadas')
     check_css()
 

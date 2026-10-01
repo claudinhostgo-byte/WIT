@@ -299,8 +299,8 @@
         ${brechas.length ? `<div><h3 class="diag-sub">Qué resolver primero</h3><ul class="diag-list">${brechas.slice(0, 3).map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : ''}
         <div><h3 class="diag-sub">Próximo paso sugerido</h3><p>${esc(paso)} Algunas de estas actividades pueden tener <a href="${diag.dataset.cofin}">cofinanciamiento de Microsoft</a>.</p></div>
         <div class="diag-cta">
-          <p><strong>¿Quieres un diagnóstico completo?</strong> Un especialista revisa tu caso contigo en 30 minutos y afina el plazo y el alcance.</p>
-          <div class="btn-row"><a class="btn btn-primary" href="${diag.dataset.contacto}">Hablar con un especialista</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
+          <p><strong>¿Conversamos?</strong> Un especialista puede revisar estos resultados contigo y resolver tus dudas.</p>
+          <div class="btn-row"><a class="btn btn-primary" href="${diag.dataset.contacto}">Conversemos</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
         </div>`;
       try {
         sessionStorage.setItem('wit-diag', JSON.stringify({ herramienta: 'Autodiagnóstico de madurez en IA y agentes',
@@ -371,8 +371,8 @@
         ${scm ? '<p class="diag-note">Por tu operación, considera sumar <strong>Dynamics 365 Supply Chain Management</strong>.</p>' : ''}
         <div><h3 class="diag-sub">Próximo paso sugerido</h3><p>Una demo sobre tus procesos reales para confirmar la elección. Conoce más en <a href="${erp.dataset.sol}">Finanzas y operaciones</a>.</p></div>
         <div class="diag-cta">
-          <p><strong>¿Quieres un diagnóstico completo?</strong> Un especialista revisa tu caso contigo en 30 minutos y afina la recomendación, el alcance y el plazo.</p>
-          <div class="btn-row"><a class="btn btn-primary" href="${erp.dataset.contacto}">Hablar con un especialista</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
+          <p><strong>¿Conversamos?</strong> Un especialista puede revisar estos resultados contigo y resolver tus dudas.</p>
+          <div class="btn-row"><a class="btn btn-primary" href="${erp.dataset.contacto}">Conversemos</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
         </div>`;
       try {
         sessionStorage.setItem('wit-diag', JSON.stringify({ herramienta: '¿Business Central o Finance?',
@@ -385,6 +385,124 @@
 
     resp = []; armar(); pregunta(0);
   }
+
+  // ---------- Autodiagnóstico de atención y ventas: puntos para Sales (s), Customer Service (cs) y Contact Center (cc)
+  const crm = $('#diag-crm');
+  if (crm) {
+    const D = JSON.parse($('#diag-crm-data').textContent);
+    const steps = $$('.diag-steps li', crm);
+    const stage = $('.diag-step', crm);
+    const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const marca = n => steps.forEach((li, k) => { li.classList.toggle('is-done', k < n); li.classList.toggle('is-on', k === n); });
+    const KEYS = ['s', 'cs', 'cc'];
+    let resp = []; // por pregunta: arreglo de opciones elegidas
+
+    const pregunta = n => {
+      const p = D.preguntas[n];
+      const sel = resp[n] || [];
+      marca(n);
+      stage.innerHTML = `<span class="eyebrow">Pregunta ${n + 1} de ${D.preguntas.length}${p.multi ? ' · Puedes marcar varias' : ''}</span>
+        <h2 class="h2" tabindex="-1">${esc(p.q)}</h2>
+        <div class="wizard-opts diag-opts">${p.opts.map((o, k) => `<button type="button" data-k="${k}"${p.multi ? ` aria-pressed="${sel.includes(o)}"` : ''}${sel.includes(o) ? ' class="is-sel"' : ''}><span class="diag-key">${'ABCDEF'[k]}</span>${esc(o.t)}</button>`).join('')}</div>
+        <div class="diag-nav">${n ? '<button type="button" class="diag-back">← Anterior</button>' : '<span></span>'}${p.multi ? `<button type="button" class="btn btn-primary diag-next"${sel.length ? '' : ' disabled'}>Continuar</button>` : ''}</div>`;
+      const sigue = () => (n + 1 < D.preguntas.length ? pregunta(n + 1) : resultado());
+      $$('.wizard-opts button', stage).forEach(b => b.addEventListener('click', () => {
+        const o = p.opts[+b.dataset.k];
+        if (!p.multi) { resp[n] = [o]; sigue(); return; }
+        const cur = resp[n] || [];
+        resp[n] = cur.includes(o) ? cur.filter(x => x !== o) : [...cur, o];
+        b.classList.toggle('is-sel'); b.setAttribute('aria-pressed', String(resp[n].includes(o)));
+        $('.diag-next', stage).disabled = !resp[n].length;
+      }));
+      const next = $('.diag-next', stage);
+      if (next) next.addEventListener('click', sigue);
+      const back = $('.diag-back', stage);
+      if (back) back.addEventListener('click', () => pregunta(n - 1));
+      if (n) $('h2', stage).focus();
+    };
+
+    const resultado = () => {
+      const pts = { s: 0, cs: 0, cc: 0 };
+      const razones = { s: [], cs: [], cc: [] };
+      const suma = o => KEYS.forEach(k => { if (o[k]) { pts[k] += o[k]; if (o[`por_${k}`]) razones[k].push([o[k], o[`por_${k}`]]); } });
+      D.preguntas.forEach((p, n) => {
+        (resp[n] || []).forEach(suma);
+        if (p.extra && (resp[n] || []).length >= p.extra.min) suma(p.extra);
+      });
+      const orden = [...KEYS].sort((a, b) => pts[b] - pts[a]);
+      const top = orden[0];
+      const max = pts[top];
+      const extras = orden.slice(1).filter(k => pts[k] >= 3 && pts[k] >= max * 0.6);
+      const prod = D.productos[top];
+      const por = razones[top].sort((a, b) => b[0] - a[0]).slice(0, 3).map(x => x[1]);
+      const canales = (resp[1] || []).map(o => o.t);
+      const ia = D.ia[String((resp[6] || [{}])[0].ia || 0)];
+      const link = k => `<a href="${root}${D.productos[k].sol}">${esc(D.productos[k].sol_n)}</a>`;
+      marca(D.preguntas.length);
+      stage.innerHTML = `<span class="eyebrow">Por dónde partir</span>
+        <h2 class="h2" tabindex="-1">${esc(prod.nombre)}</h2>
+        <p class="lead">${esc(prod.texto)}</p>
+        <div class="diag-kpis">
+          <div><span>Canales a integrar</span><strong class="diag-kpi-txt">${canales.length ? esc(canales.join(', ')) : 'Por definir'}</strong></div>
+          <div><span>Volumen mensual</span><strong class="diag-kpi-txt">${esc(((resp[2] || [{}])[0].t) || 'Por definir')}</strong></div>
+        </div>
+        ${por.length ? `<div><h3 class="diag-sub">Por qué</h3><ul class="diag-list">${por.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : ''}
+        ${extras.length ? `<div><h3 class="diag-sub">También considera</h3><ul class="diag-list">${extras.map(k => `<li><strong>${esc(D.productos[k].nombre)}</strong>: ${esc(D.productos[k].texto)}</li>`).join('')}</ul><p class="diag-note">Sales, Customer Service y Contact Center comparten la misma base de clientes en Dataverse, así que puedes partir por una y sumar las otras sin migrar datos.</p></div>` : ''}
+        ${ia ? `<div><h3 class="diag-sub">Cómo sumar IA</h3><p>${esc(ia)}</p></div>` : ''}
+        <div><h3 class="diag-sub">Próximo paso sugerido</h3><p>Una demo con tus canales y procesos reales para confirmar el punto de partida. Conoce más en ${[top, ...extras].map(link).filter((v, i, a) => a.indexOf(v) === i).join(' y ')}.</p></div>
+        <div class="diag-cta">
+          <p><strong>¿Conversamos?</strong> Un especialista puede revisar estos resultados contigo y resolver tus dudas.</p>
+          <div class="btn-row"><a class="btn btn-primary" href="${crm.dataset.contacto}">Conversemos</a><button type="button" class="btn btn-outline diag-reset">Volver a empezar</button></div>
+        </div>`;
+      try {
+        sessionStorage.setItem('wit-diag', JSON.stringify({ herramienta: 'Autodiagnóstico de atención y ventas',
+          resultado: `${prod.nombre}${extras.length ? ` + ${extras.map(k => D.productos[k].nombre).join(' + ')}` : ''}`,
+          interno: `puntos: Sales ${pts.s}, Customer Service ${pts.cs}, Contact Center ${pts.cc}`,
+          detalle: D.preguntas.map((p, n) => `${p.q} ${(resp[n] || []).map(o => o.t).join(', ')}`).join('\n') }));
+      } catch (e) { /* sin almacenamiento: el formulario va sin contexto */ }
+      $('.diag-reset', stage).addEventListener('click', () => { resp = []; pregunta(0); });
+      $('h2', stage).focus();
+    };
+
+    pregunta(0);
+  }
+
+  // ---------- Enlaces externos sin salir del sitio
+  // Mapas: ventana modal con Google Maps embebido (se carga solo al hacer clic).
+  // Resto de sitios externos (Microsoft, WITEDUCA, etc.): no permiten mostrarse dentro de otra página,
+  // así que se abren en una ventana emergente del navegador; si el navegador la bloquea, en una pestaña nueva.
+  const modal = document.createElement('dialog');
+  modal.className = 'wit-modal';
+  modal.innerHTML = `<div class="wit-modal-head"><strong></strong><button type="button" class="wit-modal-close" aria-label="Cerrar">×</button></div>
+    <div class="wit-modal-body"></div><div class="wit-modal-foot"></div>`;
+  document.body.appendChild(modal);
+  const cerrar = () => { modal.close(); $('.wit-modal-body', modal).innerHTML = ''; };
+  $('.wit-modal-close', modal).addEventListener('click', cerrar);
+  modal.addEventListener('click', e => { if (e.target === modal) cerrar(); });
+  modal.addEventListener('close', () => { $('.wit-modal-body', modal).innerHTML = ''; });
+
+  const ventana = url => {
+    const w = Math.min(1180, screen.availWidth - 80), h = Math.min(820, screen.availHeight - 80);
+    const x = Math.round(window.screenX + (window.outerWidth - w) / 2), y = Math.round(window.screenY + (window.outerHeight - h) / 2);
+    return window.open(url, 'wit-externo', `popup=yes,width=${w},height=${h},left=${Math.max(0, x)},top=${Math.max(0, y)}`);
+  };
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href]');
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (a.dataset.mapa) {
+      e.preventDefault();
+      $('.wit-modal-head strong', modal).textContent = a.dataset.mapaTitulo || 'Ubicación';
+      $('.wit-modal-body', modal).innerHTML = `<iframe title="Mapa: ${a.dataset.mapa.replace(/"/g, '&quot;')}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=${encodeURIComponent(a.dataset.mapa)}&output=embed"></iframe>`;
+      $('.wit-modal-foot', modal).innerHTML = `<span>${a.dataset.mapa.replace(/</g, '&lt;')}</span><a class="link-strong" href="${a.href}" data-externo>Abrir en Google Maps ↗</a>`;
+      modal.showModal();
+      return;
+    }
+    const url = new URL(a.href, location.href);
+    if (!/^https?:$/.test(url.protocol) || url.origin === location.origin) return;
+    if (ventana(url.href)) e.preventDefault(); // bloqueada: sigue el target="_blank" del enlace
+  });
 
   // ---------- Origen del contacto (para el CRM): desde qué página y botón se llegó, diagnóstico y UTM
   const store = {
@@ -412,7 +530,21 @@
     set('origen_pagina', origen ? origen.pagina : ref || (document.referrer ? document.referrer : 'directo'));
     set('origen_cta', origen && origen.cta);
     const diag = store.get('wit-diag');
-    if (diag) { set('diagnostico_herramienta', diag.herramienta); set('diagnostico_resultado', diag.resultado); set('diagnostico_detalle', diag.detalle); }
+    if (diag) {
+      set('diagnostico_herramienta', diag.herramienta);
+      set('diagnostico_resultado', diag.interno ? `${diag.resultado} (${diag.interno})` : diag.resultado);
+      set('diagnostico_detalle', diag.detalle);
+      // La persona ve lo que ya respondió dentro de su mensaje: escribe arriba y bajo "--" va el autodiagnóstico
+      const msg = form.elements.mensaje;
+      if (!msg.value.trim()) {
+        msg.value = ['', '', '--', `${diag.herramienta}`, `Resultado: ${diag.resultado}`, '',
+          ...diag.detalle.split('\n').map(l => `· ${l}`)].join('\n');
+        msg.rows = 10;
+        msg.setSelectionRange(0, 0);
+        msg.scrollTop = 0;
+        $('.msg-ctx', form).hidden = false;
+      }
+    }
     set('utm', store.get('wit-utm'));
   }
 

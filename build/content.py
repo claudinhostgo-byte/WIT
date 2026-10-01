@@ -65,7 +65,7 @@ SOLUCIONES = [
                     ('agent-365', 'Gestión y gobierno de agentes en la organización.', 'Cuando hay varios agentes y se necesita control centralizado.'),
                     ('dynamics-365', 'Copilot integrado en las aplicaciones Dynamics 365.', 'Cuando ya usas Dynamics 365 y quieres IA en el flujo de trabajo.')],
          credencial='WIT-AIBusinessSolutions-Agentic-color.png', credencial_txt='Solutions Partner for AI Business Solutions · Especialización Agentic',
-         herramienta=('Calculadora Copilot', 'herramientas/calculadora-copilot/'),
+         herramienta=('Estimador de créditos de Copilot', 'herramientas/calculadora-copilot/'),
          casos=[]),
     dict(slug='ventas-servicio-y-contact-center', metodo='dynamics', plataforma='Microsoft Dynamics 365 Sales y Customer Service', nombre='Ventas y servicio al cliente', corto='Ventas y servicio',
          linea='Una sola vista del cliente, de la venta a la postventa.',
@@ -83,7 +83,7 @@ SOLUCIONES = [
                     ('d365-field-service', 'Planificación y ejecución de servicios en terreno.', 'Cuando hay técnicos o cuadrillas en terreno.'),
                     ('m365-copilot', 'Copilot en Sales y Customer Service: resúmenes, borradores y siguiente mejor acción.', 'Cuando quieres que vendedores y agentes ganen tiempo sin salir del CRM.')],
          credencial='WIT-AIBusinessSolutions-Agentic-color.png', credencial_txt='Solutions Partner for AI Business Solutions',
-         herramienta=('Autodiagnóstico de madurez en IA', 'herramientas/autodiagnostico-ia/'),
+         herramienta=('Autodiagnóstico de atención y ventas', 'herramientas/atencion-y-ventas/'),
          casos=['mutual-de-seguridad', 'universidad-mayor', 'la-araucana']),
     dict(slug='contact-center', metodo='dynamics', plataforma='Microsoft Dynamics 365 Contact Center', nombre='Contact center omnicanal y voz', corto='Contact center',
          linea='Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes.',
@@ -103,7 +103,7 @@ SOLUCIONES = [
                     ('m365-copilot', 'Copilot para el agente: resumen de la conversación, respuestas sugeridas y cierre automático del caso.', 'Cuando quieres bajar el tiempo de atención sin perder calidad.'),
                     ('azure', 'Azure Communication Services: voz, números y SMS sobre Azure, con la telefonía de nuestros aliados regulados.', 'Cuando necesitas numeración, conectividad con operadores o migrar tu central.')],
          credencial='WIT-AIBusinessSolutions-Agentic-color.png', credencial_txt='Solutions Partner for AI Business Solutions',
-         herramienta=('Autodiagnóstico de madurez en IA', 'herramientas/autodiagnostico-ia/'),
+         herramienta=('Autodiagnóstico de atención y ventas', 'herramientas/atencion-y-ventas/'),
          casos=['coopeuch', 'ips-chileatiende']),
     dict(slug='finanzas-y-operaciones', metodo='dynamics', plataforma='Microsoft Dynamics 365 Business Central y Finance', nombre='Finanzas y operaciones', corto='Finanzas y operaciones',
          linea='ERP que cierra a tiempo y escala contigo.',
@@ -177,7 +177,7 @@ SOLUCIONES = [
                     ('azure-cost-management', 'FinOps: estructura de costos, etiquetado, presupuestos, alertas y recomendaciones de optimización.', 'Cuando la factura cloud crece y necesitas visibilidad y control.'),
                     ('azure-landing-zone', 'Gobierno cloud: estándares de arquitectura, políticas, control de acceso y auditoría.', 'Cuando la nube debe crecer sin perder control ni cumplimiento.')],
          credencial='WIT-CloudAIPlatforms-color.png', credencial_txt='Solutions Partner for Cloud & AI Platforms (Infrastructure, Digital & App Innovation, Data & AI)',
-         alianza='<strong>Programas financiados por Microsoft.</strong> Algunos proyectos de migración, datos, IA y seguridad en Azure pueden contar con financiamiento de Microsoft (programas Azure Accelerate), previa evaluación de elegibilidad. <span class="ph">[confirmar elegibilidad de W-IT y criterios con Comercial]</span>',
+         alianza='<strong>Programas financiados por Microsoft.</strong> Algunos proyectos de migración, datos, IA y seguridad en Azure pueden contar con financiamiento de Microsoft (programas Azure Accelerate), previa evaluación de elegibilidad.',
          herramienta=('Autodiagnóstico de madurez en IA', 'herramientas/autodiagnostico-ia/'),
          casos=['coopeuch', 'universidad-mayor']),
     dict(slug='seguridad-y-cumplimiento', metodo='azure', plataforma='Microsoft Purview y Microsoft Entra', nombre='Seguridad e identidades', corto='Seguridad e identidades',
@@ -206,20 +206,20 @@ INDUSTRIAS = [
          soluciones=['contact-center', 'ventas-servicio-y-contact-center', 'seguridad-y-cumplimiento'],
          clientes=['coopeuch', 'tanner', 'alcala', 'rabobank', 'rabofinance', 'credito-de-urgencia', 'banchile', 'metro-pago', 'banco-ripley', 'valorpyme-bci', 'larrainvial', 'redbanc', 'transbank'],
          casos=['coopeuch'],
-         regulacion='Normativa de la CMF. [validar con Legal]'),
+         regulacion='Normativa de la CMF.'),
     dict(slug='salud-y-seguros', nombre='Seguros y salud',
          h1='Seguros y salud con atención integrada y datos protegidos.',
          desafios=['Atención y postventa integradas para afiliados y pacientes.', 'Protección de datos sensibles de salud.', 'Integración con sistemas clínicos y de terceros.'],
          soluciones=['contact-center', 'ventas-servicio-y-contact-center', 'seguridad-y-cumplimiento'],
          clientes=['mutual', 'banmedica', '4life', 'meds'],
          casos=['mutual-de-seguridad'],
-         regulacion='Normativa de salud y de la Superintendencia de Salud. [validar con Legal]'),
+         regulacion='Normativa de salud y de la Superintendencia de Salud.'),
     dict(slug='educacion', nombre='Educación',
          h1='Instituciones educativas con procesos digitales y estudiantes mejor atendidos.',
          desafios=['Admisión y atención de estudiantes en un solo lugar.', 'Procesos académicos y administrativos manuales.', 'Adopción de IA responsable en la institución.'],
          soluciones=['ventas-servicio-y-contact-center', 'automatizacion-y-apps', 'ia-y-agentes'],
          clientes=['aiep', 'umayor', 'utfsm', 'cibertec'],
-         casos=['universidad-mayor'], regulacion='Normativa de educación superior. [validar con Legal]'),
+         casos=['universidad-mayor'], regulacion='Normativa de educación superior.'),
     dict(slug='mineria', nombre='Minería',
          h1='Minería con operaciones integradas y datos confiables para decidir.',
          desafios=['Integración entre ERP, operación y cadena de suministro.', 'Gestión de contratos, activos y mantenciones.', 'Datos operacionales dispersos para decidir.'],
@@ -231,7 +231,7 @@ INDUSTRIAS = [
          desafios=['Servicio al cliente de alto volumen en múltiples canales.', 'Operación de tiendas y abastecimiento.', 'Agentes de IA para atención y operación.'],
          soluciones=['contact-center', 'ia-y-agentes', 'datos-y-analitica'],
          clientes=['budnik', 'easy', 'cencosud', 'oxxo', 'ahumada', 'mallplaza', 'construmart'],
-         casos=[], regulacion='Ley del Consumidor. [validar con Legal]'),
+         casos=[], regulacion='Ley del Consumidor.'),
     dict(slug='tecnologia-y-comunicaciones', nombre='Tecnología y comunicaciones',
          h1='Empresas de tecnología y telecomunicaciones con procesos a su escala.',
          desafios=['Grandes bases de clientes y servicios que gestionar.', 'Migraciones y evolución de plataformas CRM.', 'Automatización de procesos comerciales y de soporte.'],
@@ -243,7 +243,7 @@ INDUSTRIAS = [
          desafios=['Atención ciudadana omnicanal con trazabilidad.', 'Procesos internos todavía en papel o planillas.', 'Seguridad y residencia de datos en Chile.'],
          soluciones=['contact-center', 'automatizacion-y-apps', 'seguridad-y-cumplimiento'],
          clientes=['chileatiende', 'ips', 'sence', 'minjusticia', 'minvu', 'la-araucana', 'teleton', 'subsecretaria-educacion-superior', 'los-heroes', 'neuvol', 'corfo'],
-         casos=['ips-chileatiende', 'la-araucana'], regulacion='Ley de compras públicas y normativa de transformación digital del Estado. [validar con Legal]'),
+         casos=['ips-chileatiende', 'la-araucana'], regulacion='Ley de compras públicas y normativa de transformación digital del Estado.'),
     dict(slug='transporte-vehiculos-y-maquinaria', nombre='Transporte, vehículos y maquinaria',
          h1='Transporte, vehículos y maquinaria con clientes y operaciones conectados.',
          desafios=['Gestión de clientes, ventas y postventa en red.', 'Servicio técnico y mantenciones en terreno.', 'Integración con sistemas de operación y logística.'],
@@ -705,12 +705,14 @@ COFIN_FAQ = [
 ]
 
 HERRAMIENTAS = [
-    dict(slug='calculadora-copilot', nombre='Calculadora Copilot', tiempo='3 min', estado='Disponible',
-         que='Estima créditos y presupuesto mensual por perfiles de usuario.'),
+    dict(slug='calculadora-copilot', nombre='Estimador de créditos de Copilot', tiempo='Herramienta oficial de Microsoft', estado='Oficial',
+         que='Estima los Copilot Credits que consumirán al mes tus agentes de Copilot Studio y Dynamics 365.'),
     dict(slug='autodiagnostico-ia', nombre='Autodiagnóstico de madurez en IA y agentes', tiempo='5 preguntas · 1 min', estado='Nuevo',
          que='Nivel de preparación, plazo estimado y próximo paso.'),
     dict(slug='business-central-o-finance', nombre='¿Business Central o Finance?', tiempo='7 preguntas · 2 min', estado='Nuevo',
          que='Recomendación según tu perfil, con razones y plazo típico de implementación.'),
+    dict(slug='atencion-y-ventas', nombre='Autodiagnóstico de atención y ventas', tiempo='7 preguntas · 2 min', estado='Nuevo',
+         que='Contact Center, Sales o Customer Service: por dónde partir según tus canales, volumen y equipo.'),
 ]
 
 # Autodiagnóstico IA: 5 preguntas. pts = preparación (0-2); sem = semanas [mín, máx] que suma la respuesta;
@@ -872,12 +874,74 @@ DIAG_ERP = dict(
     ),
 )
 
+# Autodiagnóstico de atención y ventas: 7 preguntas que suman puntos a tres productos
+# (s = Dynamics 365 Sales, cs = Customer Service, cc = Contact Center). La pregunta de canales es
+# de selección múltiple; `extra` suma puntos cuando se marcan `min` canales o más.
+# Resultado: el producto con más puntos es el punto de partida; los que llegan al 60 % del máximo
+# (y a 3 puntos o más) se sugieren como complemento. Orientativo: validar con preventa.
+DIAG_CRM = dict(
+    preguntas=[
+        dict(tag='Objetivo', q='¿Qué quieres mejorar primero?', opts=[
+            dict(t='Vender más y ordenar el pipeline comercial', s=3, por_s='Tu prioridad es vender más: Dynamics 365 Sales ordena el pipeline, las oportunidades y los pronósticos.'),
+            dict(t='Resolver solicitudes y reclamos dentro de plazo', cs=3, por_cs='Tu prioridad es resolver dentro de plazo: Dynamics 365 Customer Service gestiona casos con SLA y base de conocimiento.'),
+            dict(t='Atender más volumen por teléfono y canales digitales', cc=3, por_cc='Tu prioridad es el volumen de atención: Dynamics 365 Contact Center enruta voz y canales digitales en una sola plataforma.'),
+            dict(t='Las tres cosas a la vez', s=1, cs=1, cc=1),
+        ]),
+        dict(tag='Canales', multi=True, q='¿Por qué canales te contactan tus clientes?', opts=[
+            dict(t='Teléfono', cc=2, por_cc='Atender el teléfono junto a los canales digitales requiere voz integrada, como la de Dynamics 365 Contact Center.'),
+            dict(t='WhatsApp', cc=1),
+            dict(t='Chat en el sitio web o la app', cc=1),
+            dict(t='Correo electrónico', cs=1),
+            dict(t='Redes sociales', cc=1),
+            dict(t='Presencial o en terreno', s=1),
+        ], extra=dict(min=3, cc=2, por_cc='Con tres o más canales conviene un enrutamiento unificado, para que cada conversación llegue a la persona correcta con su historial.')),
+        dict(tag='Volumen', q='¿Cuántas interacciones con clientes reciben al mes?', opts=[
+            dict(t='Menos de 1.000', cs=1),
+            dict(t='Entre 1.000 y 10.000', cs=1, cc=1),
+            dict(t='Más de 10.000', cc=3, por_cc='Más de 10.000 interacciones al mes requieren colas, enrutamiento y supervisión en tiempo real, propios de un contact center.'),
+        ]),
+        dict(tag='Equipo', q='¿Quiénes atienden o venden a tus clientes?', opts=[
+            dict(t='Ejecutivos comerciales o vendedores en terreno', s=2, por_s='Un equipo de ejecutivos comerciales trabaja mejor con cuentas, oportunidades y actividades en Dynamics 365 Sales.'),
+            dict(t='Una mesa de ayuda o equipo de postventa', cs=2, por_cs='Una mesa de ayuda necesita casos, colas y escalamiento, el núcleo de Dynamics 365 Customer Service.'),
+            dict(t='Agentes de call center, propio o externo', cc=2, por_cc='Los agentes de call center necesitan un escritorio unificado con voz, chat y el historial del cliente.'),
+            dict(t='Una mezcla de los anteriores', s=1, cs=1, cc=1),
+        ]),
+        dict(tag='Sistema actual', q='¿Dónde registran hoy a sus clientes y las interacciones?', opts=[
+            dict(t='En planillas y correo', s=1, cs=1),
+            dict(t='En un CRM que no conversa con la telefonía', cc=2, por_cc='Si el CRM no conversa con la telefonía, el agente trabaja a ciegas: Contact Center integra la voz con el historial del cliente.'),
+            dict(t='En la central telefónica, sin CRM', cc=2, cs=1, por_cc='Tener la central telefónica sin CRM deja cada llamada sin contexto ni registro.'),
+            dict(t='En otro CRM que queremos reemplazar', s=1, cs=1),
+        ]),
+        dict(tag='Dolor', q='¿Qué te preocupa más hoy?', opts=[
+            dict(t='Oportunidades que se pierden sin seguimiento', s=2, por_s='Las oportunidades sin seguimiento se resuelven con actividades, alertas y Copilot en Dynamics 365 Sales.'),
+            dict(t='Casos que vencen sin que nadie lo note', cs=2, por_cs='Los casos que vencen sin aviso se controlan con SLA, alertas y escalamiento en Dynamics 365 Customer Service.'),
+            dict(t='Esperas largas y llamadas abandonadas', cc=2, por_cc='Las esperas largas y el abandono se reducen con enrutamiento inteligente y agentes de IA para lo simple.'),
+            dict(t='No ver al cliente completo entre áreas', s=1, cs=1, cc=1),
+        ]),
+        dict(tag='IA', q='¿Les interesa sumar IA a la atención y las ventas?', opts=[
+            dict(t='Sí, para asistir a ejecutivos y agentes', ia=1),
+            dict(t='Sí, con agentes que resuelvan solos los casos simples', ia=2),
+            dict(t='Más adelante', ia=0),
+        ]),
+    ],
+    productos=dict(
+        s=dict(nombre='Dynamics 365 Sales', sol='soluciones/ventas-servicio-y-contact-center/', sol_n='Ventas y servicio al cliente',
+               texto='El CRM comercial de Microsoft: cuentas, oportunidades, cotizaciones y pronósticos, con Copilot para los ejecutivos.'),
+        cs=dict(nombre='Dynamics 365 Customer Service', sol='soluciones/ventas-servicio-y-contact-center/', sol_n='Ventas y servicio al cliente',
+                texto='Gestión de casos con SLA, base de conocimiento y portal de autoservicio, con Copilot para los agentes.'),
+        cc=dict(nombre='Dynamics 365 Contact Center', sol='soluciones/contact-center/', sol_n='Contact center omnicanal y voz',
+                texto='Voz, WhatsApp, chat y otros canales en un solo enrutamiento, con supervisión en tiempo real y agentes de IA.'),
+    ),
+    ia={
+        '1': 'Copilot en Dynamics 365 resume conversaciones, sugiere respuestas y prepara el seguimiento para tus ejecutivos y agentes.',
+        '2': 'Con Microsoft Copilot Studio se construyen agentes que resuelven solos las consultas simples y derivan a una persona cuando hace falta.',
+    },
+)
+
 FAQ_HOME = [
-    ('¿Cuánto demora una implementación de Dynamics 365?', '[placeholder: rangos típicos por alcance, validar con delivery]'),
-    ('¿Trabajan con equipo propio o subcontratan?', 'Nuestros consultores son de W-IT. No subcontratamos tu proyecto. [confirmar que es 100% cierto]'),
     ('¿Los agentes de IA funcionan en producción o son demos?', 'Implementamos agentes sobre Copilot Studio y Azure AI Foundry que operan sobre los datos y sistemas del cliente, con gobierno desde el inicio. Antes de construir, evaluamos si cada caso de uso justifica usar IA.'),
-    ('¿Cómo controlan el costo de Copilot y de los agentes?', 'Con estimación previa por perfiles (Calculadora Copilot), consumo transparentado en la propuesta y medición del uso real tras el go-live.'),
+    ('¿Cómo controlan el costo de Copilot y de los agentes?', 'Con una estimación previa del consumo de créditos (con el estimador oficial de Microsoft), consumo transparentado en la propuesta y medición del uso real tras el go-live.'),
     ('¿Dónde quedan nuestros datos?', 'En el tenant del cliente. Las implementaciones se realizan en la región Azure Chile Central desde 2025.'),
     ('¿Trabajan en Perú?', 'Sí. Operamos en Perú a través de W-IT LATAM S.A.C., con oficina en Santiago de Surco, Lima.'),
-    ('¿Qué pasa después del go-live?', 'Soporte y AMS con SLA, portal de soporte y mejora continua. [+15.400 HH de soporte, verificar]'),
+    ('¿Qué pasa después del go-live?', 'Soporte y AMS con SLA, portal de soporte y mejora continua.'),
 ]
