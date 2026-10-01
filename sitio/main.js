@@ -67,14 +67,17 @@
 
   // ---------- Hero: desenfoque del fondo mientras el mouse se mueve
   const hero = $('#hero');
-  if (hero && matchMedia('(hover: hover)').matches && !reduceMotion) {
+  // Se filtra por tipo de puntero (no por "hover: hover"): en notebooks con pantalla táctil
+  // esa media query responde "none" aunque se use mouse, y el efecto no se activaba.
+  if (hero && !reduceMotion) {
     let still;
-    hero.addEventListener('mousemove', () => {
+    hero.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') return;
       hero.classList.add('is-moving');
       clearTimeout(still);
       still = setTimeout(() => hero.classList.remove('is-moving'), 220);
     }, { passive: true });
-    hero.addEventListener('mouseleave', () => { clearTimeout(still); hero.classList.remove('is-moving'); });
+    hero.addEventListener('pointerleave', () => { clearTimeout(still); hero.classList.remove('is-moving'); });
   }
 
   // ---------- Consola del agente (hero): escenarios ilustrativos

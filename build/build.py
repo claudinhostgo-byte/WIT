@@ -227,7 +227,7 @@ def footer(r):
   </div>
   <button class="agente-fab" type="button" aria-controls="agente-panel" aria-expanded="false" aria-label="Abrir agente W-IT">
     <span class="clip-say" aria-hidden="true">¿Te ayudo?</span>
-    <picture class="clip" aria-hidden="true"><source srcset="{r}assets/img/chatbot.webp" type="image/webp"><img src="{r}assets/img/chatbot.png" alt="" width="88" height="76"></picture>
+    <picture class="clip" aria-hidden="true"><source srcset="{r}assets/img/clippy.webp" type="image/webp"><img src="{r}assets/img/clippy.png" alt="" width="96" height="124"></picture>
   </button>
 </div>'''
 
