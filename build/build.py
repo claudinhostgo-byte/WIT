@@ -8,7 +8,7 @@ import os
 from html import escape
 from PIL import Image
 from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME,
-                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP, DIAG_LEY)
+                     COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sitio')
 SOL = {s['slug']: s for s in SOLUCIONES}
@@ -18,7 +18,7 @@ CASO = {c['slug']: c for c in CASOS}
 JUMPSTART_PAGE = 'microsoft-copilot-jumpstart/'
 COFIN_PAGE = 'cofinanciamiento-microsoft/'
 # Herramientas que aparecen en el menú «Autodiagnósticos»
-DIAGNOSTICOS = ('autodiagnostico-ia', 'business-central-o-finance', 'preparacion-ley-21719')
+DIAGNOSTICOS = ('autodiagnostico-ia', 'business-central-o-finance')
 COPILOT_URL = 'https://www.microsoft.com/es-cl/microsoft-365/copilot'
 IND_NOMBRE = {**{i['slug']: i['nombre'] for i in INDUSTRIAS}, 'otros': 'Telecomunicaciones y otros'}
 
@@ -127,16 +127,15 @@ def header(r, active, solid):
             </div>
           </div>
         </li>
-        <li class="nav-item">{btn('industrias', 'Industrias')}
+        <li class="nav-item">{btn('industrias', 'Clientes')}
           <div class="mega" id="mega-industrias">
             <div class="container mega-inner">
-              <div class="mega-head"><span class="eyebrow">Industrias</span><a href="{r}industrias/">Ver todas las industrias {ARROW}</a></div>
+              <div class="mega-head"><span class="eyebrow">Clientes por industria</span><a href="{r}industrias/">Ver todos los clientes {ARROW}</a></div>
               <div class="mega-grid mega-grid-ind">{ind_items}
               </div>
             </div>
           </div>
         </li>
-        <li class="nav-item"><a class="nav-link" href="{r}casos-de-exito/"{cur('casos')}>Casos</a></li>
         <li class="nav-item">{btn('diagnosticos', 'Autodiagnósticos')}
           <div class="mega" id="mega-diagnosticos">
             <div class="container mega-inner mega-split mega-diag">
@@ -145,9 +144,9 @@ def header(r, active, solid):
                 {''.join(f'<a href="{r}herramientas/{h["slug"]}/"><strong>{escape(h["nombre"])}</strong><span>{escape(h["tiempo"])} · {escape(h["que"])}</span></a>' for h in HERRAMIENTAS if h['slug'] in DIAGNOSTICOS)}
               </div>
               <div class="mega-promo">
-                <span class="eyebrow">Cuenta regresiva</span>
-                <strong>La Ley 21.719 entra en vigencia el 1 de diciembre de 2026.</strong>
-                <a class="btn btn-primary" href="{r}herramientas/preparacion-ley-21719/">Test de preparación</a>
+                <span class="eyebrow">Cofinanciamiento Microsoft</span>
+                <strong>Algunos talleres, POC y MVP pueden contar con inversión de Microsoft.</strong>
+                <a class="btn btn-primary" href="{r}{COFIN_PAGE}">Ver programas</a>
               </div>
             </div>
           </div>
@@ -200,10 +199,10 @@ def footer(r):
       <div class="footer-col footer-brand">
         <img class="footer-logo" src="{r}assets/marca/logo-white-mark.png" alt="W-IT" width="64" height="48">
         <span class="claim">We Make It Simple</span>
-        <img src="{r}assets/credenciales/WIT-MicrosoftPartner-singleline-white.png" alt="Microsoft Partner" width="200" height="40">
+        <img class="footer-ms" src="{r}assets/credenciales/WIT-MicrosoftPartner-singleline-white.png" alt="Microsoft Partner" width="200" height="40">
         <span>ISO 9001 · ISO 27001 (SGS)</span>
       </div>
-      {col('Explora', [('Soluciones', f'{r}soluciones/'), ('Industrias', f'{r}industrias/'), ('Casos de éxito', f'{r}casos-de-exito/'), ('Productos', f'{r}productos/'), ('Herramientas', f'{r}herramientas/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}')])}
+      {col('Explora', [('Soluciones', f'{r}soluciones/'), ('Clientes por industria', f'{r}industrias/'), ('Productos', f'{r}productos/'), ('Herramientas', f'{r}herramientas/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}')])}
       {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Trabaja con nosotros', f'{r}nosotros/trabaja-con-nosotros/'), ('Observatorio IA', f'{r}recursos/')])}
       <address class="footer-col"><strong>Contacto</strong><span><b class="footer-pais"><img class="flag" src="{r}assets/img/chile.svg" alt="" width="21" height="14">Chile</b>Av. Apoquindo 3039<br>Las Condes, Santiago</span><span><b class="footer-pais"><img class="flag" src="{r}assets/img/peru.svg" alt="" width="21" height="14">Perú</b>Av. Circunvalación del Golf Los Incas 170, Int. 702<br>Santiago de Surco, Lima</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
     </div>
@@ -221,8 +220,8 @@ def footer(r):
     <span>Soy un asistente de IA de W-IT. No cotizo ni doy asesoría legal; puedo derivarte a una persona.</span>
     <ul>
       <li><button type="button">¿Qué Copilot necesito?</button></li>
-      <li><button type="button">¿Estoy listo para la Ley 21.719?</button></li>
-      <li><button type="button">Casos en banca</button></li>
+      <li><button type="button">¿Business Central o Finance?</button></li>
+      <li><button type="button">Clientes en banca</button></li>
     </ul>
   </div>
   <button class="agente-fab" type="button" aria-controls="agente-panel" aria-expanded="false" aria-label="Abrir agente W-IT">
@@ -266,11 +265,11 @@ def write(path, title, desc, body, active=None, solid=True):
 
 # ---------------------------------------------------------------- componentes
 
-def page_hero(r, crumbs, eyebrow, h1, bajada, ctas=True, extra='', h1_pe=None, aside='', cls=''):
+def page_hero(r, crumbs, eyebrow, h1, bajada, ctas=True, extra='', h1_pe=None, aside='', cls='', ver_href=None):
     bc = ''.join(f'<li><a href="{r}{h}">{escape(l)}</a></li>' for l, h in crumbs)
     h1_attr = pais_attr(h1, h1_pe) if h1_pe else ''
     cta = (f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Agenda un diagnóstico de 30 min</a>'
-           f'<a class="btn btn-lg btn-outline" href="{r}casos-de-exito/">Ver casos</a></div>') if ctas else ''
+           f'<a class="btn btn-lg btn-outline" href="{ver_href or r + 'industrias/'}">Ver clientes</a></div>') if ctas else ''
     return f'''
 <section class="page-hero{(" " + cls) if cls else ""}">
   <div class="page-hero-trazo" aria-hidden="true"></div>
@@ -607,8 +606,6 @@ def home(r):
     faq = ''.join(
         f'<div class="faq-item"><h3><button type="button" aria-expanded="{"true" if i == 1 else "false"}" aria-controls="faq-{i}">{escape(q)}</button></h3>'
         f'<p id="faq-{i}"{"" if i == 1 else " hidden"}>{escape(a)}</p></div>' for i, (q, a) in enumerate(FAQ_HOME))
-    destacado = next(c for c in CASOS if c.get('destacado'))
-    casos3 = [CASO[s] for s in ('coopeuch', 'la-araucana', 'universidad-mayor')]
     return f'''
 <section class="hero" id="hero">
   <div class="hero-bg hero-media" aria-hidden="true">
@@ -694,61 +691,12 @@ def home(r):
   </div>
 </section>
 
-<section class="section bg-white" id="casos">
-  <div class="container stack-32">
-    {section_head('Casos de éxito', 'Grandes clientes, grandes implementaciones.', link=f'<a class="link-strong" href="{r}casos-de-exito/">Todos los casos {ARROW}</a>')}
-    <article class="caso-destacado">
-      <div>
-        {logo(r, destacado['cliente'], 'caso-logo-dark')}
-        <span class="metrica-xl">{escape(destacado['metrica'])}</span>
-        <span class="muted-light">{escape(destacado['metrica_txt'])}</span>
-      </div>
-      <div>
-        <div class="caso-meta"><span>{escape(IND_NOMBRE[destacado['industria']])}</span><span>·</span><span>Chile</span></div>
-        <h3>{escape(destacado['titulo'])}</h3>
-        <p>{escape(destacado['resumen'])}</p>
-        <ul class="caso-kpis">{''.join(f'<li><b>{escape(v)}</b><span>{escape(t)}</span></li>' for v, t in destacado['metricas'])}</ul>
-        <a class="link-green" href="{r}casos-de-exito/{destacado['slug']}/">Leer caso {ARROW}</a>
-      </div>
-    </article>
-    <div class="grid grid-280">{''.join(caso_card(r, c) for c in casos3)}
-    </div>
-  </div>
-</section>
-
 <section class="section bg-blue" id="metodo">
   <div class="container stack-48">
     {section_head('Cómo trabajamos', METODO_H2, METODO_LEAD, '<span class="chip-live">Adopción medida en cada proyecto</span>')}
     {metodos_cards(r)}
     <a class="link-strong" href="{r}como-trabajamos/">Conoce las cuatro metodologías {ARROW}</a>
     {cofin_strip(r)}
-  </div>
-</section>
-
-<section class="section bg-white" id="ley-21719">
-  <div class="container grid grid-2 ley-grid">
-    <div class="stack-20">
-      <span class="eyebrow">Ley 21.719 · Protección de datos personales</span>
-      <h2 class="h2">La Ley 21.719 entra en vigencia el 1 de diciembre de 2026.</h2>
-      <ul class="checks">
-        <li>Inventario y clasificación de datos personales con Microsoft Purview.</li>
-        <li>Control de accesos y trazabilidad con Microsoft Entra ID.</li>
-        <li>Evidencia auditable junto a RegulaTec, nuestra alianza legal.</li>
-      </ul>
-      <div class="btn-row">
-        <a class="btn btn-primary" href="{r}herramientas/preparacion-ley-21719/">Test de preparación</a>
-        <a class="btn btn-outline" href="{r}soluciones/seguridad-y-cumplimiento/">Seguridad y cumplimiento</a>
-      </div>
-    </div>
-    <div class="countdown" id="countdown" data-target="2026-12-01T00:00:00-03:00">
-      <span class="eyebrow">Cuenta regresiva · 1 de diciembre de 2026</span>
-      <div class="countdown-units">
-        <div><b data-unit="d">--</b><span>días</span></div>
-        <div><b data-unit="h">--</b><span>horas</span></div>
-        <div><b data-unit="m">--</b><span>minutos</span></div>
-      </div>
-      <p>Consentimiento explícito y granular, registro con evidencia y derechos ARCO+. Esta cuenta regresiva se oculta después del 01-12-2026.</p>
-    </div>
   </div>
 </section>
 
@@ -836,7 +784,6 @@ def trust_items():
 
 def recursos_grid(r):
     items = [('portada Observatorio [placeholder]', 'Observatorio IA', 'Observatorio IA Chile/Perú · Primer número', '[placeholder]'),
-             ('portada guía [a producir]', 'Guía', 'Ley 21.719 en 10 pasos', '[a producir]'),
              ('foto real: Hackathon Agrosuper 2024', 'Evento', 'Hackathon Agrosuper 2024: agentes en 48 horas', '2024')]
     return '<div class="grid grid-280">' + ''.join(
         f'<a class="recurso" href="{r}recursos/"><div class="placeholder-box">{a}</div><span class="tipo">{b}</span><h3>{c}</h3><span class="fecha">{d}</span></a>'
@@ -859,9 +806,6 @@ def solucion_page(s):
               <div><h3>{escape(MS[i]) if i else escape(d.split(':')[0])}</h3><p>{escape(d.split(': ', 1)[1] if (not i and ': ' in d) else d)}</p><p class="cuando"><strong>Cuándo conviene:</strong> {escape(c)}</p></div></div>'''
             for i, d, c in s['productos'])
         senales = senales_section(r, s['senales'])
-        casos = [CASO[c] for c in s['casos']]
-        casos_html = (f'<div class="grid grid-280">{"".join(caso_card(r, c) for c in casos)}</div>' if casos else
-                      '<div class="placeholder-box" style="min-height:140px">[placeholder: caso con métrica autorizada para esta solución]</div>')
         aside = f'<div class="page-hero-aside">{"".join(f"<span class=\"hero-prod\">{ms_icon(r, i, 44)}<span>{escape(MS[i])}</span></span>" for i in s["iconos"])}</div>' if s['iconos'] else ''
         return page_hero(r, [('Soluciones', 'soluciones/'), (s['nombre'], f"soluciones/{s['slug']}/")], f"{escape(s['plataforma'])} · {escape(s['nombre'])}", s['h1'], s['bajada'],
                          h1_pe=s.get('h1_pe'), aside=aside) + f'''
@@ -878,10 +822,6 @@ def solucion_page(s):
   {metodo_html(r, METODO[s['metodo']])}
   {cofin_strip(r)}
 </div></section>
-<section class="section bg-white"><div class="container stack-40">
-  {section_head('Resultados', 'Casos relacionados.', link=f'<a class="link-strong" href="{r}casos-de-exito/">Todos los casos {ARROW}</a>')}
-  {casos_html}
-</div></section>
 <section class="section bg-soft"><div class="container grid grid-2 aligned">
   <div class="cred-card"><span class="eyebrow">Credencial que respalda esta solución</span>{badge_img(r, s['credencial'], 110)}<p>{escape(s['credencial_txt'])}</p><a href="{r}nosotros/confianza/">Ver Trust Center {ARROW}</a></div>
   <a class="card tool-card" href="{r}{s['herramienta'][1]}"><div class="tool-top"><span>Herramienta relacionada</span><span class="pill">Gratis</span></div><h3>{escape(s['herramienta'][0])}</h3><p>Resultados orientativos. No son una cotización ni asesoría legal.</p><span class="card-cta">Empezar {ARROW}</span></a>
@@ -896,9 +836,9 @@ def industrias_index(r):
         <span class="mega-ind-ico">{IND_ICON[i['slug']]}</span>
         <h3>{escape(i['nombre'])}</h3><p>{escape(i['h1'])}</p>
         <div class="ind-logos">{''.join(logo(r, c) for c in i['clientes'][:4])}</div>
-        <span class="card-cta">Ver industria {ARROW}</span>
+        <span class="card-cta">Ver clientes {ARROW}</span>
       </a>''' for i in INDUSTRIAS)
-    return page_hero(r, [('Industrias', 'industrias/')], 'Industrias', 'Conocemos tu industria porque ya trabajamos en ella.',
+    return page_hero(r, [('Clientes por industria', 'industrias/')], 'Clientes por industria', 'Conocemos tu industria porque ya trabajamos en ella.',
                      'Más de 60 organizaciones en once industrias, de la banca y el sector público a la minería, el retail y los deportes.') + f'''
 <section class="section bg-soft"><div class="container"><div class="grid grid-300">{cards}</div></div></section>
 {cta_final(r)}'''
@@ -925,31 +865,29 @@ def industria_img(r, slug):
             f'</picture></div>')
 
 
+def industria_panel(r, i):
+    """Panel del hero de industria: desafíos más comunes del sector y su regulación."""
+    items = ''.join(f'<li><span class="ind-panel-n">0{n}</span><p>{escape(d)}</p></li>' for n, d in enumerate(i['desafios'], 1))
+    reg = f'<p class="ind-panel-reg"><strong>Regulación relevante:</strong> {escape(i["regulacion"])}</p>' if i['regulacion'] else ''
+    return f'''<aside class="page-hero-aside ind-panel" aria-label="Desafíos más comunes">
+      <span class="eyebrow">Desafíos más comunes de la industria</span>
+      <ol class="ind-panel-list">{items}</ol>
+      {reg}
+    </aside>'''
+
+
 def industria_page(i):
     def body(r):
-        desafios = ''.join(f'<div class="signal"><span class="signal-n">0{n}</span><p>{escape(d)}</p></div>' for n, d in enumerate(i['desafios'], 1))
-        casos = [CASO[c] for c in i['casos']]
-        casos_html = (f'<div class="grid grid-280">{"".join(caso_card(r, c) for c in casos)}</div>' if casos else
-                      '<div class="placeholder-box" style="min-height:140px">[placeholder: casos de la industria con autorización]</div>')
-        return page_hero(r, [('Industrias', 'industrias/'), (i['nombre'], f"industrias/{i['slug']}/")], i['nombre'], i['h1'],
+        return page_hero(r, [('Clientes por industria', 'industrias/'), (i['nombre'], f"industrias/{i['slug']}/")], i['nombre'], i['h1'],
                          'Soluciones Microsoft implementadas por un equipo que conoce los procesos y la regulación de tu sector.',
-                         aside=industria_img(r, i['slug'])) + f'''
-<section class="section bg-white"><div class="container stack-40">
-  {section_head('Desafíos típicos', 'Lo que vemos una y otra vez.')}
-  <div class="signals signals-3">{desafios}</div>
-</div></section>
-<section class="section bg-soft"><div class="container stack-40">
-  {section_head('Soluciones que aplicamos', 'Por dónde solemos empezar.')}
-  <div class="grid grid-300">{''.join(sol_card(r, SOL[s]) for s in i['soluciones'])}</div>
-</div></section>
-<section class="section bg-white"><div class="container stack-40">
+                         aside=industria_panel(r, i), ver_href='#clientes') + f'''
+<section class="section bg-white" id="clientes"><div class="container stack-40">
   {section_head('Clientes', f'Han confiado en W-IT en {escape(i["nombre"].lower())}.')}
   {logo_wall(r, i['clientes'])}
 </div></section>
 <section class="section bg-soft"><div class="container stack-40">
-  {section_head('Casos', 'Resultados en tu industria.')}
-  {casos_html}
-  {f'<div class="note"><strong>Regulación relevante:</strong> {escape(i["regulacion"])}</div>' if i['regulacion'] else ''}
+  {section_head('Soluciones Microsoft', 'Productos y soluciones que podrían aplicar.')}
+  <div class="grid grid-300">{''.join(sol_card(r, SOL[s]) for s in i['soluciones'])}</div>
 </div></section>
 {cta_final(r)}'''
     return body
@@ -1029,7 +967,7 @@ def productos_index(r):
 
 def agentes(r):
     items = [('Agente CV – Recruit Intelligence', 'Live'), ('Gestor de Puestos W-it', 'Live'),
-             ('Implementación Rápida de Automatización con Power Automate', 'Live'), ('RegulaTec', 'Live')]
+             ('Implementación Rápida de Automatización con Power Automate', 'Live')]
     cards = ''.join(f'<div class="card"><div class="tool-top"><span>Microsoft Marketplace</span><span class="pill">{e}</span></div><h3>{escape(n)}</h3><p>[placeholder: descripción breve de la ficha]</p><a class="card-cta" href="https://marketplace.microsoft.com" target="_blank" rel="noopener">Ver ficha ↗</a></div>' for n, e in items)
     return page_hero(r, [('Productos', 'productos/'), ('Agentes W-IT', 'productos/agentes-w-it/')], 'Productos · Agentes W-IT',
                      'Agentes y aceleradores listos para tu tenant.', 'Publicados en Microsoft Marketplace. <span class="ph">[confirmar el resto del catálogo]</span>', ctas=False) + f'''
@@ -1086,20 +1024,10 @@ def diag_erp(r, h):
                        DIAG_ERP)
 
 
-def diag_ley(r, h):
-    return diag_layout(r, h, 'diag-ley', 'La Ley 21.719 entra en vigencia el 1 de diciembre de 2026. Responde 8 preguntas y mira si podrías demostrar cumplimiento hoy.',
-                       [('Semáforo por área', 'Verde, amarillo o rojo en las 8 áreas clave.'),
-                        ('Días para la vigencia', 'Cuánto tiempo queda y si alcanza.'),
-                        ('Qué hacer primero', 'Las brechas críticas y el próximo paso.')],
-                       DIAG_LEY, ''.join(f'<li>{escape(q["tag"])}</li>' for q in DIAG_LEY['preguntas']))
-
-
 def herramienta_page(h):
     def body(r):
         if h['slug'] == 'autodiagnostico-ia':
             return diag_ia(r, h) + cta_final(r)
-        if h['slug'] == 'preparacion-ley-21719':
-            return diag_ley(r, h) + cta_final(r)
         if h['slug'] == 'business-central-o-finance':
             return diag_erp(r, h) + cta_final(r)
         return page_hero(r, [('Herramientas', 'herramientas/'), (h['nombre'], f"herramientas/{h['slug']}/")], f"Herramienta · {h['tiempo']}",
@@ -1206,7 +1134,11 @@ def confianza(r):
 <section class="section bg-dark"><div class="container stack-40">
   {section_head('Datos e IA', 'Cómo protegemos tu información.')}
   {trust_items()}
-  <p class="disclaimer" style="color:rgba(255,255,255,.7)">Protección de datos: postura frente a la Ley 21.719 y encargado de datos <span class="ph">[placeholder]</span>. Certificaciones del equipo: conteo agregado por área <span class="ph">[placeholder]</span>.</p>
+  <div class="trust-ley">
+    <h3>Protección de datos personales en cada implementación</h3>
+    <p>La protección de datos forma parte de nuestra forma de implementar. En cada proyecto consideramos la Ley 21.719 en Chile y la Ley 29733 en Perú: accedemos solo a los datos personales que el proyecto necesita, preferimos ambientes de prueba sin datos reales y acordamos con el cliente los permisos, la retención y la trazabilidad de la solución. Cuando el cliente necesita asesoría legal, la complementamos con <a href="https://www.regulatec.cl" target="_blank" rel="noopener">RegulaTec</a>, empresa legal aliada. <span class="ph">[validar con Legal y con el Encargado de Plataforma y Seguridad]</span></p>
+  </div>
+  <p class="disclaimer" style="color:rgba(255,255,255,.7)">Encargado de datos <span class="ph">[placeholder]</span>. Certificaciones del equipo: conteo agregado por área <span class="ph">[placeholder]</span>.</p>
 </div></section>
 {cta_final(r)}'''
 
@@ -1492,12 +1424,11 @@ def main():
     pages.append(write('soluciones/', 'Soluciones Microsoft Dynamics 365, Power Platform, Azure y Copilot · W-IT', 'Partner Microsoft en Chile y Perú: implementamos Dynamics 365, Power Platform, Azure y Copilot.', soluciones_index, 'soluciones'))
     for s in SOLUCIONES:
         pages.append(write(f"soluciones/{s['slug']}/", f"{s['plataforma']}: {s['nombre'].lower()} · W-IT Chile", f"{s['plataforma']}. {s['linea']}", solucion_page(s), 'soluciones'))
-    pages.append(write('industrias/', 'Industrias · W-IT', 'Industrias donde trabaja W-IT.', industrias_index, 'industrias'))
+    pages.append(write('industrias/', 'Clientes por industria · W-IT', 'Clientes de W-IT por industria.', industrias_index, 'industrias'))
     for i in INDUSTRIAS:
         pages.append(write(f"industrias/{i['slug']}/", f"{i['nombre']} · W-IT", i['h1'], industria_page(i), 'industrias'))
-    pages.append(write('casos-de-exito/', 'Casos de éxito · W-IT', 'Casos de éxito de W-IT.', casos_index, 'casos'))
-    for c in CASOS:
-        pages.append(write(f"casos-de-exito/{c['slug']}/", f"{CLIENTES[c['cliente']]}: {c['titulo']} · W-IT", c['titulo'], caso_page(c), 'casos'))
+    # Casos de éxito fuera del sitio (2026-10-01): la información se reserva para reuniones comerciales.
+    # Los datos siguen en content.py (CASOS) y casos_index/caso_page quedan sin uso.
     pages.append(write('productos/', 'Productos · W-IT', 'Productos W-IT en Microsoft Marketplace.', productos_index, 'productos'))
     pages.append(write('productos/agentes-w-it/', 'Agentes W-IT', 'Agentes y aceleradores de W-IT.', agentes, 'productos'))
     pages.append(write('herramientas/', 'Herramientas · W-IT', 'Herramientas gratuitas de W-IT.', herramientas_index, 'diagnosticos'))
@@ -1515,7 +1446,7 @@ def main():
     pages.append(write('contacto/', 'Contacto · W-IT', 'Contacta a W-IT: proyectos, licencias y soporte Microsoft en Chile y Perú.', contacto))
     pages.append(write('privacidad/', 'Aviso de privacidad y tratamiento de datos · W-IT', 'Qué datos recolectamos en w-it.cl, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.', privacidad_page))
     for slug, t in [('cookies', 'Política de cookies'), ('terminos', 'Términos de uso')]:
-        pages.append(write(f'{slug}/', f'{t} · W-IT', t, simple_page('Legal', t, 'Documento en redacción.', [(t, f'{slug}/')], '<p class="lead">[Redacción por Administración y Finanzas / RegulaTec]</p>')))
+        pages.append(write(f'{slug}/', f'{t} · W-IT', t, simple_page('Legal', t, 'Documento en redacción.', [(t, f'{slug}/')], '<p class="lead">[Redacción por Administración y Finanzas]</p>')))
     # recursos: grilla real
     p = os.path.join(ROOT, 'recursos', 'index.html')
     s = open(p, encoding='utf-8').read().replace('{recursos}', recursos_grid('../'))
