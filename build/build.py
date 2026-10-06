@@ -1206,7 +1206,7 @@ def contacto(r):
         <div class="contact-card contact-card-links"><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a></div>
       </div>
     </div>
-    <form class="form contact-form" id="form-contacto" novalidate>
+    <form class="form contact-form" id="form-contacto" data-api="/api/contacto" novalidate>
       <div class="form-head"><strong>Escríbenos</strong><span>Los campos con {req} son obligatorios.</span></div>
       <div class="form-row"><label><span>Nombre {req}</span><input name="nombre" required autocomplete="name" placeholder="Nombre y apellido"></label><label><span>Email corporativo {req}</span><input type="email" name="email" required autocomplete="email" placeholder="nombre@empresa.cl"></label></div>
       <div class="form-row"><label>Empresa<input name="empresa" autocomplete="organization"></label><label>Cargo<input name="cargo" autocomplete="organization-title"></label></div>
@@ -1224,8 +1224,11 @@ def contacto(r):
       <input type="hidden" name="diagnostico_resultado">
       <input type="hidden" name="diagnostico_detalle">
       <input type="hidden" name="utm">
+      <input type="hidden" name="t">
+      <!-- Antispam: campo que una persona no ve ni completa -->
+      <label class="hp" aria-hidden="true">Sitio web<input name="sitio_web" tabindex="-1" autocomplete="off"></label>
       <button class="btn btn-lg btn-primary" type="submit">Enviar solicitud</button>
-      <p class="form-msg" role="status" hidden>Formulario de demostración: aún no está conectado. <span class="ph">[conectar a Dynamics 365 y registrar el consentimiento]</span></p>
+      <p class="form-msg" role="status" tabindex="-1" hidden></p>
     </form>
   </div>
 </section>'''

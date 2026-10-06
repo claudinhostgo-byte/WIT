@@ -1083,6 +1083,9 @@ a.mega-js:hover { color: var(--green-dark); }
 .form .check { flex-direction: row; align-items: flex-start; gap: 10px; font-weight: 400; color: var(--ink); }
 .form .check input { width: 16px; height: 16px; margin: 3px 0 0; padding: 0; flex: none; }
 .form-msg { margin: 0; padding: 12px 14px; border-radius: 8px; background: var(--green-tint); font-size: 14px; }
+.form-msg.is-error { background: #fdecea; color: #8a1c12; }
+.form-msg:focus { outline: none; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1240px) {

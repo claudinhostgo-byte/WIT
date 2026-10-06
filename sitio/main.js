@@ -197,14 +197,43 @@
     });
   }
 
-  // ---------- Formulario de contacto (demostración: no envía datos)
+  // ---------- Formulario de contacto: lo recibe /api/contacto y queda como Lead en Dynamics 365
   const form = $('#form-contacto');
   if (form) {
-    form.addEventListener('submit', e => {
+    form.elements.t.value = Date.now();
+    const msg = $('.form-msg', form);
+    const btn = $('button[type=submit]', form);
+    const aviso = (texto, error) => { msg.textContent = texto; msg.classList.toggle('is-error', !!error); msg.hidden = false; };
+    form.addEventListener('submit', async e => {
       e.preventDefault();
       if (!form.reportValidity()) return;
-      $('.form-msg', form).hidden = false;
-      console.info('[demo] Contexto oculto que viajaría al CRM:', Object.fromEntries([...form.querySelectorAll('input[type=hidden]')].map(i => [i.name, i.value])));
+      const fd = new FormData(form);
+      const data = Object.fromEntries([...fd.keys()].map(k => [k, fd.get(k)]));
+      data.interes = fd.getAll('interes');
+      data.consentimiento = form.elements.consentimiento.checked;
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      try {
+        const res = await fetch(form.dataset.api, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data),
+        });
+        if (res.ok) {
+          form.reset();
+          try { sessionStorage.removeItem('wit-diag'); } catch (err) { /* sin almacenamiento */ }
+          $$('.form-row, fieldset, label, .form-head', form).forEach(el => { el.hidden = true; });
+          btn.hidden = true;
+          aviso('¡Gracias! Recibimos tu solicitud y te responderemos en menos de 1 día hábil al correo que nos dejaste.');
+          msg.focus?.();
+          return;
+        }
+        if (res.status === 400) aviso('Revisa los campos obligatorios: nombre, un email válido y la aceptación de la política de privacidad.', true);
+        else if (res.status === 429) aviso('Recibimos varios envíos desde tu conexión. Intenta más tarde o escríbenos a info@w-it.cl.', true);
+        else throw new Error(res.status);
+      } catch (err) {
+        aviso('No pudimos enviar tu solicitud. Intenta de nuevo en unos minutos o escríbenos a info@w-it.cl.', true);
+      }
+      btn.disabled = false;
+      btn.textContent = 'Enviar solicitud';
     });
   }
 

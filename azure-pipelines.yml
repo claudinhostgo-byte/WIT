@@ -1,0 +1,33 @@
+# Publica sitio/ y la API (api/) en Azure Static Web Apps en cada push a main.
+# Requiere la variable secreta AZURE_STATIC_WEB_APPS_API_TOKEN (token de despliegue de la Static Web App),
+# definida en Pipelines > Library > grupo de variables "sitio-web-prod".
+trigger:
+  branches:
+    include: [main]
+
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: sitio-web-prod
+
+steps:
+  - checkout: self
+
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.11'
+
+  - script: python -m unittest discover -s api/tests -v
+    displayName: Pruebas de la API
+
+  - task: AzureStaticWebApp@0
+    displayName: Publicar en Azure Static Web Apps
+    inputs:
+      azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN)
+      app_location: sitio
+      api_location: api
+      output_location: ''
+      skip_app_build: true
