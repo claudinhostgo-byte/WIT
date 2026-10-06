@@ -10,6 +10,7 @@ Configuración por variables de entorno (Static Web Apps > Configuración):
   DATAVERSE_OWNER_TEAM_ID (opcional) equipo dueño de los leads, p. ej. Comercial
   LEAD_SOURCE_CODE        (opcional) valor de "Origen del cliente potencial"; 8 = Web
   POLITICA_VERSION        (opcional) versión de la política de privacidad aceptada
+  CRM_PREFIJO             (opcional) prefijo de las columnas propias del Lead; wit_ por defecto
   ALLOWED_ORIGINS         (opcional) orígenes permitidos, separados por coma
   TURNSTILE_SECRET        clave secreta de Cloudflare Turnstile (captcha); sin ella no se exige
 """
@@ -36,7 +37,15 @@ INTERESES = {
     'soporte': 'Soporte',
 }
 PAISES = {'Chile', 'Perú', 'Otro'}
-TAMANOS = {'Menos de 200 personas', '200 a 1.000', 'Más de 1.000'}
+
+# Valores de las columnas de opción del Lead (ver infra/DESPLIEGUE.md); deben calzar con Dataverse
+SITIO_WIT = 100000000                      # wit_sitioorigen: 100000001 es WITEDUCA
+OPCION_INTERES = {slug: 100000000 + n for n, slug in enumerate(INTERESES)}   # wit_intereseswit
+TAMANOS = {                                # wit_tamanoorganizacion (100000000-100000002 son de WITEDUCA)
+    'Menos de 200 personas': 100000003,
+    '200 a 1.000': 100000004,
+    'Más de 1.000': 100000005,
+}
 
 # Largo máximo por campo (los de texto libre se recortan; los de Dataverse respetan su límite)
 LARGOS = {
@@ -89,51 +98,52 @@ def validar(data):
     d['pais'] = data.get('pais') if data.get('pais') in PAISES else ''
     d['tamano'] = data.get('tamano') if data.get('tamano') in TAMANOS else ''
     intereses = data.get('interes') if isinstance(data.get('interes'), list) else []
-    d['interes'] = [INTERESES[i] for i in intereses if i in INTERESES]
+    d['interes'] = [i for i in intereses if i in INTERESES]
     return d
 
 
+def _col(nombre):
+    """Columnas propias del Lead (prefijo del editor de la solución en Dataverse)."""
+    return os.environ.get('CRM_PREFIJO', 'wit_') + nombre
+
+
+def _utm(texto):
+    pares = dict(urllib.parse.parse_qsl(texto or '', keep_blank_values=False))
+    return {k: pares.get(f'utm_{k}', '')[:200] for k in ('source', 'medium', 'campaign', 'term', 'content')}
+
+
 def armar_lead(d, ahora=None):
-    """Payload de la tabla lead. Lo que no tiene columna estándar va en la descripción."""
+    """Payload de la tabla lead: columnas estándar más las columnas propias de la solicitud web."""
     ahora = ahora or datetime.now(timezone.utc)
     partes = d['nombre'].split()
     nombre, apellido = (' '.join(partes[:-1]), partes[-1]) if len(partes) > 1 else ('', partes[0])
-    temas = ', '.join(d['interes']) or 'Consulta general'
-    asunto = f"Sitio web · {temas} · {d['empresa'] or d['nombre']}"[:300]
-
-    linea = lambda etiqueta, valor: f'{etiqueta}: {valor}' if valor else None
-    descripcion = '\n'.join(x for x in [
-        d['mensaje'] or '(sin mensaje)',
-        '',
-        '— Datos del formulario —',
-        linea('Intereses', temas),
-        linea('Tamaño de la empresa', d['tamano']),
-        linea('País', d['pais']),
-        '',
-        '— Origen —',
-        linea('Página', d['origen_pagina']),
-        linea('Botón', d['origen_cta']),
-        linea('UTM', d['utm']),
-        linea('Autodiagnóstico', d['diagnostico_herramienta']),
-        linea('Resultado', d['diagnostico_resultado']),
-        linea('Detalle', d['diagnostico_detalle']),
-        '',
-        '— Consentimiento —',
-        f"Aceptó la política de privacidad (versión {os.environ.get('POLITICA_VERSION', 'vigente')}) "
-        f"el {ahora.strftime('%Y-%m-%d %H:%M:%S')} UTC desde el formulario de contacto del sitio.",
-    ] if x is not None)
+    etiquetas = [INTERESES[i] for i in d['interes']]
+    temas = ', '.join(etiquetas) or 'Consulta general'
 
     lead = {
-        'subject': asunto,
+        'subject': f"Sitio web · {temas} · {d['empresa'] or d['nombre']}"[:300],
         'lastname': apellido[:50],
         'emailaddress1': d['email'],
-        'description': descripcion,
+        'description': d['mensaje'] or '(sin mensaje)',
         'leadsourcecode': int(os.environ.get('LEAD_SOURCE_CODE', '8')),
+        _col('sitioorigen'): SITIO_WIT,
+        _col('consentimiento'): True,
+        _col('consentimientofecha'): ahora.strftime('%Y-%m-%dT%H:%M:%SZ'),
+        _col('politicaversion'): os.environ.get('POLITICA_VERSION', 'vigente')[:20],
     }
     opcionales = {
         'firstname': nombre[:50], 'companyname': d['empresa'], 'jobtitle': d['cargo'],
         'telephone1': d['telefono'], 'address1_country': d['pais'],
+        _col('tamanoorganizacion'): TAMANOS.get(d['tamano']),
+        # Opción múltiple: Dataverse recibe los valores separados por coma
+        _col('intereseswit'): ','.join(str(OPCION_INTERES[i]) for i in d['interes']),
+        _col('paginaorigen'): d['origen_pagina'],
+        _col('botonorigen'): d['origen_cta'],
+        _col('diagnosticoherramienta'): d['diagnostico_herramienta'],
+        _col('diagnosticoresultado'): d['diagnostico_resultado'],
+        _col('diagnosticodetalle'): d['diagnostico_detalle'],
     }
+    opcionales.update({_col(f'utm{k}'): v for k, v in _utm(d['utm']).items()})
     lead.update({k: v for k, v in opcionales.items() if v})
     equipo = os.environ.get('DATAVERSE_OWNER_TEAM_ID')
     if equipo:

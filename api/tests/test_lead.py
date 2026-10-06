@@ -20,7 +20,7 @@ BASE = {
 class Validacion(unittest.TestCase):
     def test_valido(self):
         d = L.validar(BASE)
-        self.assertEqual(d['interes'], ['Contact center'])
+        self.assertEqual(d['interes'], ['contact-center'])
         self.assertEqual(d['pais'], 'Chile')
 
     def test_obligatorios(self):
@@ -53,20 +53,54 @@ class Antispam(unittest.TestCase):
 class Payload(unittest.TestCase):
     def test_lead(self):
         os.environ.pop('DATAVERSE_OWNER_TEAM_ID', None)
-        lead = L.armar_lead(L.validar(BASE), datetime(2026, 10, 1, 12, tzinfo=timezone.utc))
+        datos = {**BASE, 'utm': 'utm_source=google&utm_medium=cpc&utm_campaign=cc-2026',
+                 'diagnostico_herramienta': 'Autodiagnóstico de atención y ventas', 'diagnostico_resultado': 'Contact Center'}
+        lead = L.armar_lead(L.validar(datos), datetime(2026, 10, 1, 12, tzinfo=timezone.utc))
         self.assertEqual(lead['firstname'], 'María José')
         self.assertEqual(lead['lastname'], 'Pérez')
         self.assertEqual(lead['subject'], 'Sitio web · Contact center · Empresa S.A.')
+        self.assertEqual(lead['description'], 'Queremos evaluar Contact Center.')
         self.assertEqual(lead['leadsourcecode'], 8)
-        self.assertIn('2026-10-01 12:00:00 UTC', lead['description'])
-        self.assertIn('Página: /soluciones/contact-center/', lead['description'])
+        self.assertEqual(lead['wit_sitioorigen'], 100000000)
+        self.assertEqual(lead['wit_tamanoorganizacion'], 100000004)
+        self.assertEqual(lead['wit_intereseswit'], '100000002')
+        self.assertEqual(lead['wit_paginaorigen'], '/soluciones/contact-center/')
+        self.assertEqual(lead['wit_botonorigen'], 'Conversemos · cta')
+        self.assertEqual((lead['wit_utmsource'], lead['wit_utmmedium'], lead['wit_utmcampaign']), ('google', 'cpc', 'cc-2026'))
+        self.assertNotIn('wit_utmterm', lead)
+        self.assertEqual(lead['wit_diagnosticoresultado'], 'Contact Center')
+        self.assertIs(lead['wit_consentimiento'], True)
+        self.assertEqual(lead['wit_consentimientofecha'], '2026-10-01T12:00:00Z')
         self.assertNotIn('ownerid@odata.bind', lead)
+
+    def test_valores_de_opcion_iguales_a_dataverse(self):
+        # Verificados en w-it.crm2.dynamics.com el 2026-10-06
+        self.assertEqual(L.SITIO_WIT, 100000000)
+        self.assertEqual(L.TAMANOS, {'Menos de 200 personas': 100000003, '200 a 1.000': 100000004, 'Más de 1.000': 100000005})
+        self.assertEqual(list(L.OPCION_INTERES.values()), list(range(100000000, 100000010)))
+        self.assertEqual(list(L.INTERESES.values()), ['IA y agentes', 'Ventas y servicio', 'Contact center', 'Finanzas y operaciones',
+                                                     'Datos y analítica', 'Automatización y apps', 'Nube Azure',
+                                                     'Seguridad e identidades', 'Licencias Microsoft', 'Soporte'])
+
+    def test_varios_intereses_en_orden(self):
+        lead = L.armar_lead(L.validar({**BASE, 'interes': ['soporte', 'ia-y-agentes']}))
+        self.assertEqual(lead['wit_intereseswit'], '100000009,100000000')
+        self.assertTrue(lead['subject'].startswith('Sitio web · Soporte, IA y agentes'))
+
+    def test_prefijo_configurable(self):
+        os.environ['CRM_PREFIJO'] = 'cr1a_'
+        try:
+            lead = L.armar_lead(L.validar(BASE))
+            self.assertIn('cr1a_sitioorigen', lead)
+            self.assertNotIn('wit_sitioorigen', lead)
+        finally:
+            del os.environ['CRM_PREFIJO']
 
     def test_nombre_de_una_palabra_y_sin_opcionales(self):
         lead = L.armar_lead(L.validar({'nombre': 'Cher', 'email': 'c@x.cl', 'consentimiento': True}))
         self.assertEqual(lead['lastname'], 'Cher')
-        self.assertNotIn('firstname', lead)
-        self.assertNotIn('companyname', lead)
+        for campo in ('firstname', 'companyname', 'wit_tamanoorganizacion', 'wit_intereseswit', 'wit_utmsource'):
+            self.assertNotIn(campo, lead)
         self.assertTrue(lead['subject'].startswith('Sitio web · Consulta general · Cher'))
 
     def test_equipo_duenio(self):
@@ -76,7 +110,6 @@ class Payload(unittest.TestCase):
             self.assertEqual(lead['ownerid@odata.bind'], '/teams(00000000-0000-0000-0000-000000000001)')
         finally:
             del os.environ['DATAVERSE_OWNER_TEAM_ID']
-
 
 
 class Captcha(unittest.TestCase):
