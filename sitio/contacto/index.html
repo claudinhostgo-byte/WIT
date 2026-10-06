@@ -213,11 +213,13 @@
       <input type="hidden" name="t">
       <!-- Antispam: campo que una persona no ve ni completa -->
       <label class="hp" aria-hidden="true">Sitio web<input name="sitio_web" tabindex="-1" autocomplete="off"></label>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAErb2u1CQC3VqGpb" data-theme="light" data-language="es"></div>
       <button class="btn btn-lg btn-primary" type="submit">Enviar solicitud</button>
       <p class="form-msg" role="status" tabindex="-1" hidden></p>
     </form>
   </div>
 </section>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </main>
 
 <footer class="site-footer">

@@ -78,5 +78,30 @@ class Payload(unittest.TestCase):
             del os.environ['DATAVERSE_OWNER_TEAM_ID']
 
 
+
+class Captcha(unittest.TestCase):
+    def tearDown(self):
+        os.environ.pop('TURNSTILE_SECRET', None)
+
+    def test_sin_secreto_no_se_exige(self):
+        os.environ.pop('TURNSTILE_SECRET', None)
+        self.assertTrue(L.captcha_valido({}))
+
+    def test_con_secreto_y_sin_token(self):
+        os.environ['TURNSTILE_SECRET'] = 'x'
+        self.assertFalse(L.captcha_valido({}))
+
+    def test_respuesta_de_cloudflare(self):
+        import io
+        from unittest import mock
+        os.environ['TURNSTILE_SECRET'] = 'x'
+        for cuerpo, esperado in ((b'{"success": true}', True), (b'{"success": false}', False)):
+            with mock.patch('urllib.request.urlopen', return_value=io.BytesIO(cuerpo)) as m:
+                self.assertEqual(L.captcha_valido({'cf-turnstile-response': 'tok'}, '1.2.3.4'), esperado)
+                enviado = m.call_args[0][0].data.decode()
+                self.assertIn('response=tok', enviado)
+                self.assertIn('remoteip=1.2.3.4', enviado)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -11,6 +11,7 @@ Configuración por variables de entorno (Static Web Apps > Configuración):
   LEAD_SOURCE_CODE        (opcional) valor de "Origen del cliente potencial"; 8 = Web
   POLITICA_VERSION        (opcional) versión de la política de privacidad aceptada
   ALLOWED_ORIGINS         (opcional) orígenes permitidos, separados por coma
+  TURNSTILE_SECRET        clave secreta de Cloudflare Turnstile (captcha); sin ella no se exige
 """
 import json
 import os
@@ -175,6 +176,23 @@ def crear_lead(lead):
         entidad = r.headers.get('OData-EntityId', '')
     m = re.search(r'\(([0-9a-f-]{36})\)', entidad)
     return m.group(1) if m else ''
+
+
+def captcha_valido(data, ip=''):
+    """Verifica el token de Cloudflare Turnstile. Sin TURNSTILE_SECRET (pruebas locales) no se exige."""
+    secreto = os.environ.get('TURNSTILE_SECRET')
+    if not secreto:
+        return True
+    token = data.get('cf-turnstile-response')
+    if not isinstance(token, str) or not token:
+        return False
+    campos = {'secret': secreto, 'response': token}
+    if ip:
+        campos['remoteip'] = ip
+    req = urllib.request.Request('https://challenges.cloudflare.com/turnstile/v0/siteverify',
+                                 data=urllib.parse.urlencode(campos).encode())
+    with urllib.request.urlopen(req, timeout=10) as r:
+        return json.load(r).get('success') is True
 
 
 def origen_permitido(origin):

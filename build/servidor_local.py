@@ -40,6 +40,8 @@ class Handler(SimpleHTTPRequestHandler):
         if L.es_bot(data):
             print('[antispam] envío descartado')
             return self._json(200, {'ok': True})
+        if not L.captcha_valido(data):
+            return self._json(400, {'ok': False, 'campos': ['captcha']})
         try:
             lead = L.armar_lead(L.validar(data))
         except L.Rechazo as e:

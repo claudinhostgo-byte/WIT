@@ -483,6 +483,9 @@ VERIFICAR = 'https://marketplace.microsoft.com/en-us/partners/dcdbe467-cd53-4233
 DESIGNACIONES = ['Business Applications', 'Modern Work', 'Data &amp; AI', 'Digital &amp; App Innovation', 'Infrastructure', 'Security']
 # False mientras el perfil de Marketplace no refleje Microsoft Cloud: la tarjeta enlaza al Trust Center en vez de "Verificar".
 MS_CLOUD_EN_MARKETPLACE = True
+# Cloudflare Turnstile (captcha del formulario): la misma clave pública que witeduca.cl.
+# En Cloudflare, el widget debe autorizar los dominios del sitio (w-it.cl y el de Azure Static Web Apps).
+TURNSTILE_SITEKEY = '0x4AAAAAAErb2u1CQC3VqGpb'
 
 
 def hero_trust(r):
@@ -1227,11 +1230,13 @@ def contacto(r):
       <input type="hidden" name="t">
       <!-- Antispam: campo que una persona no ve ni completa -->
       <label class="hp" aria-hidden="true">Sitio web<input name="sitio_web" tabindex="-1" autocomplete="off"></label>
+      <div class="cf-turnstile" data-sitekey="{TURNSTILE_SITEKEY}" data-theme="light" data-language="es"></div>
       <button class="btn btn-lg btn-primary" type="submit">Enviar solicitud</button>
       <p class="form-msg" role="status" tabindex="-1" hidden></p>
     </form>
   </div>
-</section>'''
+</section>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>'''
 
 
 

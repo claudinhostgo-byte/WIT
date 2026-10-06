@@ -1085,6 +1085,7 @@ a.mega-js:hover { color: var(--green-dark); }
 .form-msg { margin: 0; padding: 12px 14px; border-radius: 8px; background: var(--green-tint); font-size: 14px; }
 .form-msg.is-error { background: #fdecea; color: #8a1c12; }
 .form-msg:focus { outline: none; }
+.cf-turnstile { min-height: 65px; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* ---------- Responsive ---------- */

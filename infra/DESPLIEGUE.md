@@ -8,7 +8,7 @@ Navegador ──► Azure Static Web Apps (sitio/)            HTTPS, CDN, domini
 
 | Recurso | Nombre propuesto | Notas |
 |---|---|---|
-| Grupo de recursos | `rg-wit-sitio-prod` | |
+| Grupo de recursos | `swa-wit-sitio-prod` | |
 | Static Web App | `swa-wit-sitio-prod` | Plan **Standard** (SLA, dominios propios, secretos de app). Región `eastus2` (Static Web Apps no tiene región en Sudamérica). |
 | App Registration (Entra ID) | `W-IT Sitio web → Dataverse` | Solo client credentials. Secreto con vencimiento de 12 meses. |
 | Usuario de aplicación (Dataverse) | el mismo App Registration | Rol propio mínimo: ver paso 3. |
@@ -18,9 +18,9 @@ Navegador ──► Azure Static Web Apps (sitio/)            HTTPS, CDN, domini
 ```bash
 az login
 az account set --subscription "<suscripción de W-IT>"
-az group create -n rg-wit-sitio-prod -l eastus2 --tags proyecto=sitio-web owner=marketing
-az staticwebapp create -n swa-wit-sitio-prod -g rg-wit-sitio-prod -l eastus2 --sku Standard
-az staticwebapp secrets list -n swa-wit-sitio-prod -g rg-wit-sitio-prod --query properties.apiKey -o tsv   # token de despliegue → Azure DevOps
+az group create -n swa-wit-sitio-prod -l eastus2 --tags proyecto=sitio-web owner=marketing
+az staticwebapp create -n swa-wit-sitio-prod -g swa-wit-sitio-prod -l eastus2 --sku Standard
+az staticwebapp secrets list -n swa-wit-sitio-prod -g swa-wit-sitio-prod --query properties.apiKey -o tsv   # token de despliegue → Azure DevOps
 ```
 
 ## 2. App Registration
@@ -45,7 +45,7 @@ Anotar la fecha de vencimiento del secreto y crear un recordatorio de rotación.
 ## 4. Configuración de la Static Web App
 
 ```bash
-az staticwebapp appsettings set -n swa-wit-sitio-prod -g rg-wit-sitio-prod --setting-names \
+az staticwebapp appsettings set -n swa-wit-sitio-prod -g swa-wit-sitio-prod --setting-names \
   DATAVERSE_URL=https://<org>.crm2.dynamics.com \
   DATAVERSE_TENANT_ID=<tenant> \
   DATAVERSE_CLIENT_ID=<appId> \

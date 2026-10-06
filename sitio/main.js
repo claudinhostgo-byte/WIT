@@ -226,12 +226,16 @@
           msg.focus?.();
           return;
         }
-        if (res.status === 400) aviso('Revisa los campos obligatorios: nombre, un email válido y la aceptación de la política de privacidad.', true);
+        const err = res.status === 400 ? await res.json().catch(() => ({})) : {};
+        if (err.campos && err.campos.includes('captcha')) aviso('Completa la verificación de seguridad antes de enviar.', true);
+        else if (res.status === 400) aviso('Revisa los campos obligatorios: nombre, un email válido y la aceptación de la política de privacidad.', true);
         else if (res.status === 429) aviso('Recibimos varios envíos desde tu conexión. Intenta más tarde o escríbenos a info@w-it.cl.', true);
         else throw new Error(res.status);
       } catch (err) {
         aviso('No pudimos enviar tu solicitud. Intenta de nuevo en unos minutos o escríbenos a info@w-it.cl.', true);
       }
+      // Cada token de Turnstile sirve una sola vez: se renueva para el siguiente intento
+      try { window.turnstile && window.turnstile.reset(); } catch (err) { /* sin captcha */ }
       btn.disabled = false;
       btn.textContent = 'Enviar solicitud';
     });

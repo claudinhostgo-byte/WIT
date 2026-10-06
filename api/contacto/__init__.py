@@ -45,6 +45,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return _json(429, {'ok': False})
 
     try:
+        if not L.captcha_valido(data, ip):
+            return _json(400, {'ok': False, 'campos': ['captcha']})
+    except Exception:
+        logging.exception('contacto: no se pudo verificar el captcha')
+        return _json(502, {'ok': False})
+
+    try:
         datos = L.validar(data)
     except L.Rechazo as e:
         return _json(400, {'ok': False, 'campos': e.campos})
