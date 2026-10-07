@@ -25,7 +25,6 @@ Mapa del sitio (página: ruta)
 - Cofinanciamiento Microsoft: /cofinanciamiento-microsoft/
 - Cómo trabajamos: /como-trabajamos/
 - Contacto: /contacto/
-- Política de cookies: /cookies/
 - Autodiagnóstico de atención y ventas: /herramientas/atencion-y-ventas/
 - Autodiagnóstico de madurez en IA y agentes: /herramientas/autodiagnostico-ia/
 - ¿Business Central o Finance?: /herramientas/business-central-o-finance/
@@ -61,4 +60,3 @@ Mapa del sitio (página: ruta)
 - Nube Azure e infraestructura: /soluciones/nube-azure-e-infraestructura/
 - Seguridad e identidades: /soluciones/seguridad-y-cumplimiento/
 - Ventas y servicio al cliente: /soluciones/ventas-servicio-y-contact-center/
-- Términos de uso: /terminos/

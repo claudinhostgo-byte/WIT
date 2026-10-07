@@ -7,7 +7,6 @@ Los enlaces son rutas del sitio. Al responder, entrega la ruta como enlace Markd
 - [Cofinanciamiento Microsoft](/cofinanciamiento-microsoft/): Programas de inversión de Microsoft que cofinancian talleres, pruebas de concepto (POC) y productos mínimos viables (MVP) con W-IT. Evaluamos tu elegibilidad.
 - [Cómo trabajamos](/como-trabajamos/): Cuatro metodologías ágiles sobre marcos probados de Microsoft.
 - [Contacto](/contacto/): Contacta a W-IT: proyectos, licencias y soporte Microsoft en Chile y Perú.
-- [Política de cookies](/cookies/): Política de cookies
 - [Autodiagnóstico de atención y ventas](/herramientas/atencion-y-ventas/): Contact Center, Sales o Customer Service: por dónde partir según tus canales, volumen y equipo.
 - [Autodiagnóstico de madurez en IA y agentes](/herramientas/autodiagnostico-ia/): Nivel de preparación, plazo estimado y próximo paso.
 - [¿Business Central o Finance?](/herramientas/business-central-o-finance/): Recomendación según tu perfil, con razones y plazo típico de implementación.
@@ -43,7 +42,6 @@ Los enlaces son rutas del sitio. Al responder, entrega la ruta como enlace Markd
 - [Nube Azure e infraestructura](/soluciones/nube-azure-e-infraestructura/): Microsoft Azure. Migración, modernización y operación en Azure, con costos bajo control.
 - [Seguridad e identidades](/soluciones/seguridad-y-cumplimiento/): Microsoft Purview y Microsoft Entra. Identidades, accesos y cargas en la nube protegidos con el modelo Zero Trust.
 - [Ventas y servicio al cliente](/soluciones/ventas-servicio-y-contact-center/): Microsoft Dynamics 365 Sales y Customer Service. Una sola vista del cliente, de la venta a la postventa.
-- [Términos de uso](/terminos/): Términos de uso
 
 ## Preguntas frecuentes de navegación
 
@@ -715,21 +713,6 @@ Conversamos sobre tu escenarioLas alternativas que vemos y si podría aplicar co
 Chile · W-IT SpAAv. Apoquindo 3039, Las Condes, Santiago
 Perú · W-IT LATAM S.A.C.Av. Circunvalación del Golf Los Incas 170, Int. 702, Santiago de Surco, Lima
 +56 2 2409 6112info@w-it.cl
-
-### Política de cookies (/cookies/)
-
-[Página: Política de cookies · ruta /cookies/]
-Política de cookies
-
-Secciones: ¿Conversamos sobre tu caso?
-
-[Página: Política de cookies · ruta /cookies/]
-Legal
-Política de cookies
-Documento en redacción.
-¿Conversamos sobre tu caso?
-Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.
-ConversemosConversa con nuestro agente
 
 ### Autodiagnóstico de atención y ventas (/herramientas/atencion-y-ventas/)
 
@@ -3140,21 +3123,6 @@ Solutions Partner for AI Business SolutionsVer Trust Center →
 Herramienta relacionadaGratis
 Autodiagnóstico de atención y ventas
 Resultados orientativos. No son una cotización ni asesoría legal.Empezar →
-¿Conversamos sobre tu caso?
-Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.
-ConversemosConversa con nuestro agente
-
-### Términos de uso (/terminos/)
-
-[Página: Términos de uso · ruta /terminos/]
-Términos de uso
-
-Secciones: ¿Conversamos sobre tu caso?
-
-[Página: Términos de uso · ruta /terminos/]
-Legal
-Términos de uso
-Documento en redacción.
 ¿Conversamos sobre tu caso?
 Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.
 ConversemosConversa con nuestro agente

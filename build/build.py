@@ -212,8 +212,7 @@ def footer(r):
       <address class="footer-col"><strong>Contacto</strong><span><b class="footer-pais"><img class="flag" src="{r}assets/img/chile.svg" alt="" width="21" height="14">Chile</b>Av. Apoquindo 3039<br>Las Condes, Santiago</span><span><b class="footer-pais"><img class="flag" src="{r}assets/img/peru.svg" alt="" width="21" height="14">Perú</b>Av. Circunvalación del Golf Los Incas 170, Int. 702<br>Santiago de Surco, Lima</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
     </div>
     <div class="footer-bottom">
-      <nav aria-label="Legal"><a href="{r}privacidad/">Privacidad</a><a href="{r}cookies/">Cookies</a><a href="{r}terminos/">Términos</a></nav>
-      <nav aria-label="Redes"><a href="#">LinkedIn</a><a href="#">YouTube</a><a href="#">Instagram</a></nav>
+      <nav aria-label="Legal"><a href="{r}privacidad/">Privacidad</a></nav>
       <span>© 2026 W-IT SpA</span>
     </div>
   </div>
@@ -1558,9 +1557,9 @@ def main():
     pages.append(write('nosotros/confianza/', 'Trust Center · W-IT', 'Credenciales verificables de W-IT.', confianza, 'nosotros'))
     pages.append(write('contacto/', 'Contacto · W-IT', 'Contacta a W-IT: proyectos, licencias y soporte Microsoft en Chile y Perú.', contacto))
     pages.append(write('privacidad/', 'Aviso de privacidad y tratamiento de datos · W-IT', 'Qué datos recolectamos en w-it.cl, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.', privacidad_page))
-    for slug, t in [('cookies', 'Política de cookies'), ('terminos', 'Términos de uso')]:
-        pages.append(write(f'{slug}/', f'{t} · W-IT', t, simple_page('Legal', t, 'Documento en redacción.', [(t, f'{slug}/')], '<p class="lead">[Redacción por Administración y Finanzas]</p>')))
     # Equipo y Recursos/Observatorio IA: ocultos hasta tener contenido real (2026-10-01)
+    # Cookies y Términos: ocultos hasta tener el texto de Administración y Finanzas (2026-10-07);
+    # al volver: páginas con simple_page('Legal', ...) y enlaces en footer-bottom. Redes sociales: ocultas hasta tener las URL.
     print(f'{len(pages)} páginas generadas')
     check_css()
     agente.generar()
