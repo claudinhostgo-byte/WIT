@@ -8,6 +8,7 @@ from urllib.parse import quote
 import os
 from html import escape
 from PIL import Image
+import agente
 from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME,
                      COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP, DIAG_CRM)
 
@@ -21,6 +22,11 @@ COFIN_PAGE = 'cofinanciamiento-microsoft/'
 # Herramientas que aparecen en el menú «Autodiagnósticos»
 DIAGNOSTICOS = ('autodiagnostico-ia', 'business-central-o-finance', 'atencion-y-ventas')
 COPILOT_URL = 'https://www.microsoft.com/es-cl/microsoft-365/copilot'
+# Agente W-IT (clip flotante): token endpoint del agente de Copilot Studio (Canales → Aplicación móvil).
+# Es público por diseño (agente sin autenticación). Vacío: el panel avisa que el agente no está conectado.
+# La variable de entorno AGENTE_TOKEN_URL lo reemplaza para pruebas locales. Ver agente/README.md.
+AGENTE_TOKEN_URL = os.environ.get('AGENTE_TOKEN_URL', 'https://1756cb9a79e246269becc0563cc018.0f.environment.api.powerplatform.com'
+                                  '/powervirtualagents/botsbyschema/cr544_agentesitiowebwit_MXVmeB/directline/token?api-version=2022-03-01-preview')
 IND_NOMBRE = {**{i['slug']: i['nombre'] for i in INDUSTRIAS}, 'otros': 'Telecomunicaciones y otros'}
 
 CHEV = '<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -214,14 +220,14 @@ def footer(r):
 </footer>
 
 <div class="agente" id="agente">
-  <div class="agente-panel" id="agente-panel" role="dialog" aria-label="Agente W-IT" hidden>
+  <div class="agente-panel" id="agente-panel" role="dialog" aria-label="Agente W-IT" hidden data-token-url="{escape(AGENTE_TOKEN_URL)}">
     <strong>Agente W-IT</strong>
-    <span>Soy un asistente de IA de W-IT. No cotizo ni doy asesoría legal; puedo derivarte a una persona.</span>
-    <ul>
-      <li><button type="button">¿Qué Copilot necesito?</button></li>
-      <li><button type="button">¿Business Central o Finance?</button></li>
-      <li><button type="button">Clientes en banca</button></li>
-    </ul>
+    <span>Soy un asistente de IA y te ayudo a encontrar información en este sitio. Puedo equivocarme. No escribas datos personales.</span>
+    <div class="agente-log" aria-live="polite"><div class="agente-msg agente-msg-bot">Cuéntame qué necesitas y te ayudo a encontrarlo en el sitio.</div></div>
+    <form class="agente-form">
+      <input type="text" name="q" maxlength="500" autocomplete="off" placeholder="Escribe tu pregunta" aria-label="Escribe tu pregunta" required>
+      <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </form>
   </div>
   <button class="agente-fab" type="button" aria-controls="agente-panel" aria-expanded="false" aria-label="Abrir agente W-IT">
     <span class="clip-say" aria-hidden="true">¿Te ayudo?</span>
@@ -1422,6 +1428,7 @@ def privacidad_page(r):
     proveedores = [
         ('Microsoft Dynamics 365', 'Es nuestro CRM: ahí queda tu consulta para que el equipo comercial la atienda', 'Todo lo que enviaste en el formulario'),
         ('Microsoft 365 (Exchange Online)', 'Es nuestro correo: ahí recibimos las postulaciones de Trabaja con nosotros', 'Todo lo que enviaste en el formulario de postulación, incluido tu currículum'),
+        ('Microsoft Copilot Studio', 'Responde las preguntas que le haces al asistente del sitio (el clip)', 'Lo que escribes en el asistente'),
         ('Microsoft Azure', 'Aloja este sitio y procesa el envío de los formularios', 'El envío, en tránsito'),
         ('Cloudflare (Turnstile y Web Analytics)', 'Verifica que quien envía el formulario es una persona, y cuenta las visitas al sitio', 'Señales técnicas de tu navegador, tu IP y la página visitada. No recibe lo que escribiste ni te identifica'),
         ('Google Ads', 'Nos dice si quien envió el formulario llegó desde uno de nuestros avisos, para no gastar en avisos que no sirven', 'Que hubo un envío de formulario y desde qué aviso, mediante la cookie _gcl_au. No recibe tu nombre, tu correo ni lo que escribiste'),
@@ -1461,6 +1468,10 @@ def privacidad_page(r):
     <li>Nombre, correo electrónico, tu currículum y tu respuesta sobre si usaste IA para prepararlos. Son los obligatorios.</li>
     <li>Teléfono y un mensaje, si decides incluirlos.</li>
   </ul>
+  <h3>Lo que escribes en el asistente del sitio:</h3>
+  <ul class="legal-list">
+    <li>Tus preguntas y las respuestas del asistente. El asistente no te pide datos personales: te pedimos no escribirlos ahí.</li>
+  </ul>
   <h3>Los que el sitio registra junto a tu envío:</h3>
   <ul class="legal-list">
     <li>La página desde la que enviaste el formulario, incluidos los parámetros de campaña si llegaste por un enlace de marketing.</li>
@@ -1472,12 +1483,13 @@ def privacidad_page(r):
 
   <h2>Para qué los usamos</h2>
   <p>Para responder tu consulta y hacerte seguimiento comercial sobre lo que nos preguntaste: cotizarte un proyecto, coordinar una reunión o enviarte la información que pediste.</p>
+  <p>Las conversaciones con el asistente las usamos para responderte y para revisar si sus respuestas son correctas y mejorarlas. No las asociamos a tu identidad ni entran a nuestro CRM.</p>
   <p>Si postulas en Trabaja con nosotros, usamos tus datos y tu currículum solo para evaluar tu perfil en nuestros procesos de selección y contactarte por ellos. No entran a nuestro CRM ni al seguimiento comercial.</p>
   <p>No usamos tus datos para otra cosa. No los vendemos, no los cedemos a terceros con fines comerciales y no te vamos a inscribir en una lista de correos por haber enviado un formulario.</p>
   <p>La base que nos habilita a tratarlos es tu propio envío del formulario: tú nos entregas los datos con el fin explícito de que te contactemos.</p>
 
   <h2>Con quién los compartimos</h2>
-  <p>Con cinco proveedores de tecnología, cada uno para una función específica. Ninguno los usa para fines propios.</p>
+  <p>Con seis proveedores de tecnología, cada uno para una función específica. Ninguno los usa para fines propios.</p>
   <div class="legal-table-wrap"><table class="legal-table">
     <caption>Proveedores que procesan datos de este sitio y para qué.</caption>
     <thead><tr><th scope="col">Proveedor</th><th scope="col">Para qué</th><th scope="col">Qué recibe</th></tr></thead>
@@ -1489,6 +1501,7 @@ def privacidad_page(r):
   <h2>Cuánto tiempo los conservamos</h2>
   <p>Mantenemos tu consulta en nuestro CRM mientras siga vigente la relación comercial o el interés que la originó, y hasta que nos pidas eliminarla.</p>
   <p>Guardamos tu postulación mientras sigamos considerando tu perfil para procesos de selección, y hasta que nos pidas eliminarla.</p>
+  <p>Las conversaciones con el asistente se eliminan automáticamente a los 30 días. [validar]</p>
   <p>Si nos escribiste y decidiste no seguir adelante, puedes pedirnos que borremos tus datos en cualquier momento y no necesitas darnos una razón.</p>
 
   <h2>Tus derechos</h2>
@@ -1544,6 +1557,7 @@ def main():
     # Equipo y Recursos/Observatorio IA: ocultos hasta tener contenido real (2026-10-01)
     print(f'{len(pages)} páginas generadas')
     check_css()
+    agente.generar()
 
 
 def check_css():

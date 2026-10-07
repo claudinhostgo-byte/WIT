@@ -839,18 +839,33 @@ a.card:hover { box-shadow: var(--shadow-8); transform: translateY(-2px); text-de
 /* ---------- Agente flotante ---------- */
 .agente { position: fixed; right: 24px; bottom: 24px; z-index: 60; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
 .agente-panel {
-  width: 320px; max-width: calc(100vw - 48px); background: #fff; border-radius: 12px; box-shadow: var(--shadow-8);
+  width: 360px; max-width: calc(100vw - 48px); max-height: min(560px, calc(100vh - 180px)); background: #fff; border-radius: 12px; box-shadow: var(--shadow-8);
   padding: 20px; display: flex; flex-direction: column; gap: 12px; color: var(--ink);
 }
 .agente-panel[hidden] { display: none; }
-.agente-panel strong { color: var(--navy); }
+.agente-panel > strong { color: var(--navy); }
 .agente-panel > span { font-size: 12px; color: var(--muted); }
-.agente-panel ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.agente-panel li button {
-  width: 100%; text-align: left; border: 1px solid var(--line-strong); background: var(--bg); border-radius: 8px;
-  padding: 10px 12px; font: inherit; font-size: 14px; cursor: pointer; color: var(--navy);
+.agente-log { flex: 1 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; overscroll-behavior: contain; }
+.agente-msg { max-width: 88%; padding: 9px 12px; border-radius: 12px; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
+.agente-msg-yo { align-self: flex-end; background: var(--navy); color: #fff; border-bottom-right-radius: 4px; }
+.agente-msg-bot { align-self: flex-start; background: var(--blue-tint); color: var(--ink); border-bottom-left-radius: 4px; }
+.agente-msg-bot a { color: var(--navy); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.agente-msg-bot a:hover { color: var(--green-dark); }
+.agente-typing { display: flex; gap: 4px; padding: 12px 14px; }
+.agente-typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: agente-typing 1.2s infinite; }
+.agente-typing i:nth-child(2) { animation-delay: .15s; }
+.agente-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes agente-typing { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
+.agente-form { display: flex; gap: 8px; }
+.agente-form input {
+  flex: 1; min-width: 0; border: 1px solid var(--line-strong); border-radius: 8px; padding: 10px 12px; font: inherit; font-size: 14px; color: var(--ink);
 }
-.agente-panel li button:hover { border-color: var(--navy); }
+.agente-form input:focus { outline: 2px solid var(--green); outline-offset: -1px; border-color: transparent; }
+.agente-form button {
+  flex: none; width: 42px; border: 0; border-radius: 8px; background: var(--navy); color: #fff; cursor: pointer; display: grid; place-items: center;
+}
+.agente-form button:hover { background: var(--navy-deep); }
+.agente-form.ocupado button { opacity: .5; cursor: progress; }
 .agente-fab {
   position: relative; width: 96px; height: 124px; border: 0; background: transparent; cursor: pointer; padding: 0;
   filter: drop-shadow(0 10px 16px rgba(0,0,0,.4));
@@ -1167,6 +1182,8 @@ a.mega-js:hover { color: var(--green-dark); }
   .form, .wizard { padding: 24px; }
   .cta-grid { gap: 48px; }
   .agente { right: 16px; bottom: 16px; }
+  .agente-panel { max-width: calc(100vw - 32px); max-height: calc(100vh - 170px); }
+  .agente-form input { font-size: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

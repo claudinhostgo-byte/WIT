@@ -10,6 +10,8 @@ Nuevo sitio de W-IT, Microsoft Solutions Partner en Chile y Perú. Sitio estáti
 build/
   build.py      # plantillas (header, footer, páginas) y generador
   content.py    # contenido: soluciones, industrias, clientes, casos, etc.
+  agente.py     # genera el conocimiento y las instrucciones del Agente W-IT (Copilot Studio)
+agente/         # lo que se carga en Copilot Studio para el clip del sitio (ver agente/README.md)
 sitio/          # sitio generado, listo para servir
   styles.css    # estilos (se edita directamente)
   main.js       # comportamiento (se edita directamente)

@@ -286,14 +286,14 @@
 </footer>
 
 <div class="agente" id="agente">
-  <div class="agente-panel" id="agente-panel" role="dialog" aria-label="Agente W-IT" hidden>
+  <div class="agente-panel" id="agente-panel" role="dialog" aria-label="Agente W-IT" hidden data-token-url="https://1756cb9a79e246269becc0563cc018.0f.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr544_agentesitiowebwit_MXVmeB/directline/token?api-version=2022-03-01-preview">
     <strong>Agente W-IT</strong>
-    <span>Soy un asistente de IA de W-IT. No cotizo ni doy asesoría legal; puedo derivarte a una persona.</span>
-    <ul>
-      <li><button type="button">¿Qué Copilot necesito?</button></li>
-      <li><button type="button">¿Business Central o Finance?</button></li>
-      <li><button type="button">Clientes en banca</button></li>
-    </ul>
+    <span>Soy un asistente de IA y te ayudo a encontrar información en este sitio. Puedo equivocarme. No escribas datos personales.</span>
+    <div class="agente-log" aria-live="polite"><div class="agente-msg agente-msg-bot">Cuéntame qué necesitas y te ayudo a encontrarlo en el sitio.</div></div>
+    <form class="agente-form">
+      <input type="text" name="q" maxlength="500" autocomplete="off" placeholder="Escribe tu pregunta" aria-label="Escribe tu pregunta" required>
+      <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </form>
   </div>
   <button class="agente-fab" type="button" aria-controls="agente-panel" aria-expanded="false" aria-label="Abrir agente W-IT">
     <span class="clip-say" aria-hidden="true">¿Te ayudo?</span>

@@ -653,19 +653,158 @@
     set('utm', store.get('wit-utm'));
   }
 
-  // ---------- Agente flotante
+  // ---------- Agente flotante: conversación con el Agente W-IT (Copilot Studio) por Direct Line.
+  // El token endpoint viene en data-token-url (build.py → AGENTE_TOKEN_URL). La conversación se guarda en
+  // sessionStorage para seguirla al navegar por los enlaces que entrega el agente.
   const fab = $('.agente-fab');
   const agentePanel = $('#agente-panel');
+  const agenteLog = $('.agente-log', agentePanel);
+  const agenteForm = $('.agente-form', agentePanel);
+  const agenteInput = $('input', agenteForm);
+  const tokenUrl = agentePanel.dataset.tokenUrl;
   const setAgente = open => {
     agentePanel.hidden = !open;
     fab.setAttribute('aria-expanded', String(open));
     fab.setAttribute('aria-label', open ? 'Cerrar agente W-IT' : 'Abrir agente W-IT');
+    if (open) agenteLog.scrollTop = agenteLog.scrollHeight;
   };
   fab.addEventListener('click', () => { setAgente(agentePanel.hidden); fab.classList.add('used'); });
 
   $$('[data-open-agente]').forEach(a => a.addEventListener('click', e => {
     e.preventDefault();
     setAgente(true);
-    $('button', agentePanel).focus();
+    agenteInput.focus();
   }));
+
+  // Markdown mínimo y seguro: escapa todo y solo convierte enlaces, negritas y listas
+  const esc = t => t.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const md = texto => esc(texto
+    .replace(/^\s*\[\d+\]:.*$/gm, '')   // definiciones de citas de Copilot Studio
+    .replace(/\s?\[\d+\](?!\()/g, '')   // marcas de cita [1]
+    .trim())
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, txt, href) => {
+      const raw = href.replace(/&amp;/g, '&');
+      if (raw.startsWith('/') && !raw.startsWith('//')) return `<a href="${href}" data-agente-link>${txt}</a>`;
+      if (raw.startsWith('https://')) return `<a href="${href}" target="_blank" rel="noopener">${txt}</a>`;
+      return txt;
+    })
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/^[-*] (.*)$/gm, '• $1')
+    .replace(/\n/g, '<br>');
+
+  const estado = store.get('wit-agente') || { log: [] };
+  const guardar = () => store.set('wit-agente', estado);
+  const burbuja = (de, texto) => {
+    const div = document.createElement('div');
+    div.className = `agente-msg agente-msg-${de}`;
+    if (de === 'yo') div.textContent = texto; else div.innerHTML = md(texto);
+    agenteLog.append(div);
+    agenteLog.scrollTop = agenteLog.scrollHeight;
+  };
+  const decir = (de, texto) => { estado.log.push({ de, texto }); guardar(); burbuja(de, texto); };
+  const escribiendo = on => {
+    let t = $('.agente-typing', agenteLog);
+    if (on && !t) {
+      t = document.createElement('div');
+      t.className = 'agente-msg agente-msg-bot agente-typing';
+      t.setAttribute('aria-label', 'El agente está escribiendo');
+      t.innerHTML = '<i></i><i></i><i></i>';
+      agenteLog.append(t);
+      agenteLog.scrollTop = agenteLog.scrollHeight;
+    } else if (!on && t) t.remove();
+  };
+  estado.log.forEach(m => burbuja(m.de, m.texto));
+  // Si se llegó desde un enlace del agente, el panel sigue abierto en la nueva página
+  if (store.get('wit-agente-abierto')) { store.set('wit-agente-abierto', null); setAgente(true); fab.classList.add('used'); }
+  agenteLog.addEventListener('click', e => { if (e.target.closest('[data-agente-link]')) store.set('wit-agente-abierto', true); });
+
+  // Direct Line 3.0
+  const api = async (url, opts = {}) => {
+    const res = await fetch(url, opts);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.status === 204 ? null : res.json();
+  };
+  const conectar = async () => {
+    const c = estado.conv;
+    if (c && Date.now() - c.t < 45 * 60e3) return c;
+    if (c) { // renueva el token de la misma conversación (dura 60 min)
+      try {
+        const r = await api(`${c.dl}/tokens/refresh`, { method: 'POST', headers: { Authorization: `Bearer ${c.token}` } });
+        Object.assign(c, { token: r.token, t: Date.now() });
+        guardar();
+        return c;
+      } catch (e) { /* conversación vencida: se abre una nueva */ }
+    }
+    const endpoint = new URL(tokenUrl);
+    const version = endpoint.searchParams.get('api-version') || '2022-03-01-preview';
+    const [base, tk] = await Promise.all([
+      api(new URL(`/powervirtualagents/regionalchannelsettings?api-version=${version}`, endpoint))
+        .then(r => r.channelUrlsById.directline).catch(() => 'https://directline.botframework.com/'),
+      api(endpoint),
+    ]);
+    const dl = new URL('v3/directline', base).href;
+    const conv = await api(`${dl}/conversations`, { method: 'POST', headers: { Authorization: `Bearer ${tk.token}` } });
+    estado.conv = { dl, id: conv.conversationId, token: conv.token || tk.token, t: Date.now(), wm: null,
+      user: `web-${Math.random().toString(36).slice(2, 12)}` };
+    guardar();
+    return estado.conv;
+  };
+  const esperar = ms => new Promise(r => setTimeout(r, ms));
+  // Lee la respuesta: consulta cada segundo hasta recibir mensajes del agente y que deje de escribir (máx. 45 s)
+  const leer = async c => {
+    const fin = Date.now() + 45e3;
+    let recibidos = 0, quietos = 0;
+    while (Date.now() < fin) {
+      await esperar(recibidos ? 700 : 1000);
+      const r = await api(`${c.dl}/conversations/${c.id}/activities${c.wm ? `?watermark=${c.wm}` : ''}`,
+        { headers: { Authorization: `Bearer ${c.token}` } });
+      c.wm = r.watermark || c.wm;
+      guardar();
+      const delAgente = r.activities.filter(a => a.from && a.from.id !== c.user);
+      delAgente.forEach(a => {
+        if (a.type === 'typing') escribiendo(true);
+        if (a.type === 'message' && a.text) { escribiendo(false); decir('bot', a.text); recibidos++; }
+      });
+      if (recibidos) {
+        quietos = delAgente.length ? 0 : quietos + 1;
+        if (quietos >= 2) return;
+      }
+    }
+    if (!recibidos) throw new Error('sin respuesta');
+  };
+
+  let ocupado = false;
+  const preguntar = async texto => {
+    texto = texto.trim();
+    if (!texto || ocupado) return;
+    ocupado = true;
+    agenteForm.classList.add('ocupado');
+    decir('yo', texto);
+    escribiendo(true);
+    try {
+      if (!tokenUrl) throw new Error('sin agente');
+      const c = await conectar();
+      await api(`${c.dl}/conversations/${c.id}/activities`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${c.token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'message', from: { id: c.user }, locale: 'es-CL', text: texto }),
+      });
+      await leer(c);
+    } catch (e) {
+      if (/HTTP 40[134]/.test(e.message)) { estado.conv = null; guardar(); }
+      decir('bot', tokenUrl
+        ? 'No pude responder en este momento. Inténtalo de nuevo o escríbenos en [Contacto](/contacto/).'
+        : 'El agente todavía no está conectado. Mientras tanto, puedes escribirnos en [Contacto](/contacto/).');
+    } finally {
+      escribiendo(false);
+      ocupado = false;
+      agenteForm.classList.remove('ocupado');
+    }
+  };
+  agenteForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const t = agenteInput.value;
+    agenteInput.value = '';
+    preguntar(t);
+  });
 })();
