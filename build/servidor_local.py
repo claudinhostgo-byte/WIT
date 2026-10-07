@@ -52,6 +52,7 @@ class Handler(SimpleHTTPRequestHandler):
             return self._json(400, {'ok': False, 'campos': e.campos})
         if not REAL:
             print('[prueba] Lead que se crearía en Dataverse:\n' + json.dumps(lead, ensure_ascii=False, indent=2))
+            print('[prueba] Aviso a Comercial:\n' + json.dumps(L.armar_aviso(lead, ''), ensure_ascii=False, indent=2))
             return self._json(201, {'ok': True, 'prueba': True})
         try:
             print('[dataverse] lead creado', L.crear_lead(lead))

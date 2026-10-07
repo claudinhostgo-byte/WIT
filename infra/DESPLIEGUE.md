@@ -82,7 +82,7 @@ az staticwebapp appsettings set -n swa-wit-sitio-prod -g swa-wit-sitio-prod --se
   POLITICA_VERSION=<fecha de la política vigente> \
   POSTULACIONES_REMITENTE=sitio-web@w-it.cl
 # Opcionales: DATAVERSE_OWNER_TEAM_ID=<guid del equipo Comercial>  ALLOWED_ORIGINS=https://w-it.cl,https://www.w-it.cl
-#             POSTULACIONES_DESTINO=<otro buzón>  GRAPH_TENANT_ID / GRAPH_CLIENT_ID / GRAPH_CLIENT_SECRET (si se usa otra app; por defecto, las DATAVERSE_*)
+#             POSTULACIONES_DESTINO=<otro buzón>  AVISO_LEAD_DESTINO=<otro buzón; comercial@w-it.cl por defecto>  GRAPH_TENANT_ID / GRAPH_CLIENT_ID / GRAPH_CLIENT_SECRET (si se usa otra app; por defecto, las DATAVERSE_*)
 ```
 
 `LEAD_SOURCE_CODE=8` es "Web" en el conjunto de opciones estándar; confirmar si el ambiente lo personalizó.
@@ -101,6 +101,7 @@ Desde ahí, cada push a `main` corre las pruebas de la API y publica.
 
 1. Abrir `https://<nombre>.azurestaticapps.net/soluciones/contact-center/` → "Conversemos" → enviar el formulario.
 2. En Dynamics 365 Sales → Clientes potenciales: debe aparecer `Sitio web · … · <empresa>` con origen Web, la descripción con origen, autodiagnóstico, UTM y consentimiento.
+   A `comercial@w-it.cl` debe llegar el aviso `Nuevo lead · Sitio web · …` con el enlace al registro (sin datos de contacto ni mensaje). Si el aviso falla, el lead igual queda creado y el error se registra como `contacto: aviso a Comercial`.
 3. Abrir `/nosotros/trabaja-con-nosotros/`, adjuntar un PDF y enviar: debe llegar a `postulaciones@w-it.cl` con asunto `Postulación sitio web · <nombre>`.
 4. Revisar errores: Static Web App → Application Insights (o `az staticwebapp functions`), mensajes `contacto:` y `postulacion:`. Los logs no incluyen datos personales.
 

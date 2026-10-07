@@ -1,4 +1,4 @@
-"""POST /api/contacto: recibe el formulario del sitio y crea un Lead en Dynamics 365."""
+"""POST /api/contacto: recibe el formulario del sitio, crea un Lead en Dynamics 365 y avisa a Comercial."""
 import json
 import logging
 import urllib.error
@@ -6,6 +6,7 @@ import urllib.error
 import azure.functions as func
 
 from ..shared import lead as L
+from ..shared import postulacion as P
 
 # Límite simple por IP y por instancia (complementa el campo trampa; no reemplaza un WAF)
 _envios = {}
@@ -48,8 +49,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     except L.Rechazo as e:
         return _json(400, {'ok': False, 'campos': e.campos})
 
+    lead = L.armar_lead(datos)
     try:
-        lead_id = L.crear_lead(L.armar_lead(datos))
+        lead_id = L.crear_lead(lead)
     except urllib.error.HTTPError as e:
         # Sin datos personales en el log: solo el código y el mensaje de Dataverse
         logging.error('contacto: Dataverse respondió %s %s', e.code, e.read()[:500])
@@ -59,4 +61,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return _json(502, {'ok': False})
 
     logging.info('contacto: lead creado %s', lead_id)
+
+    # El lead ya quedó en el CRM: si el aviso falla, solo se registra y la persona igual recibe su confirmación
+    try:
+        P.enviar(L.armar_aviso(lead, lead_id))
+    except urllib.error.HTTPError as e:
+        logging.error('contacto: aviso a Comercial, Graph respondió %s %s', e.code, e.read()[:500])
+    except Exception:
+        logging.exception('contacto: no se pudo enviar el aviso a Comercial')
     return _json(201, {'ok': True})

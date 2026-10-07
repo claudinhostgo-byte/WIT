@@ -136,5 +136,23 @@ class Captcha(unittest.TestCase):
                 self.assertIn('remoteip=1.2.3.4', enviado)
 
 
+class Aviso(unittest.TestCase):
+    def test_aviso_sin_datos_personales(self):
+        os.environ['DATAVERSE_URL'] = 'https://org.crm2.dynamics.com/'
+        lead = L.armar_lead(L.validar(BASE))
+        m = L.armar_aviso(lead, '11111111-2222-3333-4444-555555555555')['message']
+        self.assertEqual(m['toRecipients'][0]['emailAddress']['address'], 'comercial@w-it.cl')
+        self.assertTrue(m['subject'].startswith('Nuevo lead · Sitio web · Contact center · Empresa S.A.'))
+        cuerpo = m['body']['content']
+        self.assertIn('https://org.crm2.dynamics.com/main.aspx?pagetype=entityrecord&amp;etn=lead'
+                      '&amp;id=11111111-2222-3333-4444-555555555555', cuerpo)
+        for dato in ('mj@empresa.cl', '1234 5678', 'Queremos evaluar'):
+            self.assertNotIn(dato, cuerpo)
+
+    def test_aviso_sin_id(self):
+        m = L.armar_aviso(L.armar_lead(L.validar(BASE)), '')['message']
+        self.assertIn('Clientes potenciales', m['body']['content'])
+
+
 if __name__ == '__main__':
     unittest.main()

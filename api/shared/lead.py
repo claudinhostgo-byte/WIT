@@ -13,6 +13,8 @@ Configuración por variables de entorno (Static Web Apps > Configuración):
   CRM_PREFIJO             (opcional) prefijo de las columnas propias del Lead; wit_ por defecto
   ALLOWED_ORIGINS         (opcional) orígenes permitidos, separados por coma
   TURNSTILE_SECRET        clave secreta de Cloudflare Turnstile (captcha); sin ella no se exige
+  AVISO_LEAD_DESTINO      (opcional) a quién avisar de cada lead nuevo; comercial@w-it.cl por defecto
+                          (se envía con Graph desde POSTULACIONES_REMITENTE, ver postulacion.py)
 """
 import json
 import os
@@ -22,6 +24,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
+from html import escape
 
 # Mismos valores que los chips del formulario (build.py)
 INTERESES = {
@@ -149,6 +152,28 @@ def armar_lead(d, ahora=None):
     if equipo:
         lead['ownerid@odata.bind'] = f'/teams({equipo})'
     return lead
+
+
+def armar_aviso(lead, lead_id):
+    """Correo de Graph (sendMail) que avisa a Comercial que hay un lead nuevo en el CRM.
+
+    Solo lleva el asunto del lead y el enlace: los datos de contacto y el mensaje se revisan en Dynamics 365.
+    """
+    base = os.environ.get('DATAVERSE_URL', '').rstrip('/')
+    enlace = f'{base}/main.aspx?pagetype=entityrecord&etn=lead&id={lead_id}' if base and lead_id else ''
+    boton = (f'<p><a href="{escape(enlace)}">Abrir el cliente potencial en Dynamics 365</a></p>' if enlace
+             else '<p>Búscalo en Dynamics 365 Sales → Clientes potenciales.</p>')
+    return {
+        'message': {
+            'subject': f"Nuevo lead · {lead['subject']}"[:250],
+            'body': {'contentType': 'HTML', 'content': (
+                '<p>Llegó una solicitud desde el formulario de contacto de w-it.cl y quedó registrada en el CRM.</p>'
+                f"<p><strong>{escape(lead['subject'])}</strong></p>{boton}"
+                '<p style="color:#666">Los datos de la persona y su mensaje están en el registro del CRM.</p>')},
+            'toRecipients': [{'emailAddress': {'address': os.environ.get('AVISO_LEAD_DESTINO', 'comercial@w-it.cl')}}],
+        },
+        'saveToSentItems': False,
+    }
 
 
 # ---------- Dataverse
