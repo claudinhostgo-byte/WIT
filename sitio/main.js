@@ -653,7 +653,7 @@
     set('utm', store.get('wit-utm'));
   }
 
-  // ---------- Agente flotante (Clipwit): conversación con el agente de Copilot Studio por Direct Line.
+  // ---------- Agente flotante (agente virtual): conversación con el agente de Copilot Studio por Direct Line.
   // El token endpoint viene en data-token-url (build.py → AGENTE_TOKEN_URL). La conversación se guarda en
   // sessionStorage para seguirla al navegar por los enlaces que entrega el agente.
   const fab = $('.agente-fab');
@@ -665,7 +665,7 @@
   const setAgente = open => {
     agentePanel.hidden = !open;
     fab.setAttribute('aria-expanded', String(open));
-    fab.setAttribute('aria-label', open ? 'Cerrar Clipwit' : 'Abrir Clipwit');
+    fab.setAttribute('aria-label', open ? 'Cerrar agente virtual' : 'Abrir agente virtual');
     if (open) agenteLog.scrollTop = agenteLog.scrollHeight;
   };
   fab.addEventListener('click', () => { setAgente(agentePanel.hidden); fab.classList.add('used'); });
