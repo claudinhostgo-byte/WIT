@@ -839,24 +839,38 @@ a.card:hover { box-shadow: var(--shadow-8); transform: translateY(-2px); text-de
 /* ---------- Agente flotante ---------- */
 .agente { position: fixed; right: 24px; bottom: 24px; z-index: 60; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
 .agente-panel {
-  width: 360px; max-width: calc(100vw - 48px); max-height: min(560px, calc(100vh - 180px)); background: #fff; border-radius: 12px; box-shadow: var(--shadow-8);
-  padding: 20px; display: flex; flex-direction: column; gap: 12px; color: var(--ink);
+  width: 370px; max-width: calc(100vw - 48px); max-height: min(600px, calc(100vh - 180px)); background: var(--blue-tint); border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(20,41,58,.28), 0 0 2px rgba(0,0,0,.08); display: flex; flex-direction: column; overflow: hidden; color: var(--ink);
 }
 .agente-panel[hidden] { display: none; }
-.agente-panel > strong { color: var(--navy); }
-.agente-panel > span { font-size: 12px; color: var(--muted); }
-.agente-log { flex: 1 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; overscroll-behavior: contain; }
-.agente-msg { max-width: 88%; padding: 9px 12px; border-radius: 12px; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
+/* Cabecera: identidad del asistente sobre azul W-IT, con el verde de marca como acento */
+.agente-head {
+  display: flex; align-items: center; gap: 12px; padding: 14px 12px 14px 16px; color: #fff;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%); border-bottom: 3px solid var(--green);
+}
+.agente-avatar { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 0 0 2px rgba(255,255,255,.25); }
+.agente-avatar img { display: block; width: 22px; height: 28px; object-fit: contain; }
+.agente-id { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.agente-id strong { font-size: 16px; color: #fff; }
+.agente-id small { font-size: 11.5px; color: rgba(255,255,255,.72); }
+.agente-cerrar {
+  flex: none; width: 34px; height: 34px; border: 0; border-radius: 8px; background: transparent; color: rgba(255,255,255,.8); cursor: pointer; display: grid; place-items: center;
+}
+.agente-cerrar:hover { background: rgba(255,255,255,.12); color: #fff; }
+.agente-cerrar:focus-visible { outline: 2px solid var(--green); outline-offset: 1px; }
+.agente-log { flex: 1 1 auto; min-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 16px; overscroll-behavior: contain; }
+.agente-aviso { margin: 0 0 2px; font-size: 11.5px; line-height: 1.45; color: var(--muted); text-align: center; }
+.agente-msg { max-width: 86%; padding: 10px 13px; border-radius: 14px; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
 .agente-msg-yo { align-self: flex-end; background: var(--navy); color: #fff; border-bottom-right-radius: 4px; }
-.agente-msg-bot { align-self: flex-start; background: var(--blue-tint); color: var(--ink); border-bottom-left-radius: 4px; }
-.agente-msg-bot a { color: var(--navy); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.agente-msg-bot { align-self: flex-start; background: #fff; color: var(--ink); border-bottom-left-radius: 4px; box-shadow: var(--shadow-2); }
+.agente-msg-bot a { color: var(--navy); font-weight: 600; text-decoration: underline; text-decoration-color: var(--green); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .agente-msg-bot a:hover { color: var(--green-dark); }
 .agente-typing { display: flex; gap: 4px; padding: 12px 14px; }
 .agente-typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: agente-typing 1.2s infinite; }
 .agente-typing i:nth-child(2) { animation-delay: .15s; }
 .agente-typing i:nth-child(3) { animation-delay: .3s; }
 @keyframes agente-typing { 0%, 60%, 100% { opacity: .3; } 30% { opacity: 1; } }
-.agente-form { display: flex; gap: 8px; }
+.agente-form { display: flex; gap: 8px; padding: 12px; background: #fff; border-top: 1px solid var(--line); }
 .agente-form input {
   flex: 1; min-width: 0; border: 1px solid var(--line-strong); border-radius: 8px; padding: 10px 12px; font: inherit; font-size: 14px; color: var(--ink);
 }

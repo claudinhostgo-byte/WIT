@@ -653,7 +653,7 @@
     set('utm', store.get('wit-utm'));
   }
 
-  // ---------- Agente flotante: conversación con el Agente W-IT (Copilot Studio) por Direct Line.
+  // ---------- Agente flotante (Clip W-IT): conversación con el agente de Copilot Studio por Direct Line.
   // El token endpoint viene en data-token-url (build.py → AGENTE_TOKEN_URL). La conversación se guarda en
   // sessionStorage para seguirla al navegar por los enlaces que entrega el agente.
   const fab = $('.agente-fab');
@@ -665,10 +665,11 @@
   const setAgente = open => {
     agentePanel.hidden = !open;
     fab.setAttribute('aria-expanded', String(open));
-    fab.setAttribute('aria-label', open ? 'Cerrar agente W-IT' : 'Abrir agente W-IT');
+    fab.setAttribute('aria-label', open ? 'Cerrar Clip W-IT' : 'Abrir Clip W-IT');
     if (open) agenteLog.scrollTop = agenteLog.scrollHeight;
   };
   fab.addEventListener('click', () => { setAgente(agentePanel.hidden); fab.classList.add('used'); });
+  $('.agente-cerrar', agentePanel).addEventListener('click', () => { setAgente(false); fab.focus(); });
 
   $$('[data-open-agente]').forEach(a => a.addEventListener('click', e => {
     e.preventDefault();
