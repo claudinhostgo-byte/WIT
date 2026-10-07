@@ -750,8 +750,9 @@
     return estado.conv;
   };
   const esperar = ms => new Promise(r => setTimeout(r, ms));
-  // Lee la respuesta: consulta cada segundo hasta recibir mensajes del agente y que deje de escribir (máx. 45 s)
-  const leer = async c => {
+  // Lee la respuesta: consulta cada segundo hasta recibir mensajes del agente y que deje de escribir (máx. 45 s).
+  // Direct Line reemplaza el id de usuario por el del token: el eco de la pregunta se reconoce por su id de actividad.
+  const leer = async (c, enviada) => {
     const fin = Date.now() + 45e3;
     let recibidos = 0, quietos = 0;
     while (Date.now() < fin) {
@@ -760,7 +761,8 @@
         { headers: { Authorization: `Bearer ${c.token}` } });
       c.wm = r.watermark || c.wm;
       guardar();
-      const delAgente = r.activities.filter(a => a.from && a.from.id !== c.user);
+      r.activities.forEach(a => { if (a.id === enviada && a.from) c.user = a.from.id; });
+      const delAgente = r.activities.filter(a => a.id !== enviada && a.from && a.from.id !== c.user);
       delAgente.forEach(a => {
         if (a.type === 'typing') escribiendo(true);
         if (a.type === 'message' && a.text) { escribiendo(false); decir('bot', a.text); recibidos++; }
@@ -784,12 +786,12 @@
     try {
       if (!tokenUrl) throw new Error('sin agente');
       const c = await conectar();
-      await api(`${c.dl}/conversations/${c.id}/activities`, {
+      const { id } = await api(`${c.dl}/conversations/${c.id}/activities`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${c.token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'message', from: { id: c.user }, locale: 'es-CL', text: texto }),
       });
-      await leer(c);
+      await leer(c, id);
     } catch (e) {
       if (/HTTP 40[134]/.test(e.message)) { estado.conv = null; guardar(); }
       decir('bot', tokenUrl

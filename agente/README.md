@@ -35,10 +35,25 @@ Los atajos ("dejar el CV", "cotizar", etc.) se editan en `build/agente.py` (`ATA
    - Autenticación: **Sin autenticación** (sitio público).
    - Seguridad del canal web: **no** exigir acceso seguro. Si se exige, el token endpoint pide un secreto y el sitio no puede conectarse.
 6. **Publicar** el agente.
-7. **Canales → Aplicación móvil** (o la opción equivalente en tu versión del portal): copiar el **Token endpoint**.
-8. Pegar esa URL en `build/build.py` → `AGENTE_TOKEN_URL`, ejecutar `python build/build.py` y hacer push a `main`.
+7. Armar el **token endpoint** y pegarlo en `build/build.py` → `AGENTE_TOKEN_URL`; ejecutar `python build/build.py` y hacer push a `main`.
 
 El token endpoint es público por diseño: no es un secreto.
+
+### Token endpoint (agentes nuevos de Copilot Studio)
+
+Los agentes nuevos ("Con tecnología de GitHub Copilot" en la lista de agentes) no muestran el token endpoint en el portal.
+Se arma con dos datos del **Código para insertar** (Canales → Aplicación) y la cadena de conexión del mismo panel:
+
+```
+https://<host del ambiente>/copilotstudio/agenticruntime/botsbyschema/<nombre de esquema>/directline/token?api-version=2022-03-01-preview
+```
+
+- `<host del ambiente>`: el de la **Cadena de conexión** (`…environment.api.powerplatform.com`).
+- `<nombre de esquema>`: lo que va después de `/bots/` en el código para insertar (p. ej. `cr544_agentesitiowebwit_MXVmeB`).
+
+Agente actual: **Agente Sitio Web W-IT**, ambiente productivo de W-IT (geografía Brasil). La ruta antigua
+`/powervirtualagents/botsbyschema/…` responde 404 para estos agentes.
+Para comprobar que responde: abrir la URL en el navegador debe devolver un JSON con `token`.
 
 ## Probar antes del lanzamiento
 

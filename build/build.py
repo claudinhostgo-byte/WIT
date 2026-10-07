@@ -22,11 +22,11 @@ COFIN_PAGE = 'cofinanciamiento-microsoft/'
 # Herramientas que aparecen en el menú «Autodiagnósticos»
 DIAGNOSTICOS = ('autodiagnostico-ia', 'business-central-o-finance', 'atencion-y-ventas')
 COPILOT_URL = 'https://www.microsoft.com/es-cl/microsoft-365/copilot'
-# Agente W-IT (clip flotante): token endpoint del agente de Copilot Studio (Canales → Aplicación móvil).
+# Agente W-IT (clip flotante): token endpoint del agente «Agente Sitio Web W-IT» de Copilot Studio (ver agente/README.md).
 # Es público por diseño (agente sin autenticación). Vacío: el panel avisa que el agente no está conectado.
-# La variable de entorno AGENTE_TOKEN_URL lo reemplaza para pruebas locales. Ver agente/README.md.
+# La variable de entorno AGENTE_TOKEN_URL lo reemplaza para pruebas locales.
 AGENTE_TOKEN_URL = os.environ.get('AGENTE_TOKEN_URL', 'https://1756cb9a79e246269becc0563cc018.0f.environment.api.powerplatform.com'
-                                  '/powervirtualagents/botsbyschema/cr544_agentesitiowebwit_MXVmeB/directline/token?api-version=2022-03-01-preview')
+                                  '/copilotstudio/agenticruntime/botsbyschema/cr544_agentesitiowebwit_MXVmeB/directline/token?api-version=2022-03-01-preview')
 IND_NOMBRE = {**{i['slug']: i['nombre'] for i in INDUSTRIAS}, 'otros': 'Telecomunicaciones y otros'}
 
 CHEV = '<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
