@@ -2,7 +2,8 @@
 
 Sin dependencias externas, igual que lead.py. Configuración por variables de entorno:
 
-  POSTULACIONES_REMITENTE buzón desde el que se envía (p. ej. postulaciones@w-it.cl); la app solo puede
+  POSTULACIONES_REMITENTE buzón compartido desde el que se envía (sitio-web@w-it.cl; postulaciones@ es un grupo
+                          de Microsoft 365 y Graph no envía desde grupos); la app solo puede
                           enviar desde ese buzón (RBAC de aplicaciones en Exchange, ver infra/DESPLIEGUE.md)
   POSTULACIONES_DESTINO   (opcional) a quién llega; postulaciones@w-it.cl por defecto
   GRAPH_TENANT_ID         (opcional) por defecto DATAVERSE_TENANT_ID

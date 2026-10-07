@@ -49,19 +49,26 @@ Anotar la fecha de vencimiento del secreto y crear un recordatorio de rotación.
 "Trabaja con nosotros" envía cada postulación con el CV adjunto a `postulaciones@w-it.cl` usando el mismo App Registration.
 El permiso se da con **RBAC para aplicaciones de Exchange**, limitado a un solo buzón: la app no puede enviar como ninguna otra persona.
 
-1. `postulaciones@w-it.cl` debe ser un buzón (compartido sirve, sin licencia). Es remitente y destinatario.
-2. **No** agregar `Mail.Send` en los permisos de API de Entra: ese permiso vale para todos los buzones del tenant y se sumaría al de Exchange.
-3. En PowerShell de Exchange Online (administrador de Exchange):
+`postulaciones@w-it.cl` es un **grupo de Microsoft 365** (equipo ":: Postulaciones ::"): sirve como destinatario, pero Graph no envía desde un grupo.
+Por eso el remitente es un buzón compartido aparte, solo para el sitio:
+
+1. Exchange admin center → Buzones → **Agregar un buzón compartido**: `sitio-web@w-it.cl` (nombre "W-IT Sitio web"). No necesita licencia ni miembros.
+2. El grupo de postulaciones recibe correo del remitente sin cambios (es interno). Recomendado: dejar el equipo como **privado**, porque los CV son datos personales y en un equipo público cualquier persona de W-IT puede unirse y leerlos.
+3. **No** agregar `Mail.Send` en los permisos de API de Entra: ese permiso vale para todos los buzones del tenant y se sumaría al de Exchange.
+4. En PowerShell de Exchange Online (administrador de Exchange):
 
 ```powershell
 Connect-ExchangeOnline
 New-ServicePrincipal -AppId <appId> -ObjectId <objectId de la aplicación empresarial> -DisplayName "W-IT Sitio web"
-New-ManagementScope -Name "Sitio web - postulaciones" -RecipientRestrictionFilter "PrimarySmtpAddress -eq 'postulaciones@w-it.cl'"
-New-ManagementRoleAssignment -App <appId> -Role "Application Mail.Send" -CustomResourceScope "Sitio web - postulaciones"
-Test-ServicePrincipalAuthorization -Identity <appId> -Resource postulaciones@w-it.cl   # debe decir InScope = True
+New-ManagementScope -Name "Sitio web - remitente" -RecipientRestrictionFilter "PrimarySmtpAddress -eq 'sitio-web@w-it.cl'"
+New-ManagementRoleAssignment -App <appId> -Role "Application Mail.Send" -CustomResourceScope "Sitio web - remitente"
+Test-ServicePrincipalAuthorization -Identity <appId> -Resource sitio-web@w-it.cl          # InScope = True
+Test-ServicePrincipalAuthorization -Identity <appId> -Resource claudio.castillo@w-it.cl   # InScope = False
 ```
 
+El `objectId` es el de la **aplicación empresarial** (Entra → Aplicaciones empresariales), no el del App Registration.
 Los cambios de RBAC pueden tardar hasta 2 horas en aplicarse. El correo no queda en Elementos enviados; "Responder" va directo a la persona que postuló.
+Los miembros del equipo ven las postulaciones en el correo del grupo; para recibirlas en su bandeja, cada uno activa "Seguir en la bandeja de entrada".
 
 ## 4. Configuración de la Static Web App
 
@@ -72,7 +79,8 @@ az staticwebapp appsettings set -n swa-wit-sitio-prod -g swa-wit-sitio-prod --se
   DATAVERSE_CLIENT_ID=<appId> \
   DATAVERSE_CLIENT_SECRET=<secreto> \
   LEAD_SOURCE_CODE=8 \
-  POLITICA_VERSION=<fecha de la política vigente>   POSTULACIONES_REMITENTE=postulaciones@w-it.cl
+  POLITICA_VERSION=<fecha de la política vigente> \
+  POSTULACIONES_REMITENTE=sitio-web@w-it.cl
 # Opcionales: DATAVERSE_OWNER_TEAM_ID=<guid del equipo Comercial>  ALLOWED_ORIGINS=https://w-it.cl,https://www.w-it.cl
 #             POSTULACIONES_DESTINO=<otro buzón>  GRAPH_TENANT_ID / GRAPH_CLIENT_ID / GRAPH_CLIENT_SECRET (si se usa otra app; por defecto, las DATAVERSE_*)
 ```
