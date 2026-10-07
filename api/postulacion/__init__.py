@@ -1,4 +1,4 @@
-"""POST /api/contacto: recibe el formulario del sitio y crea un Lead en Dynamics 365."""
+"""POST /api/postulacion: recibe "Trabaja con nosotros" y envía la postulación con el CV a postulaciones@w-it.cl."""
 import json
 import logging
 import urllib.error
@@ -6,10 +6,10 @@ import urllib.error
 import azure.functions as func
 
 from ..shared import lead as L
+from ..shared import postulacion as P
 
-# Límite simple por IP y por instancia (complementa el campo trampa; no reemplaza un WAF)
 _envios = {}
-MAX_POR_HORA = 5
+MAX_POR_HORA = 3
 
 
 def _json(status, cuerpo):
@@ -27,9 +27,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     except ValueError:
         return _json(400, {'ok': False, 'campos': []})
 
-    # A un bot se le responde como si todo hubiera salido bien, para que no insista
     if L.es_bot(data):
-        logging.info('contacto: envío descartado por antispam')
+        logging.info('postulacion: envío descartado por antispam')
         return _json(200, {'ok': True})
 
     ip = (req.headers.get('X-Forwarded-For') or '').split(',')[0].split(':')[0].strip()
@@ -40,23 +39,23 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         if not L.captcha_valido(data, ip):
             return _json(400, {'ok': False, 'campos': ['captcha']})
     except Exception:
-        logging.exception('contacto: no se pudo verificar el captcha')
+        logging.exception('postulacion: no se pudo verificar el captcha')
         return _json(502, {'ok': False})
 
     try:
-        datos = L.validar(data)
+        datos = P.validar(data)
     except L.Rechazo as e:
         return _json(400, {'ok': False, 'campos': e.campos})
 
     try:
-        lead_id = L.crear_lead(L.armar_lead(datos))
+        P.enviar(P.armar_correo(datos))
     except urllib.error.HTTPError as e:
-        # Sin datos personales en el log: solo el código y el mensaje de Dataverse
-        logging.error('contacto: Dataverse respondió %s %s', e.code, e.read()[:500])
+        # Sin datos personales en el log: solo el código y el mensaje de Graph
+        logging.error('postulacion: Graph respondió %s %s', e.code, e.read()[:500])
         return _json(502, {'ok': False})
     except Exception:
-        logging.exception('contacto: error al crear el lead')
+        logging.exception('postulacion: error al enviar el correo')
         return _json(502, {'ok': False})
 
-    logging.info('contacto: lead creado %s', lead_id)
+    logging.info('postulacion: correo enviado')
     return _json(201, {'ok': True})

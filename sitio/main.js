@@ -241,6 +241,78 @@
     });
   }
 
+  // ---------- Trabaja con nosotros: /api/postulacion envía la postulación con el CV a postulaciones@w-it.cl
+  const job = $('#form-postulacion');
+  if (job) {
+    job.elements.t.value = Date.now();
+    const MAX_CV = 2 * 1024 * 1024; // mismo límite que api/shared/postulacion.py
+    const msg = $('.form-msg', job);
+    const btn = $('button[type=submit]', job);
+    const btnHtml = btn.innerHTML;
+    const cv = job.elements.cv;
+    const fileName = $('.file-name', job);
+    const fileHint = fileName.textContent;
+    const aviso = (texto, error) => { msg.textContent = texto; msg.classList.toggle('is-error', !!error); msg.hidden = false; };
+    const cvError = f => {
+      if (!f) return 'Adjunta tu currículum.';
+      if (!/\.(pdf|docx?)$/i.test(f.name)) return 'El currículum debe estar en PDF o Word (.doc, .docx).';
+      if (f.size > MAX_CV) return 'El currículum pesa más de 2 MB. Reduce su tamaño, por ejemplo exportándolo de nuevo a PDF.';
+      return '';
+    };
+    cv.addEventListener('change', () => {
+      const f = cv.files[0];
+      fileName.textContent = f ? f.name : fileHint;
+      cv.closest('.file').classList.toggle('has-file', !!f);
+      const e = f && cvError(f);
+      cv.setCustomValidity(e || '');
+      if (e) aviso(e, true); else msg.hidden = true;
+    });
+    const base64 = f => new Promise((ok, fail) => {
+      const rd = new FileReader();
+      rd.onload = () => ok(String(rd.result).split(',')[1] || '');
+      rd.onerror = () => fail(rd.error);
+      rd.readAsDataURL(f);
+    });
+    job.addEventListener('submit', async e => {
+      e.preventDefault();
+      const f = cv.files[0];
+      cv.setCustomValidity(cvError(f));
+      if (!job.reportValidity()) return;
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      try {
+        const fd = new FormData(job);
+        const data = Object.fromEntries(['nombre', 'email', 'telefono', 'mensaje', 'ia', 't', 'sitio_web', 'cf-turnstile-response'].map(k => [k, fd.get(k) || '']));
+        data.consentimiento = job.elements.consentimiento.checked;
+        data.cv = { nombre: f.name, contenido: await base64(f) };
+        const res = await fetch(job.dataset.api, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data),
+        });
+        if (res.ok) {
+          job.reset();
+          $$('.form-row, label, .form-head', job).forEach(el => { el.hidden = true; });
+          btn.hidden = true;
+          aviso('¡Gracias! Recibimos tu postulación. Si tu perfil calza con alguno de nuestros procesos, te contactaremos al correo que nos dejaste.');
+          msg.focus?.();
+          return;
+        }
+        const err = res.status === 400 ? await res.json().catch(() => ({})) : {};
+        const campos = err.campos || [];
+        if (campos.includes('captcha')) aviso('Completa la verificación de seguridad antes de enviar.', true);
+        else if (campos.includes('cv_tamano')) aviso('El currículum pesa más de 2 MB. Reduce su tamaño e intenta de nuevo.', true);
+        else if (campos.includes('cv')) aviso('No pudimos leer tu currículum. Adjúntalo en PDF o Word (.doc, .docx).', true);
+        else if (res.status === 400) aviso('Revisa los campos obligatorios: nombre, un email válido, tu currículum, la pregunta sobre IA y la aceptación de la política de privacidad.', true);
+        else if (res.status === 429) aviso('Recibimos varios envíos desde tu conexión. Intenta de nuevo más tarde.', true);
+        else throw new Error(res.status);
+      } catch (err) {
+        aviso('No pudimos enviar tu postulación. Intenta de nuevo en unos minutos o escríbenos a postulaciones@w-it.cl.', true);
+      }
+      try { window.turnstile && window.turnstile.reset(); } catch (err) { /* sin captcha */ }
+      btn.disabled = false;
+      btn.innerHTML = btnHtml;
+    });
+  }
+
   // ---------- "Señales de que lo necesitas": el foco recorre la lista cada 3,5 s; se detiene con el mouse encima
   $$('.senales').forEach(sec => {
     const items = $$('.sen-item', sec);

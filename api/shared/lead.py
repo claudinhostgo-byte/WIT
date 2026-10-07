@@ -205,6 +205,14 @@ def captcha_valido(data, ip=''):
         return json.load(r).get('success') is True
 
 
+def limitado(ip, registro, maximo=5):
+    """Límite simple de envíos por IP y por hora, en memoria de la instancia (no reemplaza un WAF)."""
+    ahora = time.time()
+    recientes = [t for t in registro.get(ip, []) if ahora - t < 3600]
+    registro[ip] = recientes + [ahora]
+    return len(recientes) >= maximo
+
+
 def origen_permitido(origin):
     permitidos = [o.strip() for o in os.environ.get('ALLOWED_ORIGINS', '').split(',') if o.strip()]
     return not permitidos or origin in permitidos

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agentes W-IT</title>
-<meta name="description" content="Agentes y aceleradores de W-IT.">
+<title>Trabaja con nosotros · W-IT</title>
+<meta name="description" content="Envía tu currículum a W-IT, partner Microsoft en Chile y Perú.">
 <link rel="icon" type="image/png" href="../../assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="../../assets/marca/apple-touch-icon.png">
 <link rel="stylesheet" href="../../styles.css">
@@ -142,7 +142,7 @@
           </div>
         </li>
         <li class="nav-item"><a class="nav-link" href="../../como-trabajamos/">Cómo trabajamos</a></li>
-        <li class="nav-item"><button class="nav-link" type="button" aria-expanded="false" aria-controls="mega-nosotros">Nosotros<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <li class="nav-item"><button class="nav-link is-active" type="button" aria-expanded="false" aria-controls="mega-nosotros">Nosotros<svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <div class="mega" id="mega-nosotros">
             <div class="container mega-inner mega-split">
               <div class="mega-list">
@@ -178,26 +178,37 @@
 </header>
 <main id="main">
 
-<section class="page-hero">
+<section class="page-hero contact-hero">
   <div class="page-hero-trazo" aria-hidden="true"></div>
-  <div class="container page-hero-inner">
-    <div class="page-hero-copy">
-      <nav aria-label="Ruta"><ol class="crumbs"><li><a href="../../">Inicio</a></li><li><a href="../../productos/">Productos</a></li><li><a href="../../productos/agentes-w-it/">Agentes W-IT</a></li></ol></nav>
-      <span class="eyebrow">Productos · Agentes W-IT</span>
-      <h1>Agentes y aceleradores listos para tu tenant.</h1>
-      <p class="lead">Publicados en Microsoft Marketplace.</p>
-      
+  <div class="container contact-layout">
+    <div class="contact-intro">
+      <nav aria-label="Ruta"><ol class="crumbs"><li><a href="../../">Inicio</a></li><li><a href="../../nosotros/">Nosotros</a></li><li><a href="../../nosotros/trabaja-con-nosotros/">Trabaja con nosotros</a></li></ol></nav>
+      <span class="eyebrow">Trabaja con nosotros</span>
+      <h1>Súmate a W-IT.</h1>
+      <p class="lead">Implementamos Dynamics 365, Power Platform, Azure e IA para grandes empresas y organismos públicos de Chile y Perú. Si quieres trabajar en esos proyectos, envíanos tu currículum.</p>
+      <ol class="contact-pasos"><li><strong>Envías tu currículum</strong><span>En PDF o Word, con un mensaje si quieres contarnos algo más.</span></li><li><strong>Lo revisa nuestro equipo</strong><span>Comparamos tu perfil con los procesos de selección abiertos y los que vienen.</span></li><li><strong>Te contactamos</strong><span>Si tu perfil calza con alguno, te escribimos al correo que nos dejes.</span></li></ol>
+      <div class="contact-cards">
+        <div class="contact-card"><span>¿Prefieres el correo? Escríbenos con tu currículum adjunto.</span><a class="link-strong" href="mailto:postulaciones@w-it.cl">postulaciones@w-it.cl</a></div>
+      </div>
     </div>
+    <form class="form contact-form" id="form-postulacion" data-api="/api/postulacion" novalidate>
+      <div class="form-head"><strong>Envíanos tu currículum</strong><span>Los campos con <abbr class="req" title="obligatorio">*</abbr> son obligatorios.</span></div>
+      <div class="form-row"><label><span>Nombre y apellido <abbr class="req" title="obligatorio">*</abbr></span><input name="nombre" required autocomplete="name"></label><label>Teléfono<input type="tel" name="telefono" autocomplete="tel" placeholder="+56 9"></label></div>
+      <label><span>Email <abbr class="req" title="obligatorio">*</abbr></span><input type="email" name="email" required autocomplete="email" placeholder="nombre@correo.cl"></label>
+      <label class="file"><span>Adjuntar currículum <abbr class="req" title="obligatorio">*</abbr></span>
+        <span class="file-box"><input type="file" name="cv" required accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><span class="file-name">PDF o Word, hasta 2 MB</span><svg class="file-clip" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M21 11.5l-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l8.6-8.6a3.7 3.7 0 0 1 5.2 5.2l-8.6 8.6a1.8 1.8 0 0 1-2.6-2.6l7.9-7.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
+      <label>Mensaje<textarea name="mensaje" rows="3" placeholder="Cuéntanos en qué área te gustaría trabajar"></textarea></label>
+      <label><span>¿Usaste IA para crear tu currículum o para llenar este formulario? (Justifique su respuesta) <span aria-hidden="true">😉</span> <abbr class="req" title="obligatorio">*</abbr></span><textarea name="ia" rows="3" required></textarea></label>
+      <label class="check"><input type="checkbox" name="consentimiento" required> <span>Acepto la <a href="../../privacidad/">política de privacidad</a> y que W-IT use mis datos y mi currículum para evaluar mi postulación. <abbr class="req" title="obligatorio">*</abbr></span></label>
+      <input type="hidden" name="t">
+      <label class="hp" aria-hidden="true">Sitio web<input name="sitio_web" tabindex="-1" autocomplete="off"></label>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAFPqvaJaYodLrLEB" data-theme="light" data-language="es"></div>
+      <button class="btn btn-lg btn-primary" type="submit">Enviar postulación</button>
+      <p class="form-msg" role="status" tabindex="-1" hidden></p>
+    </form>
   </div>
 </section>
-<section class="section bg-soft"><div class="container"><div class="grid grid-280"><div class="card"><div class="tool-top"><span>Microsoft Marketplace</span><span class="pill">Live</span></div><h3>Agente CV – Recruit Intelligence</h3><a class="card-cta" href="https://marketplace.microsoft.com/en-us/partners/dcdbe467-cd53-4233-a80c-6c8510c2f60a/overview" target="_blank" rel="noopener">Ver ficha ↗</a></div><div class="card"><div class="tool-top"><span>Microsoft Marketplace</span><span class="pill">Live</span></div><h3>Gestor de Puestos W-it</h3><a class="card-cta" href="https://marketplace.microsoft.com/en-us/partners/dcdbe467-cd53-4233-a80c-6c8510c2f60a/overview" target="_blank" rel="noopener">Ver ficha ↗</a></div><div class="card"><div class="tool-top"><span>Microsoft Marketplace</span><span class="pill">Live</span></div><h3>Implementación Rápida de Automatización con Power Automate</h3><a class="card-cta" href="https://marketplace.microsoft.com/en-us/partners/dcdbe467-cd53-4233-a80c-6c8510c2f60a/overview" target="_blank" rel="noopener">Ver ficha ↗</a></div></div></div></section>
-
-<section class="cta-band">
-  <div class="container cta-band-inner">
-    <div><h2>¿Conversamos sobre tu caso?</h2><p>Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.</p></div>
-    <div class="btn-row"><a class="btn btn-lg btn-green" href="../../contacto/">Conversemos</a><a class="btn btn-lg btn-ghost-light" href="#agente" data-open-agente>Conversa con nuestro agente</a></div>
-  </div>
-</section>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </main>
 
 <footer class="site-footer">

@@ -4,6 +4,7 @@
   },
   "routes": [
     { "route": "/api/contacto", "methods": ["POST"] },
+    { "route": "/api/postulacion", "methods": ["POST"] },
     { "route": "/api/*", "statusCode": 404 },
     { "route": "/assets/*", "headers": { "Cache-Control": "public, max-age=604800" } }
   ],

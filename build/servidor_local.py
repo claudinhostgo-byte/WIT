@@ -3,7 +3,8 @@
   python build/servidor_local.py            # modo prueba: muestra el Lead que se crearía, no llama a Dataverse
   (con DATAVERSE_URL, DATAVERSE_TENANT_ID, DATAVERSE_CLIENT_ID y DATAVERSE_CLIENT_SECRET definidas, crea el Lead real)
 
-Usa la misma lógica que la API de Azure (api/shared/lead.py).
+Las postulaciones (/api/postulacion) siempre quedan en modo prueba: muestra el correo sin enviarlo.
+Usa la misma lógica que la API de Azure (api/shared/lead.py y api/shared/postulacion.py).
 """
 import json
 import os
@@ -13,6 +14,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(RAIZ, 'api'))
 from shared import lead as L  # noqa: E402
+from shared import postulacion as P  # noqa: E402
 
 REAL = all(os.environ.get(v) for v in ('DATAVERSE_URL', 'DATAVERSE_TENANT_ID', 'DATAVERSE_CLIENT_ID', 'DATAVERSE_CLIENT_SECRET'))
 
@@ -30,7 +32,7 @@ class Handler(SimpleHTTPRequestHandler):
         self.wfile.write(b)
 
     def do_POST(self):
-        if self.path != '/api/contacto':
+        if self.path not in ('/api/contacto', '/api/postulacion'):
             return self._json(404, {'ok': False})
         try:
             data = json.loads(self.rfile.read(int(self.headers.get('Content-Length', 0))) or b'null')
@@ -42,6 +44,8 @@ class Handler(SimpleHTTPRequestHandler):
             return self._json(200, {'ok': True})
         if not L.captcha_valido(data):
             return self._json(400, {'ok': False, 'campos': ['captcha']})
+        if self.path == '/api/postulacion':
+            return self._postulacion(data)
         try:
             lead = L.armar_lead(L.validar(data))
         except L.Rechazo as e:
@@ -55,6 +59,16 @@ class Handler(SimpleHTTPRequestHandler):
         except Exception as e:
             print('[dataverse] error', e, getattr(e, 'read', lambda: b'')()[:500])
             return self._json(502, {'ok': False})
+
+    def _postulacion(self, data):
+        try:
+            correo = P.armar_correo(P.validar(data))
+        except L.Rechazo as e:
+            return self._json(400, {'ok': False, 'campos': e.campos})
+        adj = correo['message']['attachments'][0]
+        adj['contentBytes'] = f"<{len(adj['contentBytes'])} caracteres base64>"
+        print('[prueba] Correo que se enviaría:\n' + json.dumps(correo, ensure_ascii=False, indent=2))
+        return self._json(201, {'ok': True, 'prueba': True})
 
 
 if __name__ == '__main__':

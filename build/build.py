@@ -160,6 +160,7 @@ def header(r, active, solid):
                 <span class="eyebrow">Empresa</span>
                 <a href="{r}nosotros/"><strong>Quiénes somos</strong><span>Historia, misión, visión y presencia.</span></a>
                 <a href="{r}nosotros/confianza/"><strong>Trust Center</strong><span>Credenciales verificables, ISO y datos en Chile.</span></a>
+                <a href="{r}{TRABAJA_PAGE}"><strong>Trabaja con nosotros</strong><span>Envíanos tu currículum.</span></a>
               </div>
               <div class="mega-list">
                 <span class="eyebrow">Aprende</span>
@@ -201,7 +202,7 @@ def footer(r):
         <span>ISO 9001 · ISO 27001 (SGS)</span>
       </div>
       {col('Explora', [('Soluciones', f'{r}soluciones/'), ('Clientes por industria', f'{r}industrias/'), ('Productos', f'{r}productos/'), ('Herramientas', f'{r}herramientas/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}')])}
-      {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Trust Center', f'{r}nosotros/confianza/')])}
+      {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Trabaja con nosotros', f'{r}{TRABAJA_PAGE}')])}
       <address class="footer-col"><strong>Contacto</strong><span><b class="footer-pais"><img class="flag" src="{r}assets/img/chile.svg" alt="" width="21" height="14">Chile</b>Av. Apoquindo 3039<br>Las Condes, Santiago</span><span><b class="footer-pais"><img class="flag" src="{r}assets/img/peru.svg" alt="" width="21" height="14">Perú</b>Av. Circunvalación del Golf Los Incas 170, Int. 702<br>Santiago de Surco, Lima</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
     </div>
     <div class="footer-bottom">
@@ -1240,6 +1241,52 @@ def contacto(r):
 
 
 
+TRABAJA_PAGE = 'nosotros/trabaja-con-nosotros/'
+CLIP = ('<svg class="file-clip" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M21 11.5l-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l8.6-8.6a3.7 3.7 0 0 1 5.2 5.2'
+        'l-8.6 8.6a1.8 1.8 0 0 1-2.6-2.6l7.9-7.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+
+
+def trabaja_page(r):
+    """Trabaja con nosotros: el formulario envía la postulación con el CV a postulaciones@w-it.cl (/api/postulacion).
+    Mismo diseño que Contacto: intro a la izquierda y formulario a la derecha, dentro del hero."""
+    req = '<abbr class="req" title="obligatorio">*</abbr>'
+    pasos = [('Envías tu currículum', 'En PDF o Word, con un mensaje si quieres contarnos algo más.'),
+             ('Lo revisa nuestro equipo', 'Comparamos tu perfil con los procesos de selección abiertos y los que vienen.'),
+             ('Te contactamos', 'Si tu perfil calza con alguno, te escribimos al correo que nos dejes.')]
+    return f'''
+<section class="page-hero contact-hero">
+  <div class="page-hero-trazo" aria-hidden="true"></div>
+  <div class="container contact-layout">
+    <div class="contact-intro">
+      <nav aria-label="Ruta"><ol class="crumbs"><li><a href="{r}">Inicio</a></li><li><a href="{r}nosotros/">Nosotros</a></li><li><a href="{r}{TRABAJA_PAGE}">Trabaja con nosotros</a></li></ol></nav>
+      <span class="eyebrow">Trabaja con nosotros</span>
+      <h1>Súmate a W-IT.</h1>
+      <p class="lead">Implementamos Dynamics 365, Power Platform, Azure e IA para grandes empresas y organismos públicos de Chile y Perú. Si quieres trabajar en esos proyectos, envíanos tu currículum.</p>
+      <ol class="contact-pasos">{''.join(f'<li><strong>{escape(a)}</strong><span>{escape(b)}</span></li>' for a, b in pasos)}</ol>
+      <div class="contact-cards">
+        <div class="contact-card"><span>¿Prefieres el correo? Escríbenos con tu currículum adjunto.</span><a class="link-strong" href="mailto:postulaciones@w-it.cl">postulaciones@w-it.cl</a></div>
+      </div>
+    </div>
+    <form class="form contact-form" id="form-postulacion" data-api="/api/postulacion" novalidate>
+      <div class="form-head"><strong>Envíanos tu currículum</strong><span>Los campos con {req} son obligatorios.</span></div>
+      <div class="form-row"><label><span>Nombre y apellido {req}</span><input name="nombre" required autocomplete="name"></label><label>Teléfono<input type="tel" name="telefono" autocomplete="tel" placeholder="+56 9"></label></div>
+      <label><span>Email {req}</span><input type="email" name="email" required autocomplete="email" placeholder="nombre@correo.cl"></label>
+      <label class="file"><span>Adjuntar currículum {req}</span>
+        <span class="file-box"><input type="file" name="cv" required accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><span class="file-name">PDF o Word, hasta 2 MB</span>{CLIP}</span></label>
+      <label>Mensaje<textarea name="mensaje" rows="3" placeholder="Cuéntanos en qué área te gustaría trabajar"></textarea></label>
+      <label><span>¿Usaste IA para crear tu currículum o para llenar este formulario? (Justifique su respuesta) <span aria-hidden="true">😉</span> {req}</span><textarea name="ia" rows="3" required></textarea></label>
+      <label class="check"><input type="checkbox" name="consentimiento" required> <span>Acepto la <a href="{r}privacidad/">política de privacidad</a> y que W-IT use mis datos y mi currículum para evaluar mi postulación. {req}</span></label>
+      <input type="hidden" name="t">
+      <label class="hp" aria-hidden="true">Sitio web<input name="sitio_web" tabindex="-1" autocomplete="off"></label>
+      <div class="cf-turnstile" data-sitekey="{TURNSTILE_SITEKEY}" data-theme="light" data-language="es"></div>
+      <button class="btn btn-lg btn-primary" type="submit">Enviar postulación</button>
+      <p class="form-msg" role="status" tabindex="-1" hidden></p>
+    </form>
+  </div>
+</section>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>'''
+
+
 def jumpstart_page(r):
     """Página propia del programa Microsoft Copilot Jumpstart (fuente: propuesta comercial W-IT, láminas 7 y 8)."""
     beneficios = [
@@ -1374,7 +1421,8 @@ def privacidad_page(r):
     """Aviso de privacidad: copia del de witeduca.cl/privacidad/ (11-09-2026), con las referencias propias de WITEDUCA adaptadas a W-IT."""
     proveedores = [
         ('Microsoft Dynamics 365', 'Es nuestro CRM: ahí queda tu consulta para que el equipo comercial la atienda', 'Todo lo que enviaste en el formulario'),
-        ('Microsoft Azure', 'Aloja este sitio y procesa el envío del formulario', 'El envío, en tránsito'),
+        ('Microsoft 365 (Exchange Online)', 'Es nuestro correo: ahí recibimos las postulaciones de Trabaja con nosotros', 'Todo lo que enviaste en el formulario de postulación, incluido tu currículum'),
+        ('Microsoft Azure', 'Aloja este sitio y procesa el envío de los formularios', 'El envío, en tránsito'),
         ('Cloudflare (Turnstile y Web Analytics)', 'Verifica que quien envía el formulario es una persona, y cuenta las visitas al sitio', 'Señales técnicas de tu navegador, tu IP y la página visitada. No recibe lo que escribiste ni te identifica'),
         ('Google Ads', 'Nos dice si quien envió el formulario llegó desde uno de nuestros avisos, para no gastar en avisos que no sirven', 'Que hubo un envío de formulario y desde qué aviso, mediante la cookie _gcl_au. No recibe tu nombre, tu correo ni lo que escribiste'),
     ]
@@ -1389,7 +1437,7 @@ def privacidad_page(r):
       <span class="eyebrow">Legal</span>
       <h1>Aviso de privacidad y tratamiento de datos</h1>
       <p class="lead">Qué datos recolectamos en este sitio, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.</p>
-      <p class="disclaimer">Última actualización: 11 de septiembre de 2026</p>
+      <p class="disclaimer">Última actualización: 7 de octubre de 2026</p>
     </div>
   </div>
 </section>
@@ -1408,6 +1456,11 @@ def privacidad_page(r):
     <li>Empresa u organización, cargo, teléfono, país, tamaño de tu organización y temas de interés, si decides completarlos.</li>
     <li>El mensaje que nos escribas, si escribes uno.</li>
   </ul>
+  <h3>Los que nos envías al postular en Trabaja con nosotros:</h3>
+  <ul class="legal-list">
+    <li>Nombre, correo electrónico, tu currículum y tu respuesta sobre si usaste IA para prepararlos. Son los obligatorios.</li>
+    <li>Teléfono y un mensaje, si decides incluirlos.</li>
+  </ul>
   <h3>Los que el sitio registra junto a tu envío:</h3>
   <ul class="legal-list">
     <li>La página desde la que enviaste el formulario, incluidos los parámetros de campaña si llegaste por un enlace de marketing.</li>
@@ -1419,11 +1472,12 @@ def privacidad_page(r):
 
   <h2>Para qué los usamos</h2>
   <p>Para responder tu consulta y hacerte seguimiento comercial sobre lo que nos preguntaste: cotizarte un proyecto, coordinar una reunión o enviarte la información que pediste.</p>
+  <p>Si postulas en Trabaja con nosotros, usamos tus datos y tu currículum solo para evaluar tu perfil en nuestros procesos de selección y contactarte por ellos. No entran a nuestro CRM ni al seguimiento comercial.</p>
   <p>No usamos tus datos para otra cosa. No los vendemos, no los cedemos a terceros con fines comerciales y no te vamos a inscribir en una lista de correos por haber enviado un formulario.</p>
   <p>La base que nos habilita a tratarlos es tu propio envío del formulario: tú nos entregas los datos con el fin explícito de que te contactemos.</p>
 
   <h2>Con quién los compartimos</h2>
-  <p>Con cuatro proveedores de tecnología, cada uno para una función específica. Ninguno los usa para fines propios.</p>
+  <p>Con cinco proveedores de tecnología, cada uno para una función específica. Ninguno los usa para fines propios.</p>
   <div class="legal-table-wrap"><table class="legal-table">
     <caption>Proveedores que procesan datos de este sitio y para qué.</caption>
     <thead><tr><th scope="col">Proveedor</th><th scope="col">Para qué</th><th scope="col">Qué recibe</th></tr></thead>
@@ -1434,6 +1488,7 @@ def privacidad_page(r):
 
   <h2>Cuánto tiempo los conservamos</h2>
   <p>Mantenemos tu consulta en nuestro CRM mientras siga vigente la relación comercial o el interés que la originó, y hasta que nos pidas eliminarla.</p>
+  <p>Guardamos tu postulación mientras sigamos considerando tu perfil para procesos de selección, y hasta que nos pidas eliminarla.</p>
   <p>Si nos escribiste y decidiste no seguir adelante, puedes pedirnos que borremos tus datos en cualquier momento y no necesitas darnos una razón.</p>
 
   <h2>Tus derechos</h2>
@@ -1480,12 +1535,13 @@ def main():
     pages.append(write('nosotros/', 'Nosotros · W-IT', 'Historia, misión, visión y presencia de W-IT en Chile y Perú.', nosotros, 'nosotros'))
     pages.append(write(JUMPSTART_PAGE, 'Microsoft Copilot Jumpstart Partner · Ready Tier · W-IT', 'W-IT es partner Ready Tier del programa Microsoft Copilot Jumpstart: talleres y engagements financiados por Microsoft para adoptar Copilot y agentes.', jumpstart_page, 'nosotros'))
     pages.append(write('nosotros/aprende/', 'Aprende: formación y adopción de IA con WITEDUCA · W-IT', 'WITEDUCA es la unidad de W-IT dedicada exclusivamente a la formación y adopción de IA y tecnologías Microsoft.', aprende_page, 'nosotros'))
+    pages.append(write(TRABAJA_PAGE, 'Trabaja con nosotros · W-IT', 'Envía tu currículum a W-IT, partner Microsoft en Chile y Perú.', trabaja_page, 'nosotros'))
     pages.append(write('nosotros/confianza/', 'Trust Center · W-IT', 'Credenciales verificables de W-IT.', confianza, 'nosotros'))
     pages.append(write('contacto/', 'Contacto · W-IT', 'Contacta a W-IT: proyectos, licencias y soporte Microsoft en Chile y Perú.', contacto))
     pages.append(write('privacidad/', 'Aviso de privacidad y tratamiento de datos · W-IT', 'Qué datos recolectamos en w-it.cl, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.', privacidad_page))
     for slug, t in [('cookies', 'Política de cookies'), ('terminos', 'Términos de uso')]:
         pages.append(write(f'{slug}/', f'{t} · W-IT', t, simple_page('Legal', t, 'Documento en redacción.', [(t, f'{slug}/')], '<p class="lead">[Redacción por Administración y Finanzas]</p>')))
-    # Equipo, Trabaja con nosotros y Recursos/Observatorio IA: ocultos hasta tener contenido real (2026-10-01)
+    # Equipo y Recursos/Observatorio IA: ocultos hasta tener contenido real (2026-10-01)
     print(f'{len(pages)} páginas generadas')
     check_css()
 

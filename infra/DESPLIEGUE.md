@@ -4,6 +4,8 @@
 Navegador ──► Azure Static Web Apps (sitio/)            HTTPS, CDN, dominio
                  └─► /api/contacto  (api/, Python 3.11)  valida, antispam, consentimiento
                         └─► Dataverse Web API ──► Lead en Dynamics 365 Sales
+                 └─► /api/postulacion                    "Trabaja con nosotros": valida CV (PDF/Word ≤ 2 MB)
+                        └─► Microsoft Graph sendMail ──► postulaciones@w-it.cl (CV adjunto)
 ```
 
 | Recurso | Nombre propuesto | Notas |
@@ -42,6 +44,25 @@ Anotar la fecha de vencimiento del secreto y crear un recordatorio de rotación.
    - Nada más: el sitio no puede leer, modificar ni borrar otros registros del CRM.
 2. Ambiente → Configuración → Usuarios y permisos → **Usuarios de aplicación** → Nuevo → App Registration del paso 2 → unidad de negocio raíz → rol anterior.
 
+## 3b. Correo de postulaciones (Exchange Online)
+
+"Trabaja con nosotros" envía cada postulación con el CV adjunto a `postulaciones@w-it.cl` usando el mismo App Registration.
+El permiso se da con **RBAC para aplicaciones de Exchange**, limitado a un solo buzón: la app no puede enviar como ninguna otra persona.
+
+1. `postulaciones@w-it.cl` debe ser un buzón (compartido sirve, sin licencia). Es remitente y destinatario.
+2. **No** agregar `Mail.Send` en los permisos de API de Entra: ese permiso vale para todos los buzones del tenant y se sumaría al de Exchange.
+3. En PowerShell de Exchange Online (administrador de Exchange):
+
+```powershell
+Connect-ExchangeOnline
+New-ServicePrincipal -AppId <appId> -ObjectId <objectId de la aplicación empresarial> -DisplayName "W-IT Sitio web"
+New-ManagementScope -Name "Sitio web - postulaciones" -RecipientRestrictionFilter "PrimarySmtpAddress -eq 'postulaciones@w-it.cl'"
+New-ManagementRoleAssignment -App <appId> -Role "Application Mail.Send" -CustomResourceScope "Sitio web - postulaciones"
+Test-ServicePrincipalAuthorization -Identity <appId> -Resource postulaciones@w-it.cl   # debe decir InScope = True
+```
+
+Los cambios de RBAC pueden tardar hasta 2 horas en aplicarse. El correo no queda en Elementos enviados; "Responder" va directo a la persona que postuló.
+
 ## 4. Configuración de la Static Web App
 
 ```bash
@@ -51,8 +72,9 @@ az staticwebapp appsettings set -n swa-wit-sitio-prod -g swa-wit-sitio-prod --se
   DATAVERSE_CLIENT_ID=<appId> \
   DATAVERSE_CLIENT_SECRET=<secreto> \
   LEAD_SOURCE_CODE=8 \
-  POLITICA_VERSION=<fecha de la política vigente>
+  POLITICA_VERSION=<fecha de la política vigente>   POSTULACIONES_REMITENTE=postulaciones@w-it.cl
 # Opcionales: DATAVERSE_OWNER_TEAM_ID=<guid del equipo Comercial>  ALLOWED_ORIGINS=https://w-it.cl,https://www.w-it.cl
+#             POSTULACIONES_DESTINO=<otro buzón>  GRAPH_TENANT_ID / GRAPH_CLIENT_ID / GRAPH_CLIENT_SECRET (si se usa otra app; por defecto, las DATAVERSE_*)
 ```
 
 `LEAD_SOURCE_CODE=8` es "Web" en el conjunto de opciones estándar; confirmar si el ambiente lo personalizó.
@@ -71,7 +93,8 @@ Desde ahí, cada push a `main` corre las pruebas de la API y publica.
 
 1. Abrir `https://<nombre>.azurestaticapps.net/soluciones/contact-center/` → "Conversemos" → enviar el formulario.
 2. En Dynamics 365 Sales → Clientes potenciales: debe aparecer `Sitio web · … · <empresa>` con origen Web, la descripción con origen, autodiagnóstico, UTM y consentimiento.
-3. Revisar errores: Static Web App → Application Insights (o `az staticwebapp functions`), mensajes `contacto:`. Los logs no incluyen datos personales.
+3. Abrir `/nosotros/trabaja-con-nosotros/`, adjuntar un PDF y enviar: debe llegar a `postulaciones@w-it.cl` con asunto `Postulación sitio web · <nombre>`.
+4. Revisar errores: Static Web App → Application Insights (o `az staticwebapp functions`), mensajes `contacto:` y `postulacion:`. Los logs no incluyen datos personales.
 
 ## Prueba local
 
@@ -80,6 +103,7 @@ python build/servidor_local.py
 ```
 
 Sin variables de Dataverse queda en modo prueba e imprime el Lead que crearía. Con las cuatro `DATAVERSE_*` definidas crea el Lead real.
+Las postulaciones siempre quedan en modo prueba en local: imprime el correo sin el contenido del CV y no lo envía.
 
 ## Pendientes antes de apuntar w-it.cl
 
