@@ -241,9 +241,47 @@ def footer(r):
 </div>'''
 
 
-def write(path, title, desc, body, active=None, solid=True):
+SITIO_URL = 'https://w-it.cl/'  # dominio canónico: www.w-it.cl y *.azurestaticapps.net apuntan acá
+ORG_ID = SITIO_URL + '#organizacion'
+
+
+def organizacion_ld():
+    """Datos estructurados (schema.org) de W-IT para buscadores y resúmenes de IA. Solo datos publicados en el sitio."""
+    return {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {'@type': 'Organization', '@id': ORG_ID, 'name': 'W-IT', 'url': SITIO_URL,
+             'logo': SITIO_URL + 'assets/marca/logo-color-mark.png',
+             'description': 'Solutions Partner for Microsoft Cloud, con las seis designaciones Microsoft, en Chile y Perú. '
+                            'Implementamos Microsoft Dynamics 365, Microsoft Power Platform, Microsoft Azure y agentes de IA.',
+             'foundingDate': '2013', 'email': 'info@w-it.cl', 'telephone': '+56 2 2409 6112',
+             'areaServed': [{'@type': 'Country', 'name': 'Chile'}, {'@type': 'Country', 'name': 'Perú'}],
+             'address': [{'@type': 'PostalAddress', 'streetAddress': 'Av. Apoquindo 3039', 'addressLocality': 'Las Condes',
+                          'addressRegion': 'Región Metropolitana', 'addressCountry': 'CL'},
+                         {'@type': 'PostalAddress', 'streetAddress': 'Av. Circunvalación del Golf Los Incas 170, Int. 702',
+                          'addressLocality': 'Santiago de Surco', 'addressRegion': 'Lima', 'addressCountry': 'PE'}],
+             'knowsAbout': ['Microsoft Dynamics 365', 'Dynamics 365 Contact Center', 'Dynamics 365 Business Central',
+                            'Microsoft Power Platform', 'Microsoft Azure', 'Microsoft 365 Copilot', 'Microsoft Copilot Studio',
+                            'Microsoft Fabric', 'Power BI', 'Agentes de IA'],
+             'award': ['Microsoft Partner of the Year Latinoamérica y el Caribe 2019: Dynamics 365 for Sales',
+                       'Microsoft Partner of the Year Latinoamérica y el Caribe 2020: Proactive Customer Service'],
+             'sameAs': [VERIFICAR]},
+            {'@type': 'WebSite', '@id': SITIO_URL + '#sitio', 'url': SITIO_URL, 'name': 'W-IT', 'inLanguage': 'es-CL',
+             'publisher': {'@id': ORG_ID}},
+        ]}
+
+
+def servicio_ld(s):
+    return {'@context': 'https://schema.org', '@type': 'Service', 'name': f"{s['nombre']}: {s['plataforma']}",
+            'serviceType': s['plataforma'], 'description': s['linea'], 'url': f"{SITIO_URL}soluciones/{s['slug']}/",
+            'provider': {'@type': 'Organization', '@id': ORG_ID, 'name': 'W-IT', 'url': SITIO_URL},
+            'areaServed': [{'@type': 'Country', 'name': 'Chile'}, {'@type': 'Country', 'name': 'Perú'}]}
+
+
+def write(path, title, desc, body, active=None, solid=True, ld=None):
     depth = path.strip('/').count('/') + 1 if path else 0
     r = '../' * depth
+    ld_html = ''.join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>\n' for x in (ld or []))
     html = f'''<!DOCTYPE html>
 <html lang="es-CL">
 <head>
@@ -251,11 +289,12 @@ def write(path, title, desc, body, active=None, solid=True):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)}</title>
 <meta name="description" content="{escape(desc)}">
+<link rel="canonical" href="{SITIO_URL}{path}">
 <link rel="icon" type="image/png" href="{r}assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="{r}assets/marca/apple-touch-icon.png">
 <link rel="stylesheet" href="{r}styles.css">
 <script src="{r}main.js" defer></script>
-</head>
+{ld_html}</head>
 <body{' class="has-solid-header"' if solid else ''}>
 <a class="skip" href="#main">Saltar al contenido</a>
 {header(r, active, solid)}
@@ -1544,10 +1583,10 @@ def privacidad_page(r):
 def main():
     pages = []
     pages.append(write('', 'W-IT · Partner Microsoft Dynamics 365, Power Platform, Azure y Copilot en Chile y Perú',
-                       'Solutions Partner for Microsoft Cloud, con las seis designaciones Microsoft, en Chile y Perú. Implementamos Dynamics 365, Power Platform, Azure y agentes de IA.', home, solid=False))
+                       'Solutions Partner for Microsoft Cloud, con las seis designaciones Microsoft, en Chile y Perú. Implementamos Dynamics 365, Power Platform, Azure y agentes de IA.', home, solid=False, ld=[organizacion_ld()]))
     pages.append(write('soluciones/', 'Soluciones Microsoft Dynamics 365, Power Platform, Azure y Copilot · W-IT', 'Partner Microsoft en Chile y Perú: implementamos Dynamics 365, Power Platform, Azure y Copilot.', soluciones_index, 'soluciones'))
     for s in SOLUCIONES:
-        pages.append(write(f"soluciones/{s['slug']}/", f"{s['plataforma']}: {s['nombre'].lower()} · W-IT Chile", f"{s['plataforma']}. {s['linea']}", solucion_page(s), 'soluciones'))
+        pages.append(write(f"soluciones/{s['slug']}/", f"{s['plataforma']}: {s['nombre'].lower()} · W-IT Chile", f"{s['plataforma']}. {s['linea']}", solucion_page(s), 'soluciones', ld=[servicio_ld(s)]))
     pages.append(write('industrias/', 'Clientes por industria · W-IT', 'Clientes de W-IT por industria.', industrias_index, 'industrias'))
     for i in INDUSTRIAS:
         pages.append(write(f"industrias/{i['slug']}/", f"{i['nombre']} · W-IT", i['h1'], industria_page(i), 'industrias'))
@@ -1570,9 +1609,19 @@ def main():
     # Equipo y Recursos/Observatorio IA: ocultos hasta tener contenido real (2026-10-01)
     # Cookies y Términos: ocultos hasta tener el texto de Administración y Finanzas (2026-10-07);
     # al volver: páginas con simple_page('Legal', ...) y enlaces en footer-bottom. Redes sociales: ocultas hasta tener las URL.
+    indexacion(pages)
     print(f'{len(pages)} páginas generadas')
     check_css()
     agente.generar()
+
+
+def indexacion(pages):
+    """robots.txt y sitemap.xml con las páginas publicadas (las ocultas no se generan, así que no aparecen)."""
+    with open(os.path.join(ROOT, 'robots.txt'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(f'User-agent: *\nDisallow: /api/\n\nSitemap: {SITIO_URL}sitemap.xml\n')
+    urls = ''.join(f'  <url><loc>{SITIO_URL}{p}</loc></url>\n' for p in pages)
+    with open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
 
 
 def check_css():
