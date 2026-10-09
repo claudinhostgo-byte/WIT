@@ -263,7 +263,7 @@ def write(path, title, desc, body, active=None, solid=True):
 {body(r) if callable(body) else body}
 </main>
 {footer(r)}
-</body>
+{cf_web_analytics()}</body>
 </html>
 '''
     out = os.path.join(ROOT, path, 'index.html')
@@ -498,6 +498,16 @@ MS_CLOUD_EN_MARKETPLACE = True
 # Cloudflare Turnstile (captcha del formulario): widget propio "Sitio web W-IT".
 # Sus dominios autorizados (w-it.cl y el de Azure Static Web Apps) se administran en Cloudflare.
 TURNSTILE_SITEKEY = '0x4AAAAAAFPqvaJaYodLrLEB'
+# Cloudflare Web Analytics (sin cookies; declarado en /privacidad/): token del sitio "w-it.cl" en
+# Cloudflare > Analytics > Web analytics > Manage site. Vacío = no se inserta el beacon.
+CF_WEB_ANALYTICS_TOKEN = '5181bff6096e424080fbcec1f9ea469a'
+
+
+def cf_web_analytics():
+    if not CF_WEB_ANALYTICS_TOKEN:
+        return ''
+    return f'''<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "{CF_WEB_ANALYTICS_TOKEN}"}}'></script>
+'''
 
 
 def hero_trust(r):
