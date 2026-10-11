@@ -1413,6 +1413,12 @@ a.mega-js:hover { color: var(--green-dark); }
 .contact-form .btn { align-self: stretch; justify-content: center; }
 @media (max-width: 1000px) { .contact-layout { grid-template-columns: 1fr; gap: 16px; } .contact-intro { display: contents; } .contact-pasos { display: none; } .contact-form { order: 2; margin-top: 8px; } .contact-cards { order: 3; margin-top: 16px; } }
 @media (max-width: 560px) { .form-row, .form-row-3 { grid-template-columns: 1fr; } .contact-form { padding: 20px; } }
+/* Landings de campañas (Google Ads): mismo layout que Contacto, con credenciales en vez de pasos */
+.landing-hero h1 { font-size: clamp(30px, 3.2vw, 42px); }
+.landing-hero .diag-gets { margin-top: 6px; }
+.landing-alt { font-size: 15px; color: var(--muted); margin: 4px 0 0; }
+.landing-alt a { font-weight: 600; color: var(--green-dark); white-space: nowrap; }
+@media (max-width: 1000px) { .landing-hero .diag-gets { display: none; } .landing-alt { order: 3; } }
 /* Trabaja con nosotros: mismo diseño que Contacto, con currículum adjunto */
 .file-box { position: relative; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 8px; background: #fff; font-size: 15px; font-weight: 400; cursor: pointer; }
 .file-box:hover { border-color: var(--navy); }

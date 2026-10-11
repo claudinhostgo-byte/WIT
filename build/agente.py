@@ -132,8 +132,11 @@ def _paginas():
     for f in sorted(glob.glob(os.path.join(SITIO, '**', 'index.html'), recursive=True)):
         rel = os.path.relpath(os.path.dirname(f), SITIO).replace(os.sep, '/')
         ruta = '/' if rel == '.' else f'/{rel}/'
+        html = open(f, encoding='utf-8').read()
+        if '<meta name="robots" content="noindex">' in html:
+            continue  # landings de campañas: duplican contenido y no deben recomendarse
         p = _Pagina()
-        p.feed(open(f, encoding='utf-8').read())
+        p.feed(html)
         # Nombre de la página: último elemento de su ruta de navegación; si no tiene, el <title>
         titulo = 'Inicio' if ruta == '/' else (' '.join(p.ruta[-1].split()) if p.ruta else re.sub(r'\s*·\s*W-IT.*$', '', ' '.join(p.titulo.split())))
         lineas = [' '.join(l.split()) for l in ''.join(p.texto).split('\n')]

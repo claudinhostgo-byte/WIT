@@ -265,7 +265,11 @@ def organizacion_ld():
                             'Microsoft Fabric', 'Power BI', 'Agentes de IA'],
              'award': ['Microsoft Partner of the Year Latinoamérica y el Caribe 2019: Dynamics 365 for Sales',
                        'Microsoft Partner of the Year Latinoamérica y el Caribe 2020: Proactive Customer Service'],
-             'sameAs': [VERIFICAR]},
+             'sameAs': [VERIFICAR],
+             'subOrganization': {'@type': 'Organization', 'name': 'W-IT Perú', 'legalName': 'W-IT LATAM S.A.C.',
+                                 'areaServed': {'@type': 'Country', 'name': 'Perú'},
+                                 'address': {'@type': 'PostalAddress', 'streetAddress': 'Av. Circunvalación del Golf Los Incas 170, Int. 702',
+                                             'addressLocality': 'Santiago de Surco', 'addressRegion': 'Lima', 'addressCountry': 'PE'}}},
             {'@type': 'WebSite', '@id': SITIO_URL + '#sitio', 'url': SITIO_URL, 'name': 'W-IT', 'inLanguage': 'es-CL',
              'publisher': {'@id': ORG_ID}},
         ]}
@@ -278,7 +282,7 @@ def servicio_ld(s):
             'areaServed': [{'@type': 'Country', 'name': 'Chile'}, {'@type': 'Country', 'name': 'Perú'}]}
 
 
-def write(path, title, desc, body, active=None, solid=True, ld=None):
+def write(path, title, desc, body, active=None, solid=True, ld=None, noindex=False):
     depth = path.strip('/').count('/') + 1 if path else 0
     r = '../' * depth
     ld_html = ''.join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>\n' for x in (ld or []))
@@ -290,7 +294,7 @@ def write(path, title, desc, body, active=None, solid=True, ld=None):
 <title>{escape(title)}</title>
 <meta name="description" content="{escape(desc)}">
 <link rel="canonical" href="{SITIO_URL}{path}">
-<link rel="icon" type="image/png" href="{r}assets/marca/favicon.png">
+{'<meta name="robots" content="noindex">' + chr(10) if noindex else ''}{google_ads_meta()}<link rel="icon" type="image/png" href="{r}assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="{r}assets/marca/apple-touch-icon.png">
 <link rel="stylesheet" href="{r}styles.css">
 <script src="{r}main.js" defer></script>
@@ -547,6 +551,25 @@ def cf_web_analytics():
         return ''
     return f'''<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "{CF_WEB_ANALYTICS_TOKEN}"}}'></script>
 '''
+
+
+# Google Ads: ID de la cuenta (AW-…) y etiquetas de las acciones de conversión, en Google Ads >
+# Objetivos > Conversiones > (acción) > Configuración de la etiqueta. Vacío = no se carga nada.
+# main.js solo carga gtag.js a quien llegó desde un aviso (gclid/gbraid/wbraid en la URL; recuerda 90 días),
+# sin personalización de anuncios: el resto de las visitas no recibe cookies de Google (ver /privacidad/).
+# Cuenta 807-842-4837 (W-IT, misma de WITEDUCA); acciones creadas el 2026-10-11.
+GOOGLE_ADS_ID = 'AW-634509758'
+GOOGLE_ADS_CONVERSIONES = {
+    'formulario': 'Ll5tCKiBlpkdEL6zx64C',   # "W-IT - Formulario de contacto" (principal)
+    'diagnostico': 'DWMrCKuBlpkdEL6zx64C',  # "W-IT - Autodiagnóstico completado" (vista de página, solo observación)
+}
+
+
+def google_ads_meta():
+    if not GOOGLE_ADS_ID:
+        return ''
+    cfg = {'id': GOOGLE_ADS_ID, **{k: v for k, v in GOOGLE_ADS_CONVERSIONES.items() if v}}
+    return f'<meta name="wit-ads" content="{escape(json.dumps(cfg))}">\n'
 
 
 def hero_trust(r):
@@ -837,12 +860,16 @@ def soluciones_index(r):
 {cta_final(r)}'''
 
 
+def product_cards(r, s):
+    return ''.join(
+        f'''<div class="product-card">{ms_icon(r, i, 40) if i else f'<span class="icon-slot" aria-hidden="true">{SHIELD}</span>'}
+              <div><h3>{escape(MS[i]) if i else escape(d.split(':')[0])}</h3><p>{escape(d.split(': ', 1)[1] if (not i and ': ' in d) else d)}</p><p class="cuando"><strong>Cuándo conviene:</strong> {escape(c)}</p></div></div>'''
+        for i, d, c in s['productos'])
+
+
 def solucion_page(s):
     def body(r):
-        prods = ''.join(
-            f'''<div class="product-card">{ms_icon(r, i, 40) if i else f'<span class="icon-slot" aria-hidden="true">{SHIELD}</span>'}
-              <div><h3>{escape(MS[i]) if i else escape(d.split(':')[0])}</h3><p>{escape(d.split(': ', 1)[1] if (not i and ': ' in d) else d)}</p><p class="cuando"><strong>Cuándo conviene:</strong> {escape(c)}</p></div></div>'''
-            for i, d, c in s['productos'])
+        prods = product_cards(r, s)
         senales = senales_section(r, s['senales'])
         aside = f'<div class="page-hero-aside">{"".join(f"<span class=\"hero-prod\">{ms_icon(r, i, 44)}<span>{escape(MS[i])}</span></span>" for i in s["iconos"])}</div>' if s['iconos'] else ''
         return page_hero(r, [('Soluciones', 'soluciones/'), (s['nombre'], f"soluciones/{s['slug']}/")], f"{escape(s['plataforma'])} · {escape(s['nombre'])}", s['h1'], s['bajada'],
@@ -864,7 +891,114 @@ def solucion_page(s):
   <div class="cred-card"><span class="eyebrow">Credencial que respalda esta solución</span>{badge_img(r, s['credencial'], 110)}<p>{escape(s['credencial_txt'])}</p><a href="{r}nosotros/confianza/">Ver Trust Center {ARROW}</a></div>
   <a class="card tool-card" href="{r}{s['herramienta'][1]}"><div class="tool-top"><span>Herramienta relacionada</span><span class="pill">Gratis</span></div><h3>{escape(s['herramienta'][0])}</h3><p>Resultados orientativos. No son una cotización ni asesoría legal.</p><span class="card-cta">Empezar {ARROW}</span></a>
 </div></section>
+{peru_ia(r) if s['slug'] == 'ia-y-agentes' else ''}
 {cta_final(r)}'''
+    return body
+
+
+# Clientes del sitio con operación en Perú (empresas peruanas o grupos con filial en Perú)
+CLIENTES_PERU = ['cibertec', 'unacem', 'euromotors', 'latam', 'cencosud', 'mallplaza']
+
+
+def peru_ia(r):
+    return f'''<section class="section bg-white" id="peru"><div class="container stack-40">
+  {section_head('Chile y Perú', 'Copilot y agentes de IA también para empresas en Perú.',
+                'Implementamos Microsoft 365 Copilot, Microsoft Copilot Studio y Azure AI Foundry desde Santiago y Lima. '
+                'En Perú operamos a través de W-IT LATAM S.A.C., con oficina en Santiago de Surco.',
+                f'<a class="link-strong" href="{r}nosotros/#presencia">Ver oficinas {ARROW}</a>')}
+  <p class="eyebrow">Clientes con operación en Perú</p>
+  {logo_wall(r, CLIENTES_PERU)}
+</div></section>'''
+
+
+# ---------------------------------------------------------------- landings de campañas (Google Ads)
+# Fuera del menú y del sitemap, con noindex: solo reciben tráfico de los avisos. Formulario en el hero
+# (misma API y mismos campos que /contacto/) y autodiagnósticos que terminan en Contacto.
+LANDINGS = [
+    dict(path='implementacion/dynamics-365/', campana='dynamics',
+         title='Implementación de Microsoft Dynamics 365 en Chile y Perú · W-IT',
+         desc='Partner Microsoft que implementa Dynamics 365 Sales, Customer Service, Contact Center, Business Central y Finance en Chile y Perú.',
+         eyebrow='Microsoft Dynamics 365 · Chile y Perú',
+         h1='Implementación de Microsoft Dynamics 365 con un partner especializado.',
+         lead='Implementamos Dynamics 365 Sales, Customer Service, Contact Center, Business Central y Finance para empresas en Chile y Perú, desde Santiago y Lima.',
+         hechos=[('Solutions Partner for Microsoft Cloud', 'Con las seis designaciones Solutions Partner de Microsoft.'),
+                 ('Partner of the Year 2019 · Dynamics 365 for Sales', 'Premio de Microsoft para Latinoamérica y el Caribe.'),
+                 ('Success by Design', 'El marco de implementación de Microsoft para Dynamics 365, en entregas cortas.'),
+                 ('ISO 9001 · ISO/IEC 27001', 'Calidad y seguridad de la información, certificadas por SGS.')],
+         form_titulo='Conversemos sobre tu proyecto Dynamics 365',
+         intereses=(),
+         soluciones=['ventas-servicio-y-contact-center', 'contact-center', 'finanzas-y-operaciones'],
+         herramientas=['atencion-y-ventas', 'business-central-o-finance'],
+         metodo='dynamics'),
+    dict(path='implementacion/agentes-de-ia/', campana='ia',
+         title='Implementación de Microsoft 365 Copilot y agentes de IA · W-IT',
+         desc='Partner Microsoft que implementa Microsoft 365 Copilot, Copilot Studio y Azure AI Foundry para empresas en Chile y Perú.',
+         eyebrow='Copilot y agentes de IA · Chile y Perú',
+         h1='Implementación de Microsoft 365 Copilot y agentes de IA para empresas.',
+         lead='Diseñamos, construimos y ponemos en producción agentes con Microsoft Copilot Studio y Azure AI Foundry, conectados a tus datos y sistemas, para empresas en Chile y Perú.',
+         hechos=[('AI Business Solutions · Agentic', 'Designación Solutions Partner con especialización en Agentic Business Solutions.'),
+                 ('Microsoft Copilot Jumpstart Partner', 'Ready Tier del programa de Microsoft para adoptar Copilot y agentes.'),
+                 ('Evaluación antes de producción', 'Pruebas medibles, red teaming y monitoreo continuo de cada agente.'),
+                 ('ISO 9001 · ISO/IEC 27001', 'Calidad y seguridad de la información, certificadas por SGS.')],
+         form_titulo='Conversemos sobre tu caso de IA',
+         intereses=('ia-y-agentes',),
+         productos='ia-y-agentes',
+         herramientas=['autodiagnostico-ia', 'calculadora-copilot'],
+         metodo='agentes'),
+]
+
+
+def landing_page(l):
+    def body(r):
+        hechos = ''.join(f'<li><strong>{escape(a)}</strong><span>{escape(b)}</span></li>' for a, b in l['hechos'])
+        if l.get('productos'):
+            que = f'<div class="product-grid">{product_cards(r, SOL[l["productos"]])}</div>'
+        else:
+            que = f'<div class="grid sol-grid">{"".join(sol_card(r, SOL[x]) for x in l["soluciones"])}</div>'
+        herr = {h['slug']: h for h in HERRAMIENTAS}
+        tools = ''.join(tool_card(r, herr[x]) for x in l['herramientas'])
+        m = METODO[l['metodo']]
+        clientes = [c for c in CLIENTES if c not in ALIANZAS][:12]
+        return f'''
+<section class="page-hero contact-hero landing-hero">
+  <div class="page-hero-trazo" aria-hidden="true"></div>
+  <div class="container contact-layout">
+    <div class="contact-intro">
+      <span class="eyebrow">{escape(l['eyebrow'])}</span>
+      <h1>{escape(l['h1'])}</h1>
+      <p class="lead">{escape(l['lead'])}</p>
+      <ul class="diag-gets">{hechos}</ul>
+      <p class="landing-alt">¿Prefieres partir con una evaluación rápida? <a href="#herramientas">Haz el autodiagnóstico gratuito {ARROW}</a></p>
+    </div>
+    {contact_form(r, l['form_titulo'], l['intereses'], en_pagina=True)}
+  </div>
+</section>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<section class="section bg-soft"><div class="container stack-40">
+  {section_head('Qué implementamos', 'Tecnología Microsoft, elegida según tu proceso.')}
+  {que}
+  <p class="disclaimer">Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.</p>
+</div></section>
+<section class="section bg-white" id="herramientas"><div class="container stack-40">
+  {section_head('Autodiagnóstico gratuito', '¿No sabes por dónde partir?', 'Responde unas preguntas y obtén una primera recomendación. Al final puedes enviarnos tus resultados para conversarlos.')}
+  <div class="grid grid-2">{tools}</div>
+</div></section>
+<section class="section bg-blue"><div class="container stack-40">
+  {section_head('Cómo lo hacemos', m['titulo'], m['resumen'])}
+  {metodo_html(r, m)}
+  {cofin_strip(r)}
+</div></section>
+<section class="section bg-white"><div class="container stack-40">
+  {section_head('Clientes', 'Empresas que trabajan con W-IT.')}
+  {logo_wall(r, clientes)}
+  {premios_strip(r) if l['campana'] == 'dynamics' else ''}
+</div></section>
+<section class="cta-band">
+  <div class="container cta-band-inner">
+    <div><h2>¿Conversamos sobre tu caso?</h2><p>Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.</p></div>
+    <div class="btn-row"><a class="btn btn-lg btn-green" href="#form-contacto">Conversemos</a><a class="btn btn-lg btn-ghost-light" href="#agente" data-open-agente>Conversa con nuestro agente</a></div>
+  </div>
+</section>'''
     return body
 
 
@@ -1194,7 +1328,7 @@ def nosotros(r):
   <ol class="timeline">{tl}</ol>
 </div></section>
 {premios_section(r)}
-<section class="section bg-soft"><div class="container stack-40">
+<section class="section bg-soft" id="presencia"><div class="container stack-40">
   {section_head('Presencia', 'Oficinas en Chile y Perú.', 'Atendemos a nuestros clientes desde Santiago y Lima.')}
   <div class="grid grid-2 oficinas">{oficinas}</div>
 </div></section>
@@ -1247,13 +1381,49 @@ def simple_page(eyebrow, h1, bajada, crumbs, contenido):
     return body
 
 
-def contacto(r):
+REQ = '<abbr class="req" title="obligatorio">*</abbr>'
+
+
+def contact_form(r, titulo='Escríbenos', intereses=(), en_pagina=False):
+    """Formulario de contacto → /api/contacto (Lead en Dynamics 365). Lo usan /contacto/ y las landings de campañas.
+
+    intereses: temas que llegan marcados. en_pagina: el formulario está en una landing, así que el origen
+    para el CRM es esa misma página (main.js) y no el último enlace a Contacto.
+    """
     temas = [(s['slug'], s['corto']) for s in SOLUCIONES] + [('licencias', 'Licencias Microsoft'), ('soporte', 'Soporte')]
-    sols = ''.join(f'<label class="chip"><input type="checkbox" name="interes" value="{v}"><span>{escape(t)}</span></label>' for v, t in temas)
+    sols = ''.join(f'<label class="chip"><input type="checkbox" name="interes" value="{v}"{" checked" if v in intereses else ""}><span>{escape(t)}</span></label>' for v, t in temas)
+    en_pagina = ' data-en-pagina' if en_pagina else ''
+    return f'''<form class="form contact-form" id="form-contacto" data-api="/api/contacto"{en_pagina} novalidate>
+      <div class="form-head"><strong>{escape(titulo)}</strong><span>Los campos con {REQ} son obligatorios.</span></div>
+      <div class="form-row"><label><span>Nombre {REQ}</span><input name="nombre" required autocomplete="name" placeholder="Nombre y apellido"></label><label><span>Email corporativo {REQ}</span><input type="email" name="email" required autocomplete="email" placeholder="nombre@empresa.cl"></label></div>
+      <div class="form-row"><label>Empresa<input name="empresa" autocomplete="organization"></label><label>Cargo<input name="cargo" autocomplete="organization-title"></label></div>
+      <div class="form-row form-row-3"><label>Teléfono<input type="tel" name="telefono" autocomplete="tel" placeholder="+56 9"></label>
+        <label>País<select name="pais"><option>Chile</option><option>Perú</option><option>Otro</option></select></label>
+        <label>Tamaño<select name="tamano"><option>Menos de 200 personas</option><option>200 a 1.000</option><option>Más de 1.000</option></select></label></div>
+      <fieldset><legend>¿Qué te interesa?</legend><div class="chips">{sols}</div></fieldset>
+      <label>Mensaje<textarea name="mensaje" rows="3" placeholder="Cuéntanos brevemente tu consulta"></textarea>
+        <span class="msg-ctx" hidden>Escribe tu consulta arriba. Bajo la línea «--» incluimos tus respuestas del autodiagnóstico para que no tengas que repetirlas; puedes editarlas o borrarlas.</span></label>
+      <label class="check"><input type="checkbox" name="consentimiento" required> <span>Acepto la <a href="{r}privacidad/">política de privacidad</a> y el tratamiento de mis datos para responder esta solicitud. {REQ}</span></label>
+      <!-- Contexto para el CRM: lo completa main.js según desde dónde llegó la persona; no se muestra en pantalla -->
+      <input type="hidden" name="origen_pagina">
+      <input type="hidden" name="origen_cta">
+      <input type="hidden" name="diagnostico_herramienta">
+      <input type="hidden" name="diagnostico_resultado">
+      <input type="hidden" name="diagnostico_detalle">
+      <input type="hidden" name="utm">
+      <input type="hidden" name="t">
+      <!-- Antispam: campo que una persona no ve ni completa -->
+      <label class="hp" aria-hidden="true">Sitio web<input name="sitio_web" tabindex="-1" autocomplete="off"></label>
+      <div class="cf-turnstile" data-sitekey="{TURNSTILE_SITEKEY}" data-theme="light" data-language="es"></div>
+      <button class="btn btn-lg btn-primary" type="submit">Enviar solicitud</button>
+      <p class="form-msg" role="status" tabindex="-1" hidden></p>
+    </form>'''
+
+
+def contacto(r):
     pasos = [('Te respondemos', 'En menos de 1 día hábil, al correo que nos dejes.'),
              ('Te conectamos con un especialista', 'Del área que te interesa, en una reunión breve si hace falta.'),
              ('Conversamos sobre tu escenario', 'Las alternativas que vemos y si podría aplicar cofinanciamiento de Microsoft.')]
-    req = '<abbr class="req" title="obligatorio">*</abbr>'
     return f'''
 <section class="page-hero contact-hero">
   <div class="page-hero-trazo" aria-hidden="true"></div>
@@ -1270,31 +1440,7 @@ def contacto(r):
         <div class="contact-card contact-card-links"><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a></div>
       </div>
     </div>
-    <form class="form contact-form" id="form-contacto" data-api="/api/contacto" novalidate>
-      <div class="form-head"><strong>Escríbenos</strong><span>Los campos con {req} son obligatorios.</span></div>
-      <div class="form-row"><label><span>Nombre {req}</span><input name="nombre" required autocomplete="name" placeholder="Nombre y apellido"></label><label><span>Email corporativo {req}</span><input type="email" name="email" required autocomplete="email" placeholder="nombre@empresa.cl"></label></div>
-      <div class="form-row"><label>Empresa<input name="empresa" autocomplete="organization"></label><label>Cargo<input name="cargo" autocomplete="organization-title"></label></div>
-      <div class="form-row form-row-3"><label>Teléfono<input type="tel" name="telefono" autocomplete="tel" placeholder="+56 9"></label>
-        <label>País<select name="pais"><option>Chile</option><option>Perú</option><option>Otro</option></select></label>
-        <label>Tamaño<select name="tamano"><option>Menos de 200 personas</option><option>200 a 1.000</option><option>Más de 1.000</option></select></label></div>
-      <fieldset><legend>¿Qué te interesa?</legend><div class="chips">{sols}</div></fieldset>
-      <label>Mensaje<textarea name="mensaje" rows="3" placeholder="Cuéntanos brevemente tu consulta"></textarea>
-        <span class="msg-ctx" hidden>Escribe tu consulta arriba. Bajo la línea «--» incluimos tus respuestas del autodiagnóstico para que no tengas que repetirlas; puedes editarlas o borrarlas.</span></label>
-      <label class="check"><input type="checkbox" name="consentimiento" required> <span>Acepto la <a href="{r}privacidad/">política de privacidad</a> y el tratamiento de mis datos para responder esta solicitud. {req}</span></label>
-      <!-- Contexto para el CRM: lo completa main.js según desde dónde llegó la persona; no se muestra en pantalla -->
-      <input type="hidden" name="origen_pagina">
-      <input type="hidden" name="origen_cta">
-      <input type="hidden" name="diagnostico_herramienta">
-      <input type="hidden" name="diagnostico_resultado">
-      <input type="hidden" name="diagnostico_detalle">
-      <input type="hidden" name="utm">
-      <input type="hidden" name="t">
-      <!-- Antispam: campo que una persona no ve ni completa -->
-      <label class="hp" aria-hidden="true">Sitio web<input name="sitio_web" tabindex="-1" autocomplete="off"></label>
-      <div class="cf-turnstile" data-sitekey="{TURNSTILE_SITEKEY}" data-theme="light" data-language="es"></div>
-      <button class="btn btn-lg btn-primary" type="submit">Enviar solicitud</button>
-      <p class="form-msg" role="status" tabindex="-1" hidden></p>
-    </form>
+    {contact_form(r)}
   </div>
 </section>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>'''
@@ -1485,7 +1631,7 @@ def privacidad_page(r):
         ('Microsoft Copilot Studio', 'Responde las preguntas que le haces al asistente del sitio (el clip)', 'Lo que escribes en el asistente'),
         ('Microsoft Azure', 'Aloja este sitio y procesa el envío de los formularios', 'El envío, en tránsito'),
         ('Cloudflare (Turnstile y Web Analytics)', 'Verifica que quien envía el formulario es una persona, y cuenta las visitas al sitio', 'Señales técnicas de tu navegador, tu IP y la página visitada. No recibe lo que escribiste ni te identifica'),
-        ('Google Ads', 'Nos dice si quien envió el formulario llegó desde uno de nuestros avisos, para no gastar en avisos que no sirven', 'Que hubo un envío de formulario y desde qué aviso, mediante la cookie _gcl_au. No recibe tu nombre, tu correo ni lo que escribiste'),
+        ('Google Ads', 'Nos dice si quien envió el formulario llegó desde uno de nuestros avisos, para no gastar en avisos que no sirven', 'Que hubo un envío de formulario y desde qué aviso, mediante las cookies _gcl_au y _gcl_aw, solo si llegaste desde un aviso. No recibe tu nombre, tu correo ni lo que escribiste'),
     ]
     filas = ''.join(f'<tr><th scope="row">{escape(a)}</th><td>{escape(b)}</td><td>{escape(c)}</td></tr>' for a, b, c in proveedores)
     mail = '<a href="mailto:info@w-it.cl">info@w-it.cl</a>'
@@ -1498,7 +1644,7 @@ def privacidad_page(r):
       <span class="eyebrow">Legal</span>
       <h1>Aviso de privacidad y tratamiento de datos</h1>
       <p class="lead">Qué datos recolectamos en este sitio, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.</p>
-      <p class="disclaimer">Última actualización: 7 de octubre de 2026</p>
+      <p class="disclaimer">Última actualización: 10 de octubre de 2026</p>
     </div>
   </div>
 </section>
@@ -1510,7 +1656,7 @@ def privacidad_page(r):
 
   <h2>Qué datos recolectamos</h2>
   <p>Medimos cuánta gente visita el sitio con Cloudflare Web Analytics, que no usa cookies ni identifica personas: cuenta páginas vistas, país aproximado, tipo de dispositivo y desde qué sitio llegaste. Datos personales solo recolectamos cuando tú decides enviarnos un formulario.</p>
-  <p>Además, este sitio usa una cookie publicitaria de Google Ads (_gcl_au). Su único fin es saber si quien nos escribió por el formulario llegó desde un aviso nuestro en Google, y así no seguir pagando por avisos que no funcionan. No la usamos para mostrarte publicidad en otros sitios ni para armar un perfil tuyo. Si prefieres evitarla, puedes bloquear las cookies de terceros en tu navegador: el sitio y el formulario funcionan igual.</p>
+  <p>Además, si llegaste al sitio desde uno de nuestros avisos en Google, usamos cookies publicitarias de Google Ads (_gcl_au y _gcl_aw). Si llegaste de otra forma, no se usan. Su único fin es saber si quien nos escribió por el formulario llegó desde un aviso nuestro en Google, y así no seguir pagando por avisos que no funcionan. No la usamos para mostrarte publicidad en otros sitios ni para armar un perfil tuyo. Si prefieres evitarla, puedes bloquear las cookies de terceros en tu navegador: el sitio y el formulario funcionan igual.</p>
   <h3>Los que tú escribes en el formulario:</h3>
   <ul class="legal-list">
     <li>Nombre y correo electrónico. Son los únicos obligatorios.</li>
@@ -1586,7 +1732,7 @@ def main():
                        'Solutions Partner for Microsoft Cloud, con las seis designaciones Microsoft, en Chile y Perú. Implementamos Dynamics 365, Power Platform, Azure y agentes de IA.', home, solid=False, ld=[organizacion_ld()]))
     pages.append(write('soluciones/', 'Soluciones Microsoft Dynamics 365, Power Platform, Azure y Copilot · W-IT', 'Partner Microsoft en Chile y Perú: implementamos Dynamics 365, Power Platform, Azure y Copilot.', soluciones_index, 'soluciones'))
     for s in SOLUCIONES:
-        pages.append(write(f"soluciones/{s['slug']}/", f"{s['plataforma']}: {s['nombre'].lower()} · W-IT Chile", f"{s['plataforma']}. {s['linea']}", solucion_page(s), 'soluciones', ld=[servicio_ld(s)]))
+        pages.append(write(f"soluciones/{s['slug']}/", f"{s['plataforma']}: {s['nombre']} · W-IT", f"{s['plataforma']}. {s['linea']} Implementación en Chile y Perú.", solucion_page(s), 'soluciones', ld=[servicio_ld(s)]))
     pages.append(write('industrias/', 'Clientes por industria · W-IT', 'Clientes de W-IT por industria.', industrias_index, 'industrias'))
     for i in INDUSTRIAS:
         pages.append(write(f"industrias/{i['slug']}/", f"{i['nombre']} · W-IT", i['h1'], industria_page(i), 'industrias'))
@@ -1609,6 +1755,9 @@ def main():
     # Equipo y Recursos/Observatorio IA: ocultos hasta tener contenido real (2026-10-01)
     # Cookies y Términos: ocultos hasta tener el texto de Administración y Finanzas (2026-10-07);
     # al volver: páginas con simple_page('Legal', ...) y enlaces en footer-bottom. Redes sociales: ocultas hasta tener las URL.
+    # Landings de Google Ads: noindex y fuera del sitemap (no se agregan a pages)
+    for l in LANDINGS:
+        write(l['path'], l['title'], l['desc'], landing_page(l), noindex=True)
     indexacion(pages)
     print(f'{len(pages)} páginas generadas')
     check_css()

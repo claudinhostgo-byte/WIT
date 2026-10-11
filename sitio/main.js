@@ -6,6 +6,31 @@
   const desktop = matchMedia('(min-width: 1241px)');
   const root = (document.querySelector('link[rel="stylesheet"]').getAttribute('href') || '').replace('styles.css', '');
 
+  // ---------- Google Ads: medición de conversiones solo para quien llegó desde un aviso (gclid/gbraid/wbraid
+  // en la URL; se recuerda 90 días, la ventana de conversión de Google). El ID y las etiquetas los pone build.py
+  // en <meta name="wit-ads">; sin esa meta, o para el resto de las visitas, no se carga nada de Google.
+  const adsCfg = (() => { try { return JSON.parse($('meta[name="wit-ads"]')?.content || 'null'); } catch (e) { return null; } })();
+  const adsClic = (() => {
+    const viene = ['gclid', 'gbraid', 'wbraid'].some(k => new URLSearchParams(location.search).has(k));
+    try {
+      if (viene) localStorage.setItem('wit-ads', String(Date.now()));
+      return Date.now() - Number(localStorage.getItem('wit-ads') || 0) < 90 * 864e5;
+    } catch (e) { return viene; }
+  })();
+  let gtag = null;
+  if (adsCfg && adsClic) {
+    window.dataLayer = window.dataLayer || [];
+    gtag = function () { window.dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', adsCfg.id, { allow_ad_personalization_signals: false });
+    const tag = document.createElement('script');
+    tag.async = true;
+    tag.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(adsCfg.id)}`;
+    document.head.appendChild(tag);
+  }
+  // tipo: 'formulario' (conversión principal) o 'diagnostico' (secundaria)
+  const adsConversion = tipo => { if (gtag && adsCfg[tipo]) gtag('event', 'conversion', { send_to: `${adsCfg.id}/${adsCfg[tipo]}` }); };
+
   // ---------- Header: transparente sobre el hero, sólido al hacer scroll
   const header = $('#header');
   const fixedSolid = header.classList.contains('is-solid-page');
@@ -218,6 +243,7 @@
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data),
         });
         if (res.ok) {
+          adsConversion('formulario');
           form.reset();
           try { sessionStorage.removeItem('wit-diag'); } catch (err) { /* sin almacenamiento */ }
           $$('.form-row, fieldset, label, .form-head', form).forEach(el => { el.hidden = true; });
@@ -412,6 +438,7 @@
           resultado: `${nivel[1]} (${pts}/10), plazo estimado ${min} a ${max} semanas`,
           detalle: resp.map((o, k) => `${D.preguntas[k].q} ${o.t}`).join('\n') }));
       } catch (e) { /* sin almacenamiento: el formulario va sin contexto */ }
+      adsConversion('diagnostico');
       $('.diag-reset', stage).addEventListener('click', () => { resp = []; pregunta(0); });
       $('h2', stage).focus();
     };
@@ -484,6 +511,7 @@
           resultado: `${prod.nombre}, plazo típico ${m0} a ${m1} meses${scm ? ', considerar Supply Chain Management' : ''}`,
           detalle: resp.map((o, k) => `${seq[k].q} ${o.t}`).join('\n') }));
       } catch (e) { /* sin almacenamiento: el formulario va sin contexto */ }
+      adsConversion('diagnostico');
       $('.diag-reset', stage).addEventListener('click', () => { resp = []; armar(); pregunta(0); });
       $('h2', stage).focus();
     };
@@ -565,6 +593,7 @@
           interno: `puntos: Sales ${pts.s}, Customer Service ${pts.cs}, Contact Center ${pts.cc}`,
           detalle: D.preguntas.map((p, n) => `${p.q} ${(resp[n] || []).map(o => o.t).join(', ')}`).join('\n') }));
       } catch (e) { /* sin almacenamiento: el formulario va sin contexto */ }
+      adsConversion('diagnostico');
       $('.diag-reset', stage).addEventListener('click', () => { resp = []; pregunta(0); });
       $('h2', stage).focus();
     };
@@ -632,8 +661,14 @@
     const set = (n, v) => { if (v) form.elements[n].value = v; };
     const origen = store.get('wit-origen');
     const ref = document.referrer && new URL(document.referrer).origin === location.origin ? new URL(document.referrer).pathname : '';
-    set('origen_pagina', origen ? origen.pagina : ref || (document.referrer ? document.referrer : 'directo'));
-    set('origen_cta', origen && origen.cta);
+    if (form.hasAttribute('data-en-pagina')) {
+      // Landing de campaña: el formulario está en la misma página a la que llegó la persona
+      set('origen_pagina', location.pathname);
+      set('origen_cta', 'Formulario de la landing');
+    } else {
+      set('origen_pagina', origen ? origen.pagina : ref || (document.referrer ? document.referrer : 'directo'));
+      set('origen_cta', origen && origen.cta);
+    }
     const diag = store.get('wit-diag');
     if (diag) {
       set('diagnostico_herramienta', diag.herramienta);

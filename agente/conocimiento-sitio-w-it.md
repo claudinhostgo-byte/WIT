@@ -33,15 +33,15 @@ Los enlaces son rutas del sitio. Al responder, entrega la ruta como enlace Markd
 - [Privacidad](/privacidad/): Qué datos recolectamos en w-it.cl, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.
 - [Agentes W-IT](/productos/agentes-w-it/): Agentes y aceleradores de W-IT.
 - [Productos](/productos/): Productos W-IT en Microsoft Marketplace.
-- [Automatización y apps](/soluciones/automatizacion-y-apps/): Microsoft Power Platform. Procesos sin planillas paralelas.
-- [Contact center omnicanal y voz](/soluciones/contact-center/): Microsoft Dynamics 365 Contact Center. Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes.
-- [Datos y analítica](/soluciones/datos-y-analitica/): Microsoft Fabric y Power BI. Datos unificados para decidir.
-- [Finanzas y operaciones](/soluciones/finanzas-y-operaciones/): Microsoft Dynamics 365 Business Central y Finance. ERP que cierra a tiempo y escala contigo.
-- [IA y agentes](/soluciones/ia-y-agentes/): Microsoft 365 Copilot y agentes de IA. Copilot y agentes que trabajan sobre tus datos, con gobierno desde el inicio.
+- [Automatización y apps](/soluciones/automatizacion-y-apps/): Microsoft Power Platform. Procesos sin planillas paralelas. Implementación en Chile y Perú.
+- [Contact center omnicanal y voz](/soluciones/contact-center/): Microsoft Dynamics 365 Contact Center. Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes. Implementación en Chile y Perú.
+- [Datos y analítica](/soluciones/datos-y-analitica/): Microsoft Fabric y Power BI. Datos unificados para decidir. Implementación en Chile y Perú.
+- [Finanzas y operaciones](/soluciones/finanzas-y-operaciones/): Microsoft Dynamics 365 Business Central y Finance. ERP que cierra a tiempo y escala contigo. Implementación en Chile y Perú.
+- [IA y agentes](/soluciones/ia-y-agentes/): Microsoft 365 Copilot y agentes de IA. Copilot y agentes que trabajan sobre tus datos, con gobierno desde el inicio. Implementación en Chile y Perú.
 - [Soluciones](/soluciones/): Partner Microsoft en Chile y Perú: implementamos Dynamics 365, Power Platform, Azure y Copilot.
-- [Nube Azure e infraestructura](/soluciones/nube-azure-e-infraestructura/): Microsoft Azure. Migración, modernización y operación en Azure, con costos bajo control.
-- [Seguridad e identidades](/soluciones/seguridad-y-cumplimiento/): Microsoft Purview y Microsoft Entra. Identidades, accesos y cargas en la nube protegidos con el modelo Zero Trust.
-- [Ventas y servicio al cliente](/soluciones/ventas-servicio-y-contact-center/): Microsoft Dynamics 365 Sales y Customer Service. Una sola vista del cliente, de la venta a la postventa.
+- [Nube Azure e infraestructura](/soluciones/nube-azure-e-infraestructura/): Microsoft Azure. Migración, modernización y operación en Azure, con costos bajo control. Implementación en Chile y Perú.
+- [Seguridad e identidades](/soluciones/seguridad-y-cumplimiento/): Microsoft Purview y Microsoft Entra. Identidades, accesos y cargas en la nube protegidos con el modelo Zero Trust. Implementación en Chile y Perú.
+- [Ventas y servicio al cliente](/soluciones/ventas-servicio-y-contact-center/): Microsoft Dynamics 365 Sales y Customer Service. Una sola vista del cliente, de la venta a la postventa. Implementación en Chile y Perú.
 
 ## Preguntas frecuentes de navegación
 
@@ -1836,7 +1836,7 @@ Secciones: Quién es responsable de tus datos; Qué datos recolectamos; Los que 
 Legal
 Aviso de privacidad y tratamiento de datos
 Qué datos recolectamos en este sitio, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.
-Última actualización: 7 de octubre de 2026
+Última actualización: 10 de octubre de 2026
 Quién es responsable de tus datos
 El responsable es W-IT SpA, con domicilio en Apoquindo 3039, Las Condes, Santiago de Chile.
 Para cualquier consulta sobre tus datos, escribe a info@w-it.cl.
@@ -1844,15 +1844,15 @@ Qué datos recolectamos
 Medimos cuánta gente visita el sitio con Cloudflare Web Analytics, que no usa cookies ni identifica personas: cuenta páginas vistas, país aproximado, tipo de dispositivo y desde qué sitio llegaste. Datos personales solo recolectamos cuando tú decides enviarnos un formulario.
 
 [Página: Privacidad · ruta /privacidad/]
-Además, este sitio usa una cookie publicitaria de Google Ads (_gcl_au). Su único fin es saber si quien nos escribió por el formulario llegó desde un aviso nuestro en Google, y así no seguir pagando por avisos que no funcionan. No la usamos para mostrarte publicidad en otros sitios ni para armar un perfil tuyo. Si prefieres evitarla, puedes bloquear las cookies de terceros en tu navegador: el sitio y el formulario funcionan igual.
+Además, si llegaste al sitio desde uno de nuestros avisos en Google, usamos cookies publicitarias de Google Ads (_gcl_au y _gcl_aw). Si llegaste de otra forma, no se usan. Su único fin es saber si quien nos escribió por el formulario llegó desde un aviso nuestro en Google, y así no seguir pagando por avisos que no funcionan. No la usamos para mostrarte publicidad en otros sitios ni para armar un perfil tuyo. Si prefieres evitarla, puedes bloquear las cookies de terceros en tu navegador: el sitio y el formulario funcionan igual.
 Los que tú escribes en el formulario:
 Nombre y correo electrónico. Son los únicos obligatorios.
 Empresa u organización, cargo, teléfono, país, tamaño de tu organización y temas de interés, si decides completarlos.
 El mensaje que nos escribas, si escribes uno.
 Los que nos envías al postular en Trabaja con nosotros:
-Nombre, correo electrónico, tu currículum y tu respuesta sobre si usaste IA para prepararlos. Son los obligatorios.
 
 [Página: Privacidad · ruta /privacidad/]
+Nombre, correo electrónico, tu currículum y tu respuesta sobre si usaste IA para prepararlos. Son los obligatorios.
 Teléfono y un mensaje, si decides incluirlos.
 Lo que escribes en el asistente del sitio:
 Tus preguntas y las respuestas del asistente. El asistente no te pide datos personales: te pedimos no escribirlos ahí.
@@ -1861,17 +1861,17 @@ La página desde la que enviaste el formulario, incluidos los parámetros de cam
 La página y el botón del sitio desde los que llegaste al formulario.
 Si antes usaste uno de nuestros autodiagnósticos, sus respuestas y el resultado, para que el especialista llegue a la reunión con ese contexto.
 La dirección web desde la que llegaste a nuestro sitio, si venías de otra.
-Tu dirección IP, que se usa de forma temporal y solo para limitar envíos masivos automatizados. No se guarda junto a tu registro.
-Para qué los usamos
 
 [Página: Privacidad · ruta /privacidad/]
+Tu dirección IP, que se usa de forma temporal y solo para limitar envíos masivos automatizados. No se guarda junto a tu registro.
+Para qué los usamos
 Para responder tu consulta y hacerte seguimiento comercial sobre lo que nos preguntaste: cotizarte un proyecto, coordinar una reunión o enviarte la información que pediste.
 Las conversaciones con el asistente las usamos para responderte y para revisar si sus respuestas son correctas y mejorarlas. No las asociamos a tu identidad ni entran a nuestro CRM.
 Si postulas en Trabaja con nosotros, usamos tus datos y tu currículum solo para evaluar tu perfil en nuestros procesos de selección y contactarte por ellos. No entran a nuestro CRM ni al seguimiento comercial.
 No usamos tus datos para otra cosa. No los vendemos, no los cedemos a terceros con fines comerciales y no te vamos a inscribir en una lista de correos por haber enviado un formulario.
-La base que nos habilita a tratarlos es tu propio envío del formulario: tú nos entregas los datos con el fin explícito de que te contactemos.
 
 [Página: Privacidad · ruta /privacidad/]
+La base que nos habilita a tratarlos es tu propio envío del formulario: tú nos entregas los datos con el fin explícito de que te contactemos.
 Con quién los compartimos
 Con seis proveedores de tecnología, cada uno para una función específica. Ninguno los usa para fines propios.
 Proveedores que procesan datos de este sitio y para qué.
@@ -1883,7 +1883,7 @@ Microsoft AzureAloja este sitio y procesa el envío de los formulariosEl envío,
 
 [Página: Privacidad · ruta /privacidad/]
 Cloudflare (Turnstile y Web Analytics)Verifica que quien envía el formulario es una persona, y cuenta las visitas al sitioSeñales técnicas de tu navegador, tu IP y la página visitada. No recibe lo que escribiste ni te identifica
-Google AdsNos dice si quien envió el formulario llegó desde uno de nuestros avisos, para no gastar en avisos que no sirvenQue hubo un envío de formulario y desde qué aviso, mediante la cookie _gcl_au. No recibe tu nombre, tu correo ni lo que escribiste
+Google AdsNos dice si quien envió el formulario llegó desde uno de nuestros avisos, para no gastar en avisos que no sirvenQue hubo un envío de formulario y desde qué aviso, mediante las cookies _gcl_au y _gcl_aw, solo si llegaste desde un aviso. No recibe tu nombre, tu correo ni lo que escribiste
 Elegimos Turnstile en vez de otras herramientas de verificación precisamente porque no perfila a los visitantes para publicidad.
 Estos servicios operan en infraestructura global, por lo que tus datos pueden procesarse y almacenarse fuera de Chile, bajo los compromisos contractuales de protección de datos de cada proveedor.
 Cuánto tiempo los conservamos
@@ -1949,7 +1949,7 @@ ConversemosConversa con nuestro agente
 ### Automatización y apps (/soluciones/automatizacion-y-apps/)
 
 [Página: Automatización y apps · ruta /soluciones/automatizacion-y-apps/]
-Microsoft Power Platform. Procesos sin planillas paralelas.
+Microsoft Power Platform. Procesos sin planillas paralelas. Implementación en Chile y Perú.
 
 Secciones: ¿Te identificas con alguna de estas situaciones?; Tareas repetitivas; Aprobaciones por correo; Apps en la sombra; Formularios en papel; Tecnología Microsoft, elegida según tu proceso.; Power Apps; Power Automate; Power Pages; AI Builder; Power Platform; Fusion teams y sprints.; Autodiagnóstico de madurez en IA; ¿Conversamos sobre tu caso?
 
@@ -2086,7 +2086,7 @@ ConversemosConversa con nuestro agente
 ### Contact center omnicanal y voz (/soluciones/contact-center/)
 
 [Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
-Microsoft Dynamics 365 Contact Center. Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes.
+Microsoft Dynamics 365 Contact Center. Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes. Implementación en Chile y Perú.
 
 Secciones: ¿Te identificas con alguna de estas situaciones?; La central no conversa con el CRM; Canales desconectados; Colas sin visibilidad; Agentes sin contexto; Autoservicio limitado; Tecnología Microsoft, elegida según tu proceso.; Dynamics 365 Contact Center; Dynamics 365 Customer Service; Copilot Studio; Microsoft 365 Copilot; Azure; Success by Design, por olas.; Autodiagnóstico de atención y ventas; ¿Conversamos sobre tu caso?
 
@@ -2229,7 +2229,7 @@ ConversemosConversa con nuestro agente
 ### Datos y analítica (/soluciones/datos-y-analitica/)
 
 [Página: Datos y analítica · ruta /soluciones/datos-y-analitica/]
-Microsoft Fabric y Power BI. Datos unificados para decidir.
+Microsoft Fabric y Power BI. Datos unificados para decidir. Implementación en Chile y Perú.
 
 Secciones: ¿Te identificas con alguna de estas situaciones?; Reportes que no cuadran; Datos en silos; IA sin base; Dependencia de TI; Tecnología Microsoft, elegida según tu proceso.; Microsoft Fabric; Power BI; Dataverse; Azure SQL; Azure Data Factory y Synapse; Fusion teams y sprints.; Autodiagnóstico de madurez en IA; ¿Conversamos sobre tu caso?
 
@@ -2366,7 +2366,7 @@ ConversemosConversa con nuestro agente
 ### Finanzas y operaciones (/soluciones/finanzas-y-operaciones/)
 
 [Página: Finanzas y operaciones · ruta /soluciones/finanzas-y-operaciones/]
-Microsoft Dynamics 365 Business Central y Finance. ERP que cierra a tiempo y escala contigo.
+Microsoft Dynamics 365 Business Central y Finance. ERP que cierra a tiempo y escala contigo. Implementación en Chile y Perú.
 
 Secciones: ¿Te identificas con alguna de estas situaciones?; Cierres eternos; ERP que no escala; Inventario opaco; Integraciones frágiles; Tecnología Microsoft, elegida según tu proceso.; Business Central; Dynamics 365 Finance; Dynamics 365 Supply Chain Management; Dynamics 365 Project Operations; Success by Design, por olas.; ¿Business Central o Finance?; ¿Conversamos sobre tu caso?
 
@@ -2500,9 +2500,9 @@ ConversemosConversa con nuestro agente
 ### IA y agentes (/soluciones/ia-y-agentes/)
 
 [Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
-Microsoft 365 Copilot y agentes de IA. Copilot y agentes que trabajan sobre tus datos, con gobierno desde el inicio.
+Microsoft 365 Copilot y agentes de IA. Copilot y agentes que trabajan sobre tus datos, con gobierno desde el inicio. Implementación en Chile y Perú.
 
-Secciones: ¿Te identificas con alguna de estas situaciones?; Pilotos que no escalan; Respuestas sin fuente; Licencias sin adopción; Datos sin gobierno; Costos inciertos; Tecnología Microsoft, elegida según tu proceso.; Microsoft 365 Copilot; Copilot Studio; Azure AI Foundry; Agent 365; Dynamics 365; Del prototipo a producción, con evaluación continua.; Estimador de créditos de Copilot; ¿Conversamos sobre tu caso?
+Secciones: ¿Te identificas con alguna de estas situaciones?; Pilotos que no escalan; Respuestas sin fuente; Licencias sin adopción; Datos sin gobierno; Costos inciertos; Tecnología Microsoft, elegida según tu proceso.; Microsoft 365 Copilot; Copilot Studio; Azure AI Foundry; Agent 365; Dynamics 365; Del prototipo a producción, con evaluación continua.; Estimador de créditos de Copilot; Copilot y agentes de IA también para empresas en Perú.; ¿Conversamos sobre tu caso?
 
 [Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Microsoft 365 Copilot y agentes de IA · IA y agentes
@@ -2635,6 +2635,10 @@ Herramienta relacionadaGratis
 [Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Estimador de créditos de Copilot
 Resultados orientativos. No son una cotización ni asesoría legal.Empezar →
+Chile y Perú
+Copilot y agentes de IA también para empresas en Perú.
+Implementamos Microsoft 365 Copilot, Microsoft Copilot Studio y Azure AI Foundry desde Santiago y Lima. En Perú operamos a través de W-IT LATAM S.A.C., con oficina en Santiago de Surco.Ver oficinas →
+Clientes con operación en Perú
 ¿Conversamos sobre tu caso?
 Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.
 ConversemosConversa con nuestro agente
@@ -2708,7 +2712,7 @@ ConversemosConversa con nuestro agente
 ### Nube Azure e infraestructura (/soluciones/nube-azure-e-infraestructura/)
 
 [Página: Nube Azure e infraestructura · ruta /soluciones/nube-azure-e-infraestructura/]
-Microsoft Azure. Migración, modernización y operación en Azure, con costos bajo control.
+Microsoft Azure. Migración, modernización y operación en Azure, con costos bajo control. Implementación en Chile y Perú.
 
 Secciones: ¿Te identificas con alguna de estas situaciones?; Datacenter al límite; Aplicaciones difíciles de mantener; Factura cloud que crece; Nube sin reglas; Trabajo remoto inseguro; Tecnología Microsoft, elegida según tu proceso.; Azure Migrate; Azure VMware Solution; Azure App Service; Azure Kubernetes Service; Azure Virtual Desktop; Microsoft Cost Management; Azure Landing Zone; Cloud Adoption Framework, por olas.; Autodiagnóstico de madurez en IA; ¿Conversamos sobre tu caso?
 
@@ -2857,7 +2861,7 @@ ConversemosConversa con nuestro agente
 ### Seguridad e identidades (/soluciones/seguridad-y-cumplimiento/)
 
 [Página: Seguridad e identidades · ruta /soluciones/seguridad-y-cumplimiento/]
-Microsoft Purview y Microsoft Entra. Identidades, accesos y cargas en la nube protegidos con el modelo Zero Trust.
+Microsoft Purview y Microsoft Entra. Identidades, accesos y cargas en la nube protegidos con el modelo Zero Trust. Implementación en Chile y Perú.
 
 Secciones: ¿Te identificas con alguna de estas situaciones?; Accesos sin control; Nube mal configurada; Información sin etiquetar; IA sin gobierno; Tecnología Microsoft, elegida según tu proceso.; Microsoft Purview; Microsoft Entra ID; Microsoft Defender for Cloud; Zero Trust y gobierno; Cloud Adoption Framework, por olas.; Autodiagnóstico de madurez en IA; ¿Conversamos sobre tu caso?
 
@@ -2990,7 +2994,7 @@ ConversemosConversa con nuestro agente
 ### Ventas y servicio al cliente (/soluciones/ventas-servicio-y-contact-center/)
 
 [Página: Ventas y servicio al cliente · ruta /soluciones/ventas-servicio-y-contact-center/]
-Microsoft Dynamics 365 Sales y Customer Service. Una sola vista del cliente, de la venta a la postventa.
+Microsoft Dynamics 365 Sales y Customer Service. Una sola vista del cliente, de la venta a la postventa. Implementación en Chile y Perú.
 
 Secciones: ¿Te identificas con alguna de estas situaciones?; Dos verdades; Planillas paralelas; SLA a ciegas; Postventa sin historial; Tecnología Microsoft, elegida según tu proceso.; Dynamics 365 Sales; Dynamics 365 Customer Service; Dynamics 365 Customer Insights; Dynamics 365 Field Service; Microsoft 365 Copilot; Success by Design, por olas.; Autodiagnóstico de atención y ventas; ¿Conversamos sobre tu caso?
 
