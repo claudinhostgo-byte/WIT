@@ -1,6 +1,6 @@
 # Google Ads · Campañas de búsqueda W-IT (Chile y Perú)
 
-Borrador para revisión: nada está publicado ni activo en Google Ads.
+Publicadas el 2026-10-13 con Google Ads Editor (cuenta 807-842-4837). Estado: activas, en aprendizaje.
 Objetivo: que empresas que buscan implementar Microsoft Dynamics 365 o IA de Microsoft **envíen el formulario de contacto**, directamente o después de un autodiagnóstico.
 
 ## Estructura
@@ -46,7 +46,11 @@ El sitio carga la etiqueta de Google **solo a visitantes que llegaron desde un a
   El formulario ya envía las UTM al Lead en Dynamics 365, así que Comercial verá en el CRM la campaña y la palabra clave de cada lead.
 
 ### 3. Importar con Google Ads Editor
-Crea las dos campañas con la configuración anterior. Después, en Editor: Cuenta > Importar > Desde archivo, en este orden: `palabras-clave.csv`, `anuncios.csv`, `negativas.csv`. Revisa la vista previa antes de "Publicar".
+Usar **`google-ads-editor.csv`**: un solo archivo con campañas, configuración, ubicaciones, grupos, palabras clave, negativas y anuncios (Cuenta > Importar > Desde archivo). Revisar la vista previa, "Conservar todo" y "Publicar". Los CSV sueltos (`palabras-clave.csv`, `anuncios.csv`, `negativas.csv`) quedan como referencia.
+
+**Lecciones del 2026-10-13:**
+- El asistente web de "Campaña nueva" falló 4 veces: al pedir "Confirme su identidad" en el paso de presupuesto deja de guardar y el borrador pierde nombre y tipo. Usar siempre Editor.
+- Google rechaza "ISO 9001 e ISO/IEC 27001" (y "ISO 9001 y 27001") como "número de teléfono en el texto del anuncio". En los avisos se escribe "Certificados ISO por SGS"; los números van en la landing.
 
 ### 4. Recursos (assets) a nivel de cuenta
 - Enlaces de sitio: están en `ENLACES` de `generar.py` (Sales y Customer Service, Contact Center, Business Central/Finance, Copilot y agentes, Cofinanciamiento, Trust Center).

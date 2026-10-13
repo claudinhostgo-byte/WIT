@@ -22,17 +22,17 @@ CAMPANAS = {
 # Títulos comunes de cada campaña + propios de cada grupo (máx. 15 por anuncio)
 COMUNES = {
     'dynamics': ['Implementación Dynamics 365', 'Dynamics 365 en Chile y Perú', 'Solutions Partner Microsoft',
-                 '6 designaciones Microsoft', 'Partner Microsoft desde 2014', 'ISO 9001 e ISO/IEC 27001',
+                 '6 designaciones Microsoft', 'Partner Microsoft desde 2014', 'Certificados ISO por SGS',
                  'Metodología Success by Design', 'Oficinas en Santiago y Lima', 'Autodiagnóstico gratuito',
                  'Conversemos sobre tu proyecto'],
     'ia': ['Agentes de IA con Microsoft', 'Implementación Copilot Studio', 'Agentes de IA para empresas',
-           'Copilot Jumpstart Partner', 'Solutions Partner Microsoft', 'ISO 9001 e ISO/IEC 27001',
+           'Copilot Jumpstart Partner', 'Solutions Partner Microsoft', 'Certificados ISO por SGS',
            'IA para Chile y Perú', 'Autodiagnóstico de IA gratis', 'Agentes sobre tus datos',
            'Conversemos sobre tu caso'],
 }
 DESCRIPCIONES = {
     'dynamics': ['Implementamos Dynamics 365 Sales, Customer Service, Contact Center y Business Central.',
-                 'Solutions Partner for Microsoft Cloud, con las seis designaciones. ISO 9001 y 27001.',
+                 'Solutions Partner for Microsoft Cloud, con las seis designaciones. Certificados ISO.',
                  'Haz el autodiagnóstico gratuito y descubre por dónde partir. Conversemos sin compromiso.',
                  'Oficinas en Santiago y Lima. Success by Design, el marco de Microsoft, en entregas cortas.'],
     'ia': ['Diseñamos y ponemos en producción agentes con Copilot Studio y Azure AI Foundry.',
@@ -44,6 +44,13 @@ DESCRIPCIONES = {
 # Grupos de anuncios: títulos propios y palabras clave (F = frase, E = exacta). Sin concordancia amplia:
 # con este presupuesto, la amplia gasta en búsquedas de estudiantes y de soporte.
 GRUPOS = [
+    # Búsquedas de quien ya decidió que quiere un partner acreditado: pocas, pero de altísima intención
+    ('dynamics', 'Partner certificado Microsoft',
+     ['Partner certificado Microsoft', 'Seis designaciones vigentes', 'Partner Microsoft en Chile',
+      'Partner Microsoft en Perú', 'Credenciales verificables'],
+     [('partner certificado microsoft', 'F'), ('partner microsoft chile', 'F'), ('partner microsoft peru', 'F'),
+      ('solutions partner microsoft', 'F'), ('microsoft solutions partner chile', 'E'), ('partner gold microsoft', 'F'),
+      ('empresa partner de microsoft', 'F'), ('consultora microsoft chile', 'F'), ('consultora microsoft peru', 'F')]),
     ('dynamics', 'Dynamics 365 · Partner e implementación',
      ['Partner Dynamics 365 en Chile', 'Partner Dynamics 365 en Perú', 'Consultora Dynamics 365',
       'Premio Microsoft 2019 y 2020', 'Cofinanciamiento: consúltanos'],
@@ -105,7 +112,7 @@ ENLACES = [  # (texto ≤25, descripción 1 ≤35, descripción 2 ≤35, ruta)
     ('Cofinanciamiento', 'Programas de inversión de', 'Microsoft para POC y MVP', 'cofinanciamiento-microsoft/'),
     ('Trust Center', 'Credenciales Microsoft e ISO', 'verificables', 'nosotros/confianza/'),
 ]
-DESTACADOS = ['6 designaciones Microsoft', 'ISO 9001 e ISO/IEC 27001', 'Oficinas Santiago y Lima',
+DESTACADOS = ['6 designaciones Microsoft', 'Certificados ISO por SGS', 'Oficinas Santiago y Lima',
               'Con Microsoft desde 2014', 'Autodiagnóstico gratuito', 'Success by Design']
 
 LIMITES = {'titulo': 30, 'descripcion': 90, 'ruta': 15, 'enlace': 25, 'enlace_desc': 35, 'destacado': 25}
@@ -170,10 +177,50 @@ def main():
         fila.update({f'Description {i}': d for i, d in enumerate(DESCRIPCIONES[c], 1)})
         filas.append(fila)
     escribir('anuncios.csv', filas, cols)
-    total = sum(cfg['diario'] for cfg in CAMPANAS.values())
+    escribir_editor(filas, tipo)
+    total =sum(cfg['diario'] for cfg in CAMPANAS.values())
     clp = lambda n: f'${n:,}'.replace(',', '.')
     print(f'OK: {sum(len(k) for *_, k in GRUPOS)} palabras clave, {len(GRUPOS)} anuncios, '
           f'presupuesto diario total {clp(total)} CLP (máx. {clp(round(total * 30.4))} CLP al mes)')
+
+
+# Google Ads Editor: un solo archivo (Cuenta > Importar > Desde archivo) con campañas, ubicaciones,
+# grupos, palabras clave, negativas y anuncios. Encabezados en inglés, como los exporta Editor.
+UBICACIONES = [('Chile', '2152'), ('Peru', '2604')]  # IDs de destino geográfico de Google Ads
+HORARIO = ';'.join(f'({d}[08:00-20:00])' for d in ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'))
+CPC_MAXIMO = 2500  # CLP; CPC promedio histórico de la cuenta: ~2.380
+
+
+def escribir_editor(anuncios, tipo):
+    cols = ['Campaign', 'Campaign Type', 'Campaign Status', 'Networks', 'Budget', 'Budget type',
+            'Bid Strategy Type', 'Maximum CPC bid limit', 'Languages', 'Targeting method', 'Exclusion method',
+            'Ad Schedule', 'Final URL suffix', 'EU political ads', 'Location', 'Location ID',
+            'Ad Group', 'Ad Group Status', 'Keyword', 'Criterion Type', 'Status', 'Ad type'] + \
+           [f'Headline {i}' for i in range(1, 16)] + [f'Description {i}' for i in range(1, 5)] + \
+           ['Path 1', 'Path 2', 'Final URL']
+    filas = []
+    for c, cfg in CAMPANAS.items():
+        filas.append({'Campaign': cfg['nombre'], 'Campaign Type': 'Search', 'Campaign Status': 'Enabled',
+                      'Networks': 'Google search', 'Budget': cfg['diario'], 'Budget type': 'Daily',
+                      'Bid Strategy Type': 'Maximize clicks', 'Maximum CPC bid limit': CPC_MAXIMO,
+                      'Languages': 'es;en', 'Targeting method': 'Location of presence',
+                      'Exclusion method': 'Location of presence', 'Ad Schedule': HORARIO,
+                      'Final URL suffix': cfg['sufijo'], 'EU political ads': "Doesn't have EU political ads"})
+        filas += [{'Campaign': cfg['nombre'], 'Location': n, 'Location ID': i} for n, i in UBICACIONES]
+        filas += [{'Campaign': cfg['nombre'], 'Keyword': k, 'Criterion Type': 'Negative Phrase'}
+                  for k in NEGATIVAS_COMUNES + NEGATIVAS[c]]
+    for c, g, _, kws in GRUPOS:
+        nombre = CAMPANAS[c]['nombre']
+        filas.append({'Campaign': nombre, 'Ad Group': g, 'Ad Group Status': 'Enabled'})
+        filas += [{'Campaign': nombre, 'Ad Group': g, 'Keyword': k, 'Criterion Type': tipo[m], 'Status': 'Enabled'}
+                  for k, m in kws]
+    filas += [{**a, 'Status': 'Enabled'} for a in anuncios]
+    escribir('google-ads-editor.csv', filas, cols)
+    # Solo el grupo "Partner certificado": se agregó después de importar el resto (2026-10-13)
+    g = 'Partner certificado Microsoft'
+    escribir('google-ads-editor-partner-certificado.csv',
+             [f for f in filas if f.get('Ad Group') == g], cols)
+
 
 if __name__ == '__main__':
     main()
