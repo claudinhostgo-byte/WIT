@@ -51,6 +51,9 @@ Usar **`google-ads-editor.csv`**: un solo archivo con campañas, configuración,
 **Lecciones del 2026-10-13:**
 - El asistente web de "Campaña nueva" falló 4 veces: al pedir "Confirme su identidad" en el paso de presupuesto deja de guardar y el borrador pierde nombre y tipo. Usar siempre Editor.
 - Google rechaza "ISO 9001 e ISO/IEC 27001" (y "ISO 9001 y 27001") como "número de teléfono en el texto del anuncio". En los avisos se escribe "Certificados ISO por SGS"; los números van en la landing.
+- La web de Google Ads no guarda recursos (vínculos, destacados) mientras la extensión de Claude depura Chrome: muestra "Turn off ad blockers" y descarta el guardado en silencio. Cargarlos con Editor.
+- Vínculos en Editor: una fila por campaña con texto, líneas y URL (`google-ads-editor-recursos.csv`); una fila extra de asociación sin URL crea un vínculo vacío con error. Destacados: `google-ads-editor-destacados.csv` entra a la biblioteca (Editor lo reporta como "omitido" igual) y luego se asocian a la cuenta con "Agregar texto destacado".
+- Publicado el 2026-10-13: 8 vínculos (4 por campaña), 6 destacados a nivel de cuenta, y se quitaron 2 vínculos antiguos rechazados de la cuenta ("Dynamics 365 · CRM" y "Noticias · Gold Certified Partner", sitio viejo). Quedan otros vínculos antiguos con URL http:// aprobados, por revisar.
 
 ### 4. Recursos (assets) a nivel de cuenta
 - Enlaces de sitio: están en `ENLACES` de `generar.py` (Sales y Customer Service, Contact Center, Business Central/Finance, Copilot y agentes, Cofinanciamiento, Trust Center).

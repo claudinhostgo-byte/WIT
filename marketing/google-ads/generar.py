@@ -111,7 +111,10 @@ ENLACES = [  # (texto ≤25, descripción 1 ≤35, descripción 2 ≤35, ruta)
     ('Copilot y agentes de IA', 'Microsoft 365 Copilot y', 'agentes con Copilot Studio', 'soluciones/ia-y-agentes/'),
     ('Cofinanciamiento', 'Programas de inversión de', 'Microsoft para POC y MVP', 'cofinanciamiento-microsoft/'),
     ('Trust Center', 'Credenciales Microsoft e ISO', 'verificables', 'nosotros/confianza/'),
+    ('Autodiagnóstico de IA', 'Nivel de preparación y', 'próximo paso, en 2 minutos', 'herramientas/autodiagnostico-ia/'),
 ]
+# Qué vínculos van en cada campaña (por índice en ENLACES)
+ENLACES_CAMPANA = {'dynamics': [0, 1, 2, 4], 'ia': [3, 4, 5, 6]}
 DESTACADOS = ['6 designaciones Microsoft', 'Certificados ISO por SGS', 'Oficinas Santiago y Lima',
               'Con Microsoft desde 2014', 'Autodiagnóstico gratuito', 'Success by Design']
 
@@ -220,7 +223,30 @@ def escribir_editor(anuncios, tipo):
     g = 'Partner certificado Microsoft'
     escribir('google-ads-editor-partner-certificado.csv',
              [f for f in filas if f.get('Ad Group') == g], cols)
+    escribir_recursos()
 
+
+def escribir_recursos():
+    """Vínculos a sitio por campaña para Google Ads Editor (los textos destacados van en otro CSV).
+
+    La web de Google Ads no guarda recursos mientras la extensión de Claude depura el navegador
+    (aviso "Turn off ad blockers"), así que se cargan con Editor (2026-10-13). Formato de Editor:
+    el recurso se define en la biblioteca y la asociación con la campaña/cuenta va en otra fila.
+    """
+    # Vínculos: una fila por campaña con texto, líneas y URL basta; Editor crea el recurso y lo asocia.
+    # Una fila extra "de asociación" sin URL genera un vínculo vacío con error (visto el 2026-10-13).
+    cols = ['Campaign', 'Sitelink text', 'Sitelink description line 1', 'Sitelink description line 2',
+            'Sitelink final URL', 'Status']
+    filas = []
+    for c, cfg in CAMPANAS.items():
+        for i in ENLACES_CAMPANA[c]:
+            t, d1, d2, ruta = ENLACES[i]
+            filas.append({'Campaign': cfg['nombre'], 'Sitelink text': t, 'Sitelink description line 1': d1,
+                          'Sitelink description line 2': d2, 'Sitelink final URL': SITIO + ruta, 'Status': 'Enabled'})
+    escribir('google-ads-editor-recursos.csv', filas, cols)
+    # Textos destacados a nivel de cuenta: sin campaña ni grupo, igual que los que ya existen
+    escribir('google-ads-editor-destacados.csv', [{'Callout text': t, 'Status': 'Enabled'} for t in DESTACADOS],
+             ['Callout text', 'Status'])
 
 if __name__ == '__main__':
     main()
