@@ -6,6 +6,8 @@
     { "route": "/api/contacto", "methods": ["POST"] },
     { "route": "/api/postulacion", "methods": ["POST"] },
     { "route": "/api/*", "statusCode": 404 },
+    { "route": "/soluciones/marketing/", "redirect": "/soluciones/ventas-servicio-y-contact-center/", "statusCode": 301 },
+    { "route": "/soluciones/data-lake-analytics/", "redirect": "/soluciones/datos-y-analitica/", "statusCode": 301 },
     { "route": "/assets/*", "headers": { "Cache-Control": "public, max-age=604800" } }
   ],
   "globalHeaders": {
