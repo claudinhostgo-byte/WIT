@@ -137,20 +137,33 @@ class Captcha(unittest.TestCase):
 
 
 class Aviso(unittest.TestCase):
-    def test_aviso_sin_datos_personales(self):
+    def test_aviso_con_datos_del_formulario(self):
         os.environ['DATAVERSE_URL'] = 'https://org.crm2.dynamics.com/'
-        lead = L.armar_lead(L.validar(BASE))
-        m = L.armar_aviso(lead, '11111111-2222-3333-4444-555555555555')['message']
+        d = L.validar(BASE)
+        m = L.armar_aviso(d, L.armar_lead(d), '11111111-2222-3333-4444-555555555555')['message']
         self.assertEqual(m['toRecipients'][0]['emailAddress']['address'], 'comercial@w-it.cl')
+        self.assertEqual(m['replyTo'][0]['emailAddress']['address'], 'mj@empresa.cl')
         self.assertTrue(m['subject'].startswith('Nuevo lead · Sitio web · Contact center · Empresa S.A.'))
         cuerpo = m['body']['content']
         self.assertIn('https://org.crm2.dynamics.com/main.aspx?pagetype=entityrecord&amp;etn=lead'
                       '&amp;id=11111111-2222-3333-4444-555555555555', cuerpo)
-        for dato in ('mj@empresa.cl', '1234 5678', 'Queremos evaluar'):
-            self.assertNotIn(dato, cuerpo)
+        for dato in ('María José Pérez', 'Empresa S.A.', 'Gerenta TI', 'mj@empresa.cl', '+56 9 1234 5678',
+                     'Chile', '200 a 1.000', 'Contact center', 'Queremos evaluar Contact Center.',
+                     '/soluciones/contact-center/', 'Conversemos · cta', 'google'):
+            self.assertIn(dato, cuerpo)
+
+    def test_aviso_escapa_html_y_omite_vacios(self):
+        d = L.validar({**BASE, 'mensaje': 'Hola <b>mundo</b>\nsegunda línea', 'empresa': '', 'telefono': '', 'utm': ''})
+        cuerpo = L.armar_aviso(d, L.armar_lead(d), 'x')['message']['body']['content']
+        self.assertIn('Hola &lt;b&gt;mundo&lt;/b&gt;<br>segunda línea', cuerpo)
+        self.assertNotIn('<b>mundo', cuerpo)
+        self.assertNotIn('Teléfono', cuerpo)
+        self.assertNotIn('Campaña', cuerpo)
+        self.assertIn('>María José Pérez</h1>', cuerpo)
 
     def test_aviso_sin_id(self):
-        m = L.armar_aviso(L.armar_lead(L.validar(BASE)), '')['message']
+        d = L.validar(BASE)
+        m = L.armar_aviso(d, L.armar_lead(d), '')['message']
         self.assertIn('Clientes potenciales', m['body']['content'])
 
 

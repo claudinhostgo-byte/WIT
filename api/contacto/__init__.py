@@ -64,7 +64,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     # El lead ya quedó en el CRM: si el aviso falla, solo se registra y la persona igual recibe su confirmación
     try:
-        P.enviar(L.armar_aviso(lead, lead_id))
+        P.enviar(L.armar_aviso(datos, lead, lead_id))
     except urllib.error.HTTPError as e:
         logging.error('contacto: aviso a Comercial, Graph respondió %s %s', e.code, e.read()[:500])
     except Exception:

@@ -13,7 +13,8 @@ Configuración por variables de entorno (Static Web Apps > Configuración):
   CRM_PREFIJO             (opcional) prefijo de las columnas propias del Lead; wit_ por defecto
   ALLOWED_ORIGINS         (opcional) orígenes permitidos, separados por coma
   TURNSTILE_SECRET        clave secreta de Cloudflare Turnstile (captcha); sin ella no se exige
-  AVISO_LEAD_DESTINO      (opcional) a quién avisar de cada lead nuevo; comercial@w-it.cl por defecto
+  AVISO_LEAD_DESTINO      (opcional) a quién avisar de cada lead nuevo (con los datos del formulario);
+                          comercial@w-it.cl por defecto
                           (se envía con Graph desde POSTULACIONES_REMITENTE, ver postulacion.py)
 """
 import json
@@ -154,23 +155,97 @@ def armar_lead(d, ahora=None):
     return lead
 
 
-def armar_aviso(lead, lead_id):
+# Colores de la marca (los mismos del sitio: --navy, --green, --ink, --muted, --line, --bg)
+_NAVY, _VERDE, _TINTA, _GRIS, _LINEA, _FONDO = '#1B3A50', '#54BA00', '#242424', '#616161', '#EBEBEB', '#FAFAFA'
+
+
+def _parrafo(texto):
+    return escape(texto).replace('\n', '<br>')
+
+
+def armar_aviso(d, lead, lead_id):
     """Correo de Graph (sendMail) que avisa a Comercial que hay un lead nuevo en el CRM.
 
-    Solo lleva el asunto del lead y el enlace: los datos de contacto y el mensaje se revisan en Dynamics 365.
+    Lleva los datos del formulario (contacto, intereses, mensaje y origen) para entender la solicitud
+    sin abrir Dynamics 365, más el enlace al registro. Responder va directo a la persona (replyTo).
     """
     base = os.environ.get('DATAVERSE_URL', '').rstrip('/')
     enlace = f'{base}/main.aspx?pagetype=entityrecord&etn=lead&id={lead_id}' if base and lead_id else ''
-    boton = (f'<p><a href="{escape(enlace)}">Abrir el cliente potencial en Dynamics 365</a></p>' if enlace
-             else '<p>Búscalo en Dynamics 365 Sales → Clientes potenciales.</p>')
+    intereses = ', '.join(INTERESES[i] for i in d['interes']) or 'Consulta general'
+
+    def fila(etiqueta, valor):
+        if not valor:
+            return ''
+        return (f'<tr><td style="padding:6px 16px 6px 0;color:{_GRIS};white-space:nowrap;vertical-align:top">{etiqueta}</td>'
+                f'<td style="padding:6px 0;color:{_TINTA};vertical-align:top">{valor}</td></tr>')
+
+    def tabla(titulo, filas):
+        cuerpo = ''.join(filas)
+        if not cuerpo:
+            return ''
+        return (f'<p style="margin:24px 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;'
+                f'color:{_VERDE};font-weight:700">{titulo}</p>'
+                f'<table cellpadding="0" cellspacing="0" style="font-size:15px;line-height:1.4">{cuerpo}</table>')
+
+    contacto = tabla('Contacto', [
+        fila('Nombre', escape(d['nombre'])),
+        fila('Empresa', escape(d['empresa'])),
+        fila('Cargo', escape(d['cargo'])),
+        fila('Email', f'<a href="mailto:{escape(d["email"])}" style="color:{_NAVY}">{escape(d["email"])}</a>'),
+        fila('Teléfono', escape(d['telefono'])),
+        fila('País', escape(d['pais'])),
+        fila('Tamaño', escape(d['tamano'])),
+    ])
+    mensaje = _parrafo(d['mensaje']) if d['mensaje'] else f'<em style="color:{_GRIS}">(sin mensaje)</em>'
+    solicitud = tabla('Solicitud', [fila('Interés', escape(intereses))]) + (
+        f'<div style="margin:12px 0 0;padding:14px 16px;background:{_FONDO};border-left:3px solid {_VERDE};'
+        f'font-size:15px;line-height:1.5;color:{_TINTA}">{mensaje}</div>')
+    utm = _utm(d['utm'])
+    campana = ' · '.join(v for v in (utm['source'], utm['medium'], utm['campaign']) if v)
+    diagnostico = ' · '.join(v for v in (d['diagnostico_herramienta'], d['diagnostico_resultado']) if v)
+    origen = tabla('Origen', [
+        fila('Página', escape(d['origen_pagina'])),
+        fila('Botón', escape(d['origen_cta'])),
+        fila('Campaña', escape(campana)),
+        fila('Diagnóstico', escape(diagnostico)),
+    ])
+    if d['diagnostico_detalle']:
+        origen += (f'<div style="margin:12px 0 0;padding:14px 16px;background:{_FONDO};font-size:14px;line-height:1.5;'
+                   f'color:{_TINTA}">{_parrafo(d["diagnostico_detalle"])}</div>')
+
+    if enlace:
+        boton = (f'<a href="{escape(enlace)}" style="display:inline-block;padding:12px 22px;background:{_NAVY};'
+                 'color:#ffffff;text-decoration:none;font-weight:700;border-radius:6px">Abrir en Dynamics 365</a>')
+    else:
+        boton = f'<span style="color:{_GRIS}">Búscalo en Dynamics 365 Sales → Clientes potenciales.</span>'
+
+    html = (
+        f'<div style="margin:0;padding:24px 12px;background:{_FONDO}">'
+        f'<table cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;margin:0 auto;background:#ffffff;'
+        f'border:1px solid {_LINEA};border-radius:8px;font-family:Segoe UI,Arial,sans-serif;color:{_TINTA}">'
+        f'<tr><td style="padding:20px 28px;background:{_NAVY};border-radius:8px 8px 0 0">'
+        '<span style="font-size:18px;font-weight:700;color:#ffffff;letter-spacing:.04em">W-IT</span>'
+        '<span style="font-size:13px;color:#A8D97C;float:right;padding-top:4px">Nuevo cliente potencial · w-it.cl</span>'
+        '</td></tr>'
+        f'<tr><td style="height:4px;background:{_VERDE};font-size:0;line-height:0">&nbsp;</td></tr>'
+        '<tr><td style="padding:28px">'
+        f'<h1 style="margin:0 0 4px;font-size:22px;line-height:1.3;color:{_NAVY}">{escape(d["empresa"] or d["nombre"])}</h1>'
+        f'<p style="margin:0;font-size:15px;color:{_GRIS}">{escape(intereses)} · formulario de contacto del sitio</p>'
+        f'{contacto}{solicitud}{origen}'
+        f'<p style="margin:28px 0 0">{boton}</p>'
+        '</td></tr>'
+        f'<tr><td style="padding:16px 28px;border-top:1px solid {_LINEA};font-size:12px;line-height:1.5;color:{_GRIS}">'
+        'El lead ya quedó registrado en el CRM. Para contactar a la persona, usa Responder: el correo va directo a su dirección. '
+        'La persona aceptó la política de privacidad; estos datos son personales, úsalos solo para atender su solicitud '
+        'y no los reenvíes fuera de W-IT.'
+        '</td></tr></table></div>')
+
     return {
         'message': {
             'subject': f"Nuevo lead · {lead['subject']}"[:250],
-            'body': {'contentType': 'HTML', 'content': (
-                '<p>Llegó una solicitud desde el formulario de contacto de w-it.cl y quedó registrada en el CRM.</p>'
-                f"<p><strong>{escape(lead['subject'])}</strong></p>{boton}"
-                '<p style="color:#666">Los datos de la persona y su mensaje están en el registro del CRM.</p>')},
+            'body': {'contentType': 'HTML', 'content': html},
             'toRecipients': [{'emailAddress': {'address': os.environ.get('AVISO_LEAD_DESTINO', 'comercial@w-it.cl')}}],
+            'replyTo': [{'emailAddress': {'address': d['email'], 'name': d['nombre']}}],
         },
         'saveToSentItems': False,
     }
