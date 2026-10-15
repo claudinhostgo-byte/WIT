@@ -125,7 +125,7 @@ def armar_lead(d, ahora=None):
     temas = ', '.join(etiquetas) or 'Consulta general'
 
     lead = {
-        'subject': f"Sitio web · {temas} · {d['empresa'] or d['nombre']}"[:300],
+        'subject': f"W-IT · {temas} · {d['empresa'] or d['nombre']}"[:300],
         'lastname': apellido[:50],
         'emailaddress1': d['email'],
         'description': d['mensaje'] or '(sin mensaje)',

@@ -100,8 +100,8 @@ Desde ahí, cada push a `main` corre las pruebas de la API y publica.
 ## 6. Prueba de punta a punta
 
 1. Abrir `https://<nombre>.azurestaticapps.net/soluciones/contact-center/` → "Conversemos" → enviar el formulario.
-2. En Dynamics 365 Sales → Clientes potenciales: debe aparecer `Sitio web · … · <empresa>` con origen Web, la descripción con origen, autodiagnóstico, UTM y consentimiento.
-   A `comercial@w-it.cl` debe llegar el aviso `Nuevo lead · Sitio web · …` con los datos del formulario (contacto, interés, mensaje y origen) y el botón al registro; Responder va directo a la persona. Si el aviso falla, el lead igual queda creado y el error se registra como `contacto: aviso a Comercial`.
+2. En Dynamics 365 Sales → Clientes potenciales: debe aparecer `W-IT · … · <empresa>` (los de witeduca.cl llevan `WITEDUCA ·`) con origen Web, la descripción con origen, autodiagnóstico, UTM y consentimiento.
+   A `comercial@w-it.cl` debe llegar el aviso `Nuevo lead · W-IT · …` con los datos del formulario (contacto, interés, mensaje y origen) y el botón al registro; Responder va directo a la persona. Si el aviso falla, el lead igual queda creado y el error se registra como `contacto: aviso a Comercial`.
 3. Abrir `/nosotros/trabaja-con-nosotros/`, adjuntar un PDF y enviar: debe llegar a `postulaciones@w-it.cl` con asunto `Postulación sitio web · <nombre>`.
 4. Revisar errores: Static Web App → Application Insights (o `az staticwebapp functions`), mensajes `contacto:` y `postulacion:`. Los logs no incluyen datos personales.
 

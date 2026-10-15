@@ -58,7 +58,7 @@ class Payload(unittest.TestCase):
         lead = L.armar_lead(L.validar(datos), datetime(2026, 10, 1, 12, tzinfo=timezone.utc))
         self.assertEqual(lead['firstname'], 'María José')
         self.assertEqual(lead['lastname'], 'Pérez')
-        self.assertEqual(lead['subject'], 'Sitio web · Contact center · Empresa S.A.')
+        self.assertEqual(lead['subject'], 'W-IT · Contact center · Empresa S.A.')
         self.assertEqual(lead['description'], 'Queremos evaluar Contact Center.')
         self.assertEqual(lead['leadsourcecode'], 8)
         self.assertEqual(lead['wit_sitioorigen'], 100000000)
@@ -85,7 +85,7 @@ class Payload(unittest.TestCase):
     def test_varios_intereses_en_orden(self):
         lead = L.armar_lead(L.validar({**BASE, 'interes': ['soporte', 'ia-y-agentes']}))
         self.assertEqual(lead['wit_intereseswit'], '100000009,100000000')
-        self.assertTrue(lead['subject'].startswith('Sitio web · Soporte, IA y agentes'))
+        self.assertTrue(lead['subject'].startswith('W-IT · Soporte, IA y agentes'))
 
     def test_prefijo_configurable(self):
         os.environ['CRM_PREFIJO'] = 'cr1a_'
@@ -101,7 +101,7 @@ class Payload(unittest.TestCase):
         self.assertEqual(lead['lastname'], 'Cher')
         for campo in ('firstname', 'companyname', 'wit_tamanoorganizacion', 'wit_intereseswit', 'wit_utmsource'):
             self.assertNotIn(campo, lead)
-        self.assertTrue(lead['subject'].startswith('Sitio web · Consulta general · Cher'))
+        self.assertTrue(lead['subject'].startswith('W-IT · Consulta general · Cher'))
 
     def test_equipo_duenio(self):
         os.environ['DATAVERSE_OWNER_TEAM_ID'] = '00000000-0000-0000-0000-000000000001'
@@ -143,7 +143,7 @@ class Aviso(unittest.TestCase):
         m = L.armar_aviso(d, L.armar_lead(d), '11111111-2222-3333-4444-555555555555')['message']
         self.assertEqual(m['toRecipients'][0]['emailAddress']['address'], 'comercial@w-it.cl')
         self.assertEqual(m['replyTo'][0]['emailAddress']['address'], 'mj@empresa.cl')
-        self.assertTrue(m['subject'].startswith('Nuevo lead · Sitio web · Contact center · Empresa S.A.'))
+        self.assertTrue(m['subject'].startswith('Nuevo lead · W-IT · Contact center · Empresa S.A.'))
         cuerpo = m['body']['content']
         self.assertIn('https://org.crm2.dynamics.com/main.aspx?pagetype=entityrecord&amp;etn=lead'
                       '&amp;id=11111111-2222-3333-4444-555555555555', cuerpo)
