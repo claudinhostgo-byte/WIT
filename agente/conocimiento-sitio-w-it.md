@@ -1981,19 +1981,19 @@ Power Apps
 Aplicaciones de negocio low-code sobre Dataverse.
 
 [Página: Automatización y apps · ruta /soluciones/automatizacion-y-apps/]
-Cuándo conviene: Cuando un proceso necesita una app propia rápidamente.
+Cuándo conviene: Cuando un proceso necesita una app propia rápidamente.Ver detalle en Microsoft ↗
 Power Automate
 Automatización de flujos y RPA.
-Cuándo conviene: Cuando hay tareas repetitivas entre sistemas.
+Cuándo conviene: Cuando hay tareas repetitivas entre sistemas.Ver detalle en Microsoft ↗
 Power Pages
 Portales externos seguros para clientes y proveedores.
-Cuándo conviene: Cuando terceros deben interactuar con tus procesos.
+Cuándo conviene: Cuando terceros deben interactuar con tus procesos.Ver detalle en Microsoft ↗
 AI Builder
 Modelos de IA para documentos, formularios y predicción.
-Cuándo conviene: Cuando hay documentos que hoy se digitan a mano.
+Cuándo conviene: Cuando hay documentos que hoy se digitan a mano.Ver detalle en Microsoft ↗
 Power Platform
 Gobierno, entornos y centro de excelencia.
-Cuándo conviene: Cuando Power Platform crece y necesita control.
+Cuándo conviene: Cuando Power Platform crece y necesita control.Ver detalle en Microsoft ↗
 Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.
 Cómo lo hacemos
 Fusion teams y sprints.
@@ -2121,27 +2121,27 @@ Qué implementamos
 Tecnología Microsoft, elegida según tu proceso.
 Dynamics 365 Contact Center
 Voz en la nube, IVR conversacional, enrutamiento unificado y supervisión en tiempo real.
-Cuándo conviene: Cuando quieres reemplazar o integrar tu central telefónica con la atención digital.
+Cuándo conviene: Cuando quieres reemplazar o integrar tu central telefónica con la atención digital.Ver detalle en Microsoft ↗
 Dynamics 365 Customer Service
 Casos, SLA, base de conocimiento y escritorio del agente.
-Cuándo conviene: Cuando cada interacción debe quedar registrada y resuelta con trazabilidad.
+Cuándo conviene: Cuando cada interacción debe quedar registrada y resuelta con trazabilidad.Ver detalle en Microsoft ↗
 Copilot Studio
 Agentes de autoservicio en voz y chat que resuelven antes de transferir.
-Cuándo conviene: Cuando una parte importante de las consultas es repetitiva.
-Microsoft 365 Copilot
 
 [Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
+Cuándo conviene: Cuando una parte importante de las consultas es repetitiva.Ver detalle en Microsoft ↗
+Microsoft 365 Copilot
 Copilot para el agente: resumen de la conversación, respuestas sugeridas y cierre automático del caso.
-Cuándo conviene: Cuando quieres bajar el tiempo de atención sin perder calidad.
+Cuándo conviene: Cuando quieres bajar el tiempo de atención sin perder calidad.Ver detalle en Microsoft ↗
 Azure
 Azure Communication Services: voz, números y SMS sobre Azure, con la telefonía de nuestros aliados regulados.
-Cuándo conviene: Cuando necesitas numeración, conectividad con operadores o migrar tu central.
+Cuándo conviene: Cuando necesitas numeración, conectividad con operadores o migrar tu central.Ver detalle en Microsoft ↗
 Cadena de voz completa. Resolvemos toda la cadena de voz, desde la numeración y la conectividad telefónica hasta el escritorio del agente en Dynamics 365, en alianza con empresas de telefonía reguladas.
 Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.
-Cómo lo hacemos
-Success by Design, por olas.
 
 [Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
+Cómo lo hacemos
+Success by Design, por olas.
 El marco de implementación de Microsoft para Dynamics 365, entregado en olas cortas: la primera sale a producción con el proceso más urgente y las siguientes amplían lo que ya está en uso.Cómo trabajamos →
 Entendemos tu negocio y definimos qué sale primero a producción.Success by Design · Se inicia el Solution Blueprint Review
 Qué hacemos
@@ -2261,21 +2261,21 @@ Microsoft Fabric
 
 [Página: Datos y analítica · ruta /soluciones/datos-y-analitica/]
 Plataforma unificada de datos: OneLake, shortcuts y mirroring, lakehouse, modelado y reportería con gobierno.
-Cuándo conviene: Cuando necesitas una base de datos corporativa única para BI e IA.
+Cuándo conviene: Cuando necesitas una base de datos corporativa única para BI e IA.Ver detalle en Microsoft ↗
 Power BI
 visualización y reportes de autoservicio.
-Cuándo conviene: Cuando las áreas necesitan tableros confiables y actualizados.
+Cuándo conviene: Cuando las áreas necesitan tableros confiables y actualizados.Ver detalle en Microsoft ↗
 Dataverse
 Base de datos de negocio de Power Platform y Dynamics 365.
-Cuándo conviene: Cuando las aplicaciones de negocio comparten un modelo de datos.
+Cuándo conviene: Cuando las aplicaciones de negocio comparten un modelo de datos.Ver detalle en Microsoft ↗
 Azure SQL
 Base de datos relacional administrada en Azure.
-Cuándo conviene: Cuando migras o modernizas bases de datos existentes.
+Cuándo conviene: Cuando migras o modernizas bases de datos existentes.Ver detalle en Microsoft ↗
 Azure Data Factory y Synapse
 integración y orquestación de datos entre sistemas.
-Cuándo conviene: Cuando los datos vienen de ERP, CRM y fuentes externas que hay que consolidar.
 
 [Página: Datos y analítica · ruta /soluciones/datos-y-analitica/]
+Cuándo conviene: Cuando los datos vienen de ERP, CRM y fuentes externas que hay que consolidar.Ver detalle en Microsoft ↗
 Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.
 Cómo lo hacemos
 Fusion teams y sprints.
@@ -2287,12 +2287,12 @@ Priorización por valor, esfuerzo y datos disponibles.
 Métricas de éxito y dueño de la solución definidos.
 Entornos, políticas de datos (DLP) y licenciamiento de partida.
 Qué recibes
+
+[Página: Datos y analítica · ruta /soluciones/datos-y-analitica/]
 Backlog priorizado.
 Métricas de éxito acordadas.
 Entorno listo para prototipar.
 IAIA en esta fase
-
-[Página: Datos y analítica · ruta /soluciones/datos-y-analitica/]
 Análisis del proceso y de los datos existentes para proponer alternativas de diseño.
 Un prototipo que los usuarios prueban antes de construir la solución.Hito · Prototipo validado con usuarios
 Qué hacemos
@@ -2308,9 +2308,9 @@ IAIA en esta fase
 Borradores de apps, flujos e informes generados con Copilot a partir de la descripción del proceso.
 Tus usuarios expertos y nuestro equipo construyen juntos, sprint a sprint.Hito · Demo de sprint
 Qué hacemos
-Equipo de fusión: usuarios expertos (makers), desarrolladores W-IT y TI.
 
 [Página: Datos y analítica · ruta /soluciones/datos-y-analitica/]
+Equipo de fusión: usuarios expertos (makers), desarrolladores W-IT y TI.
 Sprints con demo al cierre y backlog vivo.
 ALM: entornos de desarrollo, pruebas y producción, con pipelines.
 Pruebas funcionales y de rendimiento en cada incremento.
@@ -2331,9 +2331,9 @@ Solución en producción y gobernada.
 Usuarios capacitados.
 Tablero de uso y adopción.
 IAIA en esta fase
-Medición del uso real y alertas tempranas de adopción.
 
 [Página: Datos y analítica · ruta /soluciones/datos-y-analitica/]
+Medición del uso real y alertas tempranas de adopción.
 Llevamos el modelo a más procesos con un Centro de Excelencia.Hito · Revisión de madurez
 Qué hacemos
 Centro de Excelencia (CoE): estándares, inventario y monitoreo de la plataforma.
@@ -2398,16 +2398,16 @@ Tecnología Microsoft, elegida según tu proceso.
 [Página: Finanzas y operaciones · ruta /soluciones/finanzas-y-operaciones/]
 Business Central
 ERP para empresas medianas: finanzas, compras, ventas e inventario.
-Cuándo conviene: Cuando buscas un ERP completo con implementación ágil.
+Cuándo conviene: Cuando buscas un ERP completo con implementación ágil.Ver detalle en Microsoft ↗
 Dynamics 365 Finance
 Finanzas globales, multi-sociedad y multi-moneda.
-Cuándo conviene: Cuando la operación financiera es compleja o multinacional.
+Cuándo conviene: Cuando la operación financiera es compleja o multinacional.Ver detalle en Microsoft ↗
 Dynamics 365 Supply Chain Management
 Abastecimiento, manufactura, bodegas y logística.
-Cuándo conviene: Cuando la cadena de suministro es crítica para el negocio.
+Cuándo conviene: Cuando la cadena de suministro es crítica para el negocio.Ver detalle en Microsoft ↗
 Dynamics 365 Project Operations
 Gestión de proyectos, recursos y facturación por avance.
-Cuándo conviene: Cuando vendes y entregas servicios por proyecto.
+Cuándo conviene: Cuando vendes y entregas servicios por proyecto.Ver detalle en Microsoft ↗
 Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.
 Cómo lo hacemos
 Success by Design, por olas.
@@ -2535,32 +2535,32 @@ Qué implementamos
 Tecnología Microsoft, elegida según tu proceso.
 Microsoft 365 Copilot
 Asistente de IA dentro de Word, Excel, Outlook y Teams.
-Cuándo conviene: Cuando el objetivo es productividad personal y de equipos.
+Cuándo conviene: Cuando el objetivo es productividad personal y de equipos.Ver detalle en Microsoft ↗
 Copilot Studio
 Construcción de agentes conectados a tus sistemas y procesos.
-Cuándo conviene: Cuando necesitas un agente propio para un proceso específico.
+Cuándo conviene: Cuando necesitas un agente propio para un proceso específico.Ver detalle en Microsoft ↗
 Azure AI Foundry
 Agentes y asistentes con RAG sobre tus documentos y sistemas, con evaluación de calidad y guardrails, del piloto al despliegue productivo.
-Cuándo conviene: Cuando el caso requiere control fino de modelos, datos y despliegue.
+Cuándo conviene: Cuando el caso requiere control fino de modelos, datos y despliegue.Ver detalle en Microsoft ↗
 Agent 365
 Gestión y gobierno de agentes en la organización.
-Cuándo conviene: Cuando hay varios agentes y se necesita control centralizado.
-Dynamics 365
-Copilot integrado en las aplicaciones Dynamics 365.
 
 [Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
-Cuándo conviene: Cuando ya usas Dynamics 365 y quieres IA en el flujo de trabajo.
+Cuándo conviene: Cuando hay varios agentes y se necesita control centralizado.Ver detalle en Microsoft ↗
+Dynamics 365
+Copilot integrado en las aplicaciones Dynamics 365.
+Cuándo conviene: Cuando ya usas Dynamics 365 y quieres IA en el flujo de trabajo.Ver detalle en Microsoft ↗
 Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.
 Cómo lo hacemos
 Del prototipo a producción, con evaluación continua.
 Prototipo con datos reales, evaluación medible antes de desplegar y monitoreo permanente. Sobre la guía de adopción de agentes del Cloud Adoption Framework, las prácticas AI-first de Success by Design y la observabilidad de Microsoft Foundry.Cómo trabajamos →
 Elegimos el caso de uso según su valor, los datos disponibles y el riesgo.Hito · Caso de uso y métricas aprobados
 Qué hacemos
+
+[Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Taller de casos de uso: priorización por valor, factibilidad y riesgo.
 Nivel de madurez de IA y barreras de adopción: de asistido a autónomo.
 Tipo de agente: de productividad, de acción o de automatización.
-
-[Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Datos y conocimiento disponibles: calidad, permisos y brechas.
 Qué recibes
 Casos de uso priorizados con métricas de éxito.
@@ -2573,14 +2573,14 @@ Qué hacemos
 Principios de IA responsable aplicados al caso: transparencia, privacidad y equidad.
 Alcance del agente, límites y rutas de escalamiento a personas.
 Permisos mínimos sobre datos y sistemas, con auditoría.
+
+[Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Entorno preparado: Copilot Studio o Azure AI Foundry, conectores y canales.
 Qué recibes
 Política de uso y gobierno del agente.
 Diseño de supervisión humana y escalamiento.
 Entorno listo para construir.
 IAIA responsable
-
-[Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Cada decisión automatizada tiene dueño, registro y una persona que puede intervenir.
 Prototipo con datos reales y un set de evaluación desde el primer día.Hito · Evaluación aprobada
 Qué hacemos
@@ -2593,11 +2593,11 @@ Agente funcional probado con usuarios piloto.
 Resultados de evaluación: precisión, fundamentación, seguridad y latencia.
 Registro de decisiones de diseño.
 IAIA responsable
+
+[Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Ninguna versión avanza sin pasar las evaluaciones de calidad y seguridad.
 Salimos a producción por canales y grupos, con monitoreo desde el minuto uno.Hito · Go-live con aprobación de IA responsable
 Qué hacemos
-
-[Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Despliegue gradual: piloto, ampliación y apertura por canal (Teams, web, WhatsApp).
 Integración con los sistemas y el flujo de trabajo real.
 Telemetría, trazas y alertas activas antes del go-live.
@@ -2611,12 +2611,12 @@ Aprobación documentada de los responsables del negocio antes de salir a producc
 Medimos calidad y valor de forma continua, y ampliamos los casos que dan resultado.Hito · Revisión periódica de calidad y valor
 Qué hacemos
 Evaluación continua sobre tráfico real y pruebas programadas.
+
+[Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Monitoreo de desvíos tras actualizaciones de modelos.
 Ajuste de instrucciones, conocimiento y herramientas según el uso.
 Nuevos casos de uso y mayor autonomía cuando los datos lo respaldan.
 Qué recibes
-
-[Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Informe periódico de calidad, uso y costos.
 Backlog de mejoras y nuevos agentes.
 Nivel de autonomía revisado.
@@ -2627,12 +2627,12 @@ Prácticas según la guía de adopción de agentes de IA (Cloud Adoption Framewo
 Cofinanciamiento Microsoft
 Microsoft cofinancia el primer paso: taller, POC o MVP.
 Como Solutions Partner estamos habilitados en los programas de inversión de Microsoft. Evaluamos si tu empresa califica y gestionamos la solicitud.
+
+[Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 POC y MVP cofinanciados →
 Credencial que respalda esta solución
 Solutions Partner for AI Business Solutions · Especialización AgenticVer Trust Center →
 Herramienta relacionadaGratis
-
-[Página: IA y agentes · ruta /soluciones/ia-y-agentes/]
 Estimador de créditos de Copilot
 Resultados orientativos. No son una cotización ni asesoría legal.Empezar →
 Chile y Perú
@@ -2747,27 +2747,27 @@ Qué implementamos
 Tecnología Microsoft, elegida según tu proceso.
 Azure Migrate
 Migración de servidores y bases de datos a Azure: evaluación, estrategia de rehost o replatform, redes y conectividad.
-Cuándo conviene: Cuando quieres salir del datacenter con continuidad operativa.
+Cuándo conviene: Cuando quieres salir del datacenter con continuidad operativa.Ver detalle en Microsoft ↗
 Azure VMware Solution
 Entornos VMware llevados a Azure sin rehacer las aplicaciones.
-Cuándo conviene: Cuando tu operación depende de VMware y necesitas moverla rápido.
+Cuándo conviene: Cuando tu operación depende de VMware y necesitas moverla rápido.Ver detalle en Microsoft ↗
 Azure App Service
 Modernización de aplicaciones hacia servicios administrados, APIs e integración.
-Cuándo conviene: Cuando tus aplicaciones deben evolucionar más rápido y con menos carga operativa.
-Azure Kubernetes Service
+Cuándo conviene: Cuando tus aplicaciones deben evolucionar más rápido y con menos carga operativa.Ver detalle en Microsoft ↗
 
 [Página: Nube Azure e infraestructura · ruta /soluciones/nube-azure-e-infraestructura/]
+Azure Kubernetes Service
 Contenedores y arquitecturas cloud-native, con automatización y observabilidad.
-Cuándo conviene: Cuando necesitas escalar aplicaciones críticas de forma confiable.
+Cuándo conviene: Cuando necesitas escalar aplicaciones críticas de forma confiable.Ver detalle en Microsoft ↗
 Azure Virtual Desktop
 Escritorios virtuales seguros en Azure para trabajo remoto e híbrido.
-Cuándo conviene: Cuando modernizas los puestos de trabajo sin comprometer la seguridad.
+Cuándo conviene: Cuando modernizas los puestos de trabajo sin comprometer la seguridad.Ver detalle en Microsoft ↗
 Microsoft Cost Management
 FinOps: estructura de costos, etiquetado, presupuestos, alertas y recomendaciones de optimización.
-Cuándo conviene: Cuando la factura cloud crece y necesitas visibilidad y control.
+Cuándo conviene: Cuando la factura cloud crece y necesitas visibilidad y control.Ver detalle en Microsoft ↗
 Azure Landing Zone
 Gobierno cloud: estándares de arquitectura, políticas, control de acceso y auditoría.
-Cuándo conviene: Cuando la nube debe crecer sin perder control ni cumplimiento.
+Cuándo conviene: Cuando la nube debe crecer sin perder control ni cumplimiento.Ver detalle en Microsoft ↗
 
 [Página: Nube Azure e infraestructura · ruta /soluciones/nube-azure-e-infraestructura/]
 Programas financiados por Microsoft. Algunos proyectos de migración, datos, IA y seguridad en Azure pueden contar con financiamiento de Microsoft (programas Azure Accelerate), previa evaluación de elegibilidad.
@@ -2892,19 +2892,19 @@ Qué implementamos
 Tecnología Microsoft, elegida según tu proceso.
 Microsoft Purview
 clasificación y etiquetado, prevención de pérdida de datos (DLP), catálogo y linaje, auditoría y políticas, incluidos escenarios con IA.
-Cuándo conviene: Cuando hay que saber dónde están los datos sensibles y controlar su uso.
+Cuándo conviene: Cuando hay que saber dónde están los datos sensibles y controlar su uso.Ver detalle en Microsoft ↗
 Microsoft Entra ID
 identidades y acceso condicional.
-Cuándo conviene: Cuando el control de accesos es un riesgo.
+Cuándo conviene: Cuando el control de accesos es un riesgo.Ver detalle en Microsoft ↗
 Microsoft Defender for Cloud
 postura de seguridad (CSPM) y protección de cargas de trabajo en la nube.
-Cuándo conviene: Cuando tus cargas en Azure deben cumplir estándares y reducir riesgo.
+Cuándo conviene: Cuando tus cargas en Azure deben cumplir estándares y reducir riesgo.Ver detalle en Microsoft ↗
 Zero Trust y gobierno
 acceso condicional, mínimo privilegio y auditoría continua.
-Cuándo conviene: Cuando necesitas un modelo de seguridad que escale con la nube.
-Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.
+Cuándo conviene: Cuando necesitas un modelo de seguridad que escale con la nube.Ver detalle en Microsoft ↗
 
 [Página: Seguridad e identidades · ruta /soluciones/seguridad-y-cumplimiento/]
+Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.
 Cómo lo hacemos
 Cloud Adoption Framework, por olas.
 Primero la landing zone, luego migraciones por olas pequeñas para aprender rápido, con costos y seguridad bajo control desde el primer día. Sobre el Cloud Adoption Framework y el Well-Architected Framework de Microsoft.Cómo trabajamos →
@@ -2918,10 +2918,10 @@ Qué recibes
 Estrategia de adopción y business case.
 Inventario de cargas de trabajo.
 Primera ola candidata.
-IAIA en esta fase
-Descubrimiento y clasificación automática de cargas y dependencias.
 
 [Página: Seguridad e identidades · ruta /soluciones/seguridad-y-cumplimiento/]
+IAIA en esta fase
+Descubrimiento y clasificación automática de cargas y dependencias.
 Un plan por olas, con la primera lo bastante pequeña para aprender rápido.Cloud Adoption Framework · Plan de olas aprobado
 Qué hacemos
 Evaluación de cada carga: migrar, modernizar o reemplazar.
@@ -2937,9 +2937,9 @@ Recomendaciones de dimensionamiento y costos por carga de trabajo.
 Construimos la landing zone: la base segura y gobernada donde todo aterriza.Cloud Adoption Framework · Landing zone lista
 Qué hacemos
 Azure landing zone: suscripciones, red, identidad y políticas.
-Seguridad base: Microsoft Entra ID, Microsoft Defender for Cloud y respaldos.
 
 [Página: Seguridad e identidades · ruta /soluciones/seguridad-y-cumplimiento/]
+Seguridad base: Microsoft Entra ID, Microsoft Defender for Cloud y respaldos.
 Conectividad híbrida y residencia de datos en Azure Chile Central.
 Infraestructura como código y pipelines de despliegue.
 Qué recibes
@@ -2959,9 +2959,9 @@ Cargas migradas y validadas.
 Runbooks de corte y de vuelta atrás.
 Informe de costos por ola.
 IAIA en esta fase
-Detección de anomalías y recomendaciones de optimización durante la migración.
 
 [Página: Seguridad e identidades · ruta /soluciones/seguridad-y-cumplimiento/]
+Detección de anomalías y recomendaciones de optimización durante la migración.
 La nube se gobierna, se asegura y se opera todos los días.Cloud Adoption Framework · Revisión de costos y seguridad
 Qué hacemos
 Gobierno: políticas, etiquetado y control de costos (FinOps).
@@ -2977,9 +2977,9 @@ Monitoreo inteligente y agentes de operación sobre alertas y costos.
 Fases según el Cloud Adoption Framework de Microsoft (Strategy, Plan, Ready, Adopt, Govern, Secure, Manage). Cloud Adoption Framework en Microsoft Learn ↗
 1 / 5
 Cofinanciamiento Microsoft
-Microsoft cofinancia el primer paso: taller, POC o MVP.
 
 [Página: Seguridad e identidades · ruta /soluciones/seguridad-y-cumplimiento/]
+Microsoft cofinancia el primer paso: taller, POC o MVP.
 Como Solutions Partner estamos habilitados en los programas de inversión de Microsoft. Evaluamos si tu empresa califica y gestionamos la solicitud.
 POC y MVP cofinanciados →
 Credencial que respalda esta solución
@@ -3026,21 +3026,21 @@ Qué implementamos
 Tecnología Microsoft, elegida según tu proceso.
 Dynamics 365 Sales
 Gestión de oportunidades, pipeline y pronósticos.
-Cuándo conviene: Cuando el proceso comercial necesita trazabilidad y previsibilidad.
+Cuándo conviene: Cuando el proceso comercial necesita trazabilidad y previsibilidad.Ver detalle en Microsoft ↗
 Dynamics 365 Customer Service
 Casos, SLA, base de conocimiento y portal de autoservicio.
-Cuándo conviene: Cuando el servicio postventa tiene alto volumen de casos.
+Cuándo conviene: Cuando el servicio postventa tiene alto volumen de casos.Ver detalle en Microsoft ↗
 Dynamics 365 Customer Insights
 Datos unificados del cliente y journeys de marketing.
-Cuándo conviene: Cuando necesitas segmentar y personalizar a escala.
+Cuándo conviene: Cuando necesitas segmentar y personalizar a escala.Ver detalle en Microsoft ↗
 Dynamics 365 Field Service
 Planificación y ejecución de servicios en terreno.
-Cuándo conviene: Cuando hay técnicos o cuadrillas en terreno.
+Cuándo conviene: Cuando hay técnicos o cuadrillas en terreno.Ver detalle en Microsoft ↗
 Microsoft 365 Copilot
 Copilot en Sales y Customer Service: resúmenes, borradores y siguiente mejor acción.
-Cuándo conviene: Cuando quieres que vendedores y agentes ganen tiempo sin salir del CRM.
 
 [Página: Ventas y servicio al cliente · ruta /soluciones/ventas-servicio-y-contact-center/]
+Cuándo conviene: Cuando quieres que vendedores y agentes ganen tiempo sin salir del CRM.Ver detalle en Microsoft ↗
 Reconocimientos Microsoft · Latinoamérica y el Caribe
 Partner of the Year 2019 · Microsoft Dynamics 365 for Sales
 Partner of the Year 2020 · Proactive Customer ServiceVer trayectoria →
@@ -3051,10 +3051,10 @@ El marco de implementación de Microsoft para Dynamics 365, entregado en olas co
 Entendemos tu negocio y definimos qué sale primero a producción.Success by Design · Se inicia el Solution Blueprint Review
 Qué hacemos
 Levantamiento y validación de requerimientos con los dueños de proceso.
-Mapeo de procesos, datos y sistemas actuales.
-Definición de olas: qué sale primero a producción y qué viene después.
 
 [Página: Ventas y servicio al cliente · ruta /soluciones/ventas-servicio-y-contact-center/]
+Mapeo de procesos, datos y sistemas actuales.
+Definición de olas: qué sale primero a producción y qué viene después.
 Priorización de casos de uso de IA y evaluación de datos y gobierno.
 Qué recibes
 Enfoque de solución de alto nivel.
@@ -3071,10 +3071,10 @@ Revisión de IA responsable: privacidad, transparencia y responsabilidad.
 Qué recibes
 Solution Blueprint: el diseño completo de la solución.
 Plan de proyecto actualizado.
-Estrategias de pruebas y de migración de datos.
-IAIA en esta fase
 
 [Página: Ventas y servicio al cliente · ruta /soluciones/ventas-servicio-y-contact-center/]
+Estrategias de pruebas y de migración de datos.
+IAIA en esta fase
 Borradores de diseño y de reglas de negocio generados con IA y revisados por nuestros arquitectos.
 Construimos por sprints, con demos y revisiones técnicas en el camino.Success by Design · Implementation Reviews
 Qué hacemos
@@ -3090,9 +3090,9 @@ IAIA en esta fase
 Personalizaciones asistidas por IA y pruebas automatizadas.
 Preparamos a las personas y la salida a producción.Success by Design · Go-live Readiness Review
 Qué hacemos
-Pruebas de aceptación (UAT) y capacitación de usuarios.
 
 [Página: Ventas y servicio al cliente · ruta /soluciones/ventas-servicio-y-contact-center/]
+Pruebas de aceptación (UAT) y capacitación de usuarios.
 Plan de cutover con criterios go/no-go y simulacros de go-live.
 Modelo de soporte y runbook de despliegue.
 Validación de agentes con datos representativos de producción y monitoreo listo.
@@ -3110,10 +3110,10 @@ Monitoreo continuo de agentes: calidad de respuestas, uso y desvíos.
 Siguiente ola: mejoras y nuevos casos de uso.
 Qué recibes
 Soporte AMS con niveles de servicio acordados.
-Evaluaciones periódicas de agentes y actualizaciones de plataforma.
-Roadmap de evolución de la solución.
 
 [Página: Ventas y servicio al cliente · ruta /soluciones/ventas-servicio-y-contact-center/]
+Evaluaciones periódicas de agentes y actualizaciones de plataforma.
+Roadmap de evolución de la solución.
 IAIA en esta fase
 Agentes en producción con monitoreo continuo y evaluaciones periódicas.
 Fases y revisiones según Microsoft Success by Design. Success by Design en Microsoft Learn ↗
@@ -3129,4 +3129,6 @@ Autodiagnóstico de atención y ventas
 Resultados orientativos. No son una cotización ni asesoría legal.Empezar →
 ¿Conversamos sobre tu caso?
 Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.
+
+[Página: Ventas y servicio al cliente · ruta /soluciones/ventas-servicio-y-contact-center/]
 ConversemosConversa con nuestro agente

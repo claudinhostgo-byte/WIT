@@ -9,7 +9,7 @@ import os
 from html import escape
 from PIL import Image
 import agente
-from content import (MS, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME,
+from content import (MS, MS_URL, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME,
                      COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP, DIAG_CRM)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sitio')
@@ -861,10 +861,15 @@ def soluciones_index(r):
 
 
 def product_cards(r, s):
-    return ''.join(
-        f'''<div class="product-card">{ms_icon(r, i, 40) if i else f'<span class="icon-slot" aria-hidden="true">{SHIELD}</span>'}
-              <div><h3>{escape(MS[i]) if i else escape(d.split(':')[0])}</h3><p>{escape(d.split(': ', 1)[1] if (not i and ': ' in d) else d)}</p><p class="cuando"><strong>Cuándo conviene:</strong> {escape(c)}</p></div></div>'''
-        for i, d, c in s['productos'])
+    def card(p):
+        i, d, c = p[:3]
+        url = p[3] if len(p) > 3 else MS_URL.get(i)
+        nombre = MS[i] if i else d.split(':')[0]
+        link = (f'<a class="product-link" href="{url}" target="_blank" rel="noopener" '
+                f'aria-label="Ver {escape(nombre)} en el sitio de Microsoft (abre en otra pestaña)">Ver detalle en Microsoft ↗</a>') if url else ''
+        return f'''<div class="product-card">{ms_icon(r, i, 40) if i else f'<span class="icon-slot" aria-hidden="true">{SHIELD}</span>'}
+              <div><h3>{escape(nombre)}</h3><p>{escape(d.split(': ', 1)[1] if (not i and ': ' in d) else d)}</p><p class="cuando"><strong>Cuándo conviene:</strong> {escape(c)}</p>{link}</div></div>'''
+    return ''.join(card(p) for p in s['productos'])
 
 
 def solucion_page(s):

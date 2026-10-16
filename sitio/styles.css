@@ -1025,6 +1025,7 @@ a.mega-js:hover { color: var(--green-dark); }
 .product-card p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--muted); }
 .product-card .cuando { margin-top: 10px; font-size: 14px; color: var(--ink); }
 .product-card .icon-slot { flex: none; }
+.product-card .product-link { display: inline-block; margin-top: 12px; font-size: 14px; font-weight: 600; }
 
 .cred-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
 .cred-card .ms-badge { height: 110px; }
