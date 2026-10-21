@@ -18,7 +18,7 @@
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()"
   },
   "mimeTypes": {
-    "webp": "image/webp",
-    "svg": "image/svg+xml"
+    ".webp": "image/webp",
+    ".svg": "image/svg+xml"
   }
 }
