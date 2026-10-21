@@ -241,7 +241,8 @@ def footer(r):
 </div>'''
 
 
-SITIO_URL = 'https://w-it.cl/'  # dominio canónico: www.w-it.cl y *.azurestaticapps.net apuntan acá
+SITIO_URL = 'https://w-it.cl/'  # dominio canónico: www.w-it.cl y *.azurestaticapps.net apuntan acá.
+# Static Web Apps no redirige por hostname, así que cada página lleva un script que manda www al apex (y el canonical cubre a los buscadores).
 ORG_ID = SITIO_URL + '#organizacion'
 
 
@@ -290,6 +291,7 @@ def write(path, title, desc, body, active=None, solid=True, ld=None, noindex=Fal
 <html lang="es-CL">
 <head>
 <meta charset="utf-8">
+<script>if(location.hostname==="www.w-it.cl")location.replace("https://w-it.cl"+location.pathname+location.search+location.hash)</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)}</title>
 <meta name="description" content="{escape(desc)}">
