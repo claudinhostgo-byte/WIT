@@ -72,3 +72,9 @@ Usar **`google-ads-editor.csv`**: un solo archivo con campañas, configuración,
 - **"precio"** no está como negativa: puede traer compradores o solo personas que comparan licencias. Hay que decidirlo con los términos de búsqueda reales.
 - **Cuenta en Gmail** (witchile.ads@gmail.com): conviene migrarla a una cuenta corporativa y sumar un segundo administrador.
 - **Nombre del producto**: el sitio usa "Azure AI Foundry", pero Microsoft hoy lo llama "Microsoft Foundry". Las palabras clave cubren ambos nombres.
+
+## Control semana 2 (2026-10-28)
+
+- **IA** (13–27 oct): $34.913, 99 clics, CTR 8,6 %, CPC $353, 1 conversión. Los términos de búsqueda estaban dominados por compradores de licencias y precios ("copilot 365", "copilot pro precio", "cuanto cuesta copilot studio", "copilot planes de pago", "https copilot studio").
+- **Dynamics** (13–27 oct): $65.361, 42 clics, CTR 4,5 %, CPC $1.556, 0 conversiones. Términos pertinentes (business central, crm dynamics, contact center).
+- **Acción A aplicada:** negativas nuevas en IA `pro`, `precio`, `cuánto cuesta`, `cuanto cuesta`, `planes de pago`, `https`, `com`; se quitó la palabra clave `licencias microsoft 365 copilot`. Archivo para importar solo las negativas nuevas: `google-ads-editor-negativas-ia-s2.csv`. Quitar la palabra clave se hace a mano en Editor (la importación no borra).

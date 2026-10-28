@@ -82,7 +82,7 @@ GRUPOS = [
      ['Microsoft 365 Copilot empresas', 'Adopción de Copilot', 'Copilot en Word, Excel y Teams',
       'Cofinanciamiento: consúltanos', 'Partner Copilot Microsoft'],
      [('microsoft 365 copilot empresas', 'F'), ('implementar microsoft 365 copilot', 'F'), ('copilot para empresas', 'F'),
-      ('partner copilot microsoft', 'F'), ('adopción copilot', 'F'), ('licencias microsoft 365 copilot', 'F')]),
+      ('partner copilot microsoft', 'F'), ('adopción copilot', 'F')]),
     ('ia', 'Azure AI e IA empresarial',
      ['Azure AI Foundry', 'IA con datos en tu tenant', 'Evaluación y monitoreo de IA',
       'IA responsable en producción', 'Partner Microsoft Data & AI'],
@@ -101,7 +101,9 @@ NEGATIVAS = {
     'dynamics': ['dynamics ax 2009', 'navision gratis', 'dynamics gp'],
     'ia': ['chatgpt', 'gemini', 'claude', 'anthropic', 'github copilot', 'copilot app', 'copilot gratis', 'bing',
            'imagen', 'imágenes', 'prompt', 'prompts', 'cómo usar', 'como usar', 'estudiantes', 'tarea', 'windows',
-           'tecla copilot', 'copilot key'],
+           'tecla copilot', 'copilot key',
+           # Control semana 2 (2026-10-28): compradores de licencias y precios, no empresas que buscan partner
+           'pro', 'precio', 'cuánto cuesta', 'cuanto cuesta', 'planes de pago', 'https', 'com'],
 }
 
 ENLACES = [  # (texto ≤25, descripción 1 ≤35, descripción 2 ≤35, ruta)
