@@ -6,6 +6,7 @@ styles.css, main.js y assets/ se editan directamente en sitio/; este script solo
 import json
 from urllib.parse import quote
 import os
+from pathlib import Path
 from html import escape
 from PIL import Image
 import agente
@@ -13,6 +14,16 @@ from content import (MS, MS_URL, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, 
                      COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP, DIAG_CRM)
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'sitio')
+
+
+def _asset_ver(nombre):
+    """Hash corto del archivo para que el navegador no use una versión en caché tras publicar."""
+    import hashlib
+    with open(os.path.join(ROOT, nombre), 'rb') as f:
+        return hashlib.md5(f.read()).hexdigest()[:8]
+
+
+ASSET_VER = {n: _asset_ver(n) for n in ('styles.css', 'main.js')}
 SOL = {s['slug']: s for s in SOLUCIONES}
 IND = {i['slug']: i for i in INDUSTRIAS}
 CASO = {c['slug']: c for c in CASOS}
@@ -298,8 +309,8 @@ def write(path, title, desc, body, active=None, solid=True, ld=None, noindex=Fal
 <link rel="canonical" href="{SITIO_URL}{path}">
 {'<meta name="robots" content="noindex">' + chr(10) if noindex else ''}{google_ads_meta()}<link rel="icon" type="image/png" href="{r}assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="{r}assets/marca/apple-touch-icon.png">
-<link rel="stylesheet" href="{r}styles.css">
-<script src="{r}main.js" defer></script>
+<link rel="stylesheet" href="{r}styles.css?v={ASSET_VER['styles.css']}">
+<script src="{r}main.js?v={ASSET_VER['main.js']}" defer></script>
 {ld_html}</head>
 <body{' class="has-solid-header"' if solid else ''}>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -874,6 +885,111 @@ def product_cards(r, s):
     return ''.join(card(p) for p in s['productos'])
 
 
+# Geometría del diagrama "Cómo funciona" (viewBox 1200×380): canales, conexión (con alternativas unidas por "o"),
+# plataforma, agente de IA, ejecutivo.
+FLUJO_POS = {'llamadas': (10, 63, 180, 70), 'whatsapp': (10, 181, 180, 70), 'instagram': (10, 266, 180, 70), 'chat': (10, 366, 180, 70),
+             'telefonia': (240, 26, 160, 56), 'sbc-propio': (240, 114, 160, 56),
+             'conector': (240, 206, 160, 56), 'twilio': (240, 294, 160, 56),
+             'plataforma': (580, 26, 250, 410), 'agente-ia': (860, 186, 160, 80), 'ejecutivo': (1070, 186, 130, 80)}
+FLUJO_ALT = {'sbc-propio', 'twilio'}  # alternativas: borde punteado
+FLUJO_O = [(320, 98), (320, 278)]  # "o" entre las dos opciones de cada grupo (la línea se bifurca hacia una u otra)
+# Dentro de la plataforma: franja vertical "Enrutamiento unificado", carriles sombreados por canal (y, alto, etiqueta, conceptos)
+# alineados con la altura a la que entra cada canal, y notas de texto entre carriles (y, etiqueta, líneas).
+FLUJO_CARRILES = [(72, 52, 'Voz', 'Colas · Skills · IVR'),
+                  (252, 52, 'WhatsApp e Instagram', 'Colas · Skills · Plantillas'),
+                  (375, 52, 'Chat web y correo', 'Colas · Skills · SLA')]
+FLUJO_NOTAS = [(150, 'Reglas de asignación', ['Prioridad · Capacidad', 'Horario · Desborde']),
+               (320, 'Supervisión y calidad', ['Tableros · Grabación'])]
+_COLA_VOZ = 'H610 Q640 98 640 128 V211 Q640 226 655 226 H1070'
+_COLA_MSG = 'H610 Q640 278 640 248 V241 Q640 226 655 226 H1070'
+FLUJO_RUTAS = {  # id de ruta -> (trazo, clase de color, nodos que la encienden, inicios de los puntos)
+    'voz-a': (f'M190 98 C215 98 215 54 240 54 H400 C425 54 425 98 450 98 {_COLA_VOZ}', 'fl-voz', ('llamadas', 'telefonia', 'plataforma', 'agente-ia', 'ejecutivo'), ['0s']),
+    'voz-b': (f'M190 98 C215 98 215 142 240 142 H400 C425 142 425 98 450 98 {_COLA_VOZ}', 'fl-voz', ('llamadas', 'sbc-propio', 'plataforma', 'agente-ia', 'ejecutivo'), ['2.5s']),
+    'wa-a': (f'M190 216 C215 216 215 234 240 234 H400 C425 234 425 278 450 278 {_COLA_MSG}', 'fl-wa', ('whatsapp', 'conector', 'plataforma', 'agente-ia', 'ejecutivo'), ['0.8s']),
+    'wa-b': (f'M190 216 C215 216 215 322 240 322 H400 C425 322 425 278 450 278 {_COLA_MSG}', 'fl-wa', ('whatsapp', 'twilio', 'plataforma', 'agente-ia', 'ejecutivo'), ['3.3s']),
+    'ig': (f'M190 301 C215 301 215 234 240 234 H400 C425 234 425 278 450 278 {_COLA_MSG}', 'fl-ig', ('instagram', 'conector', 'plataforma', 'agente-ia', 'ejecutivo'), ['1.9s']),
+    'chat': ('M190 401 H610 Q640 401 640 371 V241 Q640 226 655 226 H1070', 'fl-chat', ('chat', 'plataforma', 'agente-ia', 'ejecutivo'), ['1.3s'])}
+# Íconos de 24×24 por nodo: ('ms', ícono oficial de Microsoft), ('logo', archivo en assets/logos, con texto si falta) o ('svg', trazado propio / Simple Icons CC0)
+_SVG_SBC = '<rect x="2.5" y="7" width="19" height="10" rx="2" fill="none" stroke="#1B3A50" stroke-width="2"/><path d="M6 12h2M10 12h2M14 12h2" stroke="#54BA00" stroke-width="2.4" stroke-linecap="round"/><path d="M8 7V4M16 7V4M8 17v3M16 17v3" stroke="#1B3A50" stroke-width="2" stroke-linecap="round"/>'
+FLUJO_ICONOS = {
+    'llamadas': ('svg', '<path fill="#1B3A50" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/>'),
+    'whatsapp': ('svg', '<path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>'),
+    'instagram': ('svg', '<defs><linearGradient id="fl-ig-g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F9A825"/><stop offset=".5" stop-color="#E1306C"/><stop offset="1" stop-color="#8134AF"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5.5" fill="none" stroke="url(#fl-ig-g)" stroke-width="2.2"/><circle cx="12" cy="12" r="4.6" fill="none" stroke="url(#fl-ig-g)" stroke-width="2.2"/><circle cx="17.4" cy="6.6" r="1.4" fill="#E1306C"/>'),
+    'chat': ('svg', '<rect x="2.5" y="5" width="19" height="14" rx="2.5" fill="none" stroke="#1B3A50" stroke-width="2"/><path d="M3.5 6.5 12 13l8.5-6.5" fill="none" stroke="#1B3A50" stroke-width="2" stroke-linejoin="round"/>'),
+    'telefonia': ('logo', 'audiocodes'),
+    'sbc-propio': ('svg', _SVG_SBC),
+    'conector': ('svg', '<circle cx="6" cy="12" r="3" fill="none" stroke="#1B3A50" stroke-width="2"/><circle cx="18" cy="12" r="3" fill="none" stroke="#1B3A50" stroke-width="2"/><path d="M9 12h6" stroke="#54BA00" stroke-width="2.4" stroke-linecap="round"/><path d="M12 9v6" stroke="#54BA00" stroke-width="2.4" stroke-linecap="round"/>'),
+    'twilio': ('svg', '<path d="M7 17.5h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 11.2 3.2 3.2 0 0 0 7 17.5z" fill="none" stroke="#616161" stroke-width="2" stroke-linejoin="round"/>'),
+    'plataforma': ('ms', 'd365-contact-center'),
+    'agente-ia': ('ms', 'copilot-studio'),
+    'ejecutivo': ('svg', '<path d="M4 13a8 8 0 0 1 16 0" fill="none" stroke="#1B3A50" stroke-width="2" stroke-linecap="round"/><rect x="3" y="12" width="4" height="6" rx="1.5" fill="#1B3A50"/><rect x="17" y="12" width="4" height="6" rx="1.5" fill="#1B3A50"/><path d="M19 18v1.5a2 2 0 0 1-2 2h-4" fill="none" stroke="#54BA00" stroke-width="2" stroke-linecap="round"/>'),
+}
+LOGOS_DIR = Path(ROOT) / 'assets' / 'logos'  # logos de terceros autorizados (p. ej. audiocodes.svg); si falta, el nodo muestra el nombre en texto
+
+
+def flujo_icono(r, nid, x, y, size=24):
+    kind, v = FLUJO_ICONOS[nid]
+    if kind == 'ms':
+        return f'<image href="{r}assets/ms/{v}.svg" x="{x}" y="{y}" width="{size}" height="{size}"/>'
+    return f'<svg x="{x}" y="{y}" width="{size}" height="{size}" viewBox="0 0 24 24" aria-hidden="true">{v}</svg>'
+
+
+def flujo_section(r, s):
+    """Cómo funciona: diagrama SVG con los puntos (llamadas, WhatsApp, Instagram, chat) viajando por los componentes;
+    cada componente es un botón que muestra su explicación en el panel de abajo (main.js, [data-flujo])."""
+    rutas = ''.join(f'<path id="fl-r-{k}" class="fl-route {c}" data-nodes="{" ".join(n)}" d="{d}"/>' for k, (d, c, n, _) in FLUJO_RUTAS.items())
+    puntos = ''.join(f'<circle class="fl-dot {c}" r="7"><animateMotion dur="5s" begin="{b}" repeatCount="indefinite"><mpath href="#fl-r-{k}"/></animateMotion></circle>'
+                     for k, (_, c, __, begins) in FLUJO_RUTAS.items() for b in begins)
+    nodos = ''
+    for n, (nid, l1, l2, *_rest) in enumerate(s['flujo']):
+        x, y, w, h = FLUJO_POS[nid]
+        kind, v = FLUJO_ICONOS[nid]
+        cx, cy = x + w / 2, y + h / 2
+        if h > 120:  # plataforma: ícono y título arriba; franja vertical de enrutamiento; carriles por canal y notas
+            txt = (f'{flujo_icono(r, nid, x + 14, y + 10, 24)}<text class="fl-lbl fl-sm" x="{x + 44}" y="{y + 27}">{escape(l1)}</text>')
+            sx, sy, sw, sh = x + 12, 72, 30, 355  # franja vertical (empieza bajo el título)
+            txt += (f'<rect class="fl-vstrip" x="{sx}" y="{sy}" width="{sw}" height="{sh}" rx="8"/>'
+                    f'<text class="fl-vert" transform="translate({sx + sw / 2 + 4} {sy + sh / 2}) rotate(-90)" text-anchor="middle">Enrutamiento unificado</text>')
+            lx, lw = sx + sw + 8, w - 12 - (sw + 8) - 12
+            for ly, lh, lab, items in FLUJO_CARRILES:
+                txt += (f'<rect class="fl-lane" x="{lx}" y="{ly}" width="{lw}" height="{lh}" rx="8"/>'
+                        f'<text class="fl-lane-t" x="{lx + 12}" y="{ly + 20}">{escape(lab)}</text><text class="fl-lane-i" x="{lx + 12}" y="{ly + 38}">{escape(items)}</text>')
+            for ny, lab, lines in FLUJO_NOTAS:
+                txt += f'<text class="fl-lane-t" x="{lx + 12}" y="{ny + 14}">{escape(lab)}</text>' + ''.join(
+                    f'<text class="fl-lane-i" x="{lx + 12}" y="{ny + 32 + i * 16}">{escape(t)}</text>' for i, t in enumerate(lines))
+        elif kind == 'logo':  # logo de terceros centrado arriba (o el nombre en texto si no está el archivo) y subtítulo abajo
+            logo = f'<image href="{r}assets/logos/{v}.svg" x="{cx - 55}" y="{y + 8}" width="110" height="22" preserveAspectRatio="xMidYMid meet"/>' if (LOGOS_DIR / f'{v}.svg').exists() else \
+                   f'<text class="fl-lbl" x="{cx}" y="{y + 26}" text-anchor="middle">{escape(l1)}</text>'
+            txt = logo + f'<text class="fl-sub" x="{cx}" y="{y + 46}" text-anchor="middle">{escape(l2)}</text>'
+        elif w < 160:  # cajas de conexión (angostas): ícono a la izquierda y texto compacto
+            txt = (f'{flujo_icono(r, nid, x + 9, cy - 11, 22)}<text class="fl-lbl fl-sm" x="{x + 38}" y="{cy - 3}">{escape(l1)}</text>'
+                   f'<text class="fl-sub fl-xs" x="{x + 38}" y="{cy + 15}">{escape(l2)}</text>')
+        elif ' / ' in l2:  # ícono a la izquierda, título y dos líneas de subtítulo
+            s1, s2 = l2.split(' / ', 1)
+            txt = (f'{flujo_icono(r, nid, x + 12, cy - 12, 24)}<text class="fl-lbl" x="{x + 46}" y="{cy - 9}">{escape(l1)}</text>'
+                   f'<text class="fl-sub fl-xs" x="{x + 46}" y="{cy + 7}">{escape(s1)}</text><text class="fl-sub fl-xs" x="{x + 46}" y="{cy + 21}">{escape(s2)}</text>')
+        else:  # ícono a la izquierda, dos líneas de texto a la derecha
+            txt = (f'{flujo_icono(r, nid, x + 12, cy - 12, 24)}<text class="fl-lbl" x="{x + 46}" y="{cy - 3}">{escape(l1)}</text>'
+                   f'<text class="fl-sub" x="{x + 46}" y="{cy + 17}">{escape(l2)}</text>')
+        nodos += (f'<g class="fl-node{" fl-alt" if nid in FLUJO_ALT else ""}{" is-on" if n == 0 else ""}" data-id="{nid}" role="button" tabindex="0" aria-label="{escape(l1)}: ver explicación">'
+                  f'<rect class="fl-box" x="{x}" y="{y}" width="{w}" height="{h}" rx="12"/>{txt}</g>')
+    oes = ''.join(f'<g class="fl-o" aria-hidden="true"><circle cx="{ox}" cy="{oy}" r="11"/><text x="{ox}" y="{oy + 4}" text-anchor="middle">o</text></g>' for ox, oy in FLUJO_O)
+    cols = ''.join(f'<text class="fl-col" x="{cx}" y="12" text-anchor="middle">{t}</text>' for cx, t in
+                   ((100, 'Canales'), (320, 'Conexión'), (705, 'Plataforma'), (940, 'Agente de IA'), (1135, 'Ejecutivo')))
+    deriv = '<text class="fl-deriv" x="1045" y="204" text-anchor="middle">deriva con</text><text class="fl-deriv" x="1045" y="217" text-anchor="middle">contexto</text>'
+    infos = ''.join(f'<div class="fl-info" data-id="{nid}"{"" if n == 0 else " hidden"}><h3>{escape(t)}</h3><p>{escape(d)}</p>{pills(c)}</div>'
+                    for n, (nid, _, __, t, d, c) in enumerate(s['flujo']))
+    return f"""<section class="section bg-white" data-flujo aria-labelledby="fl-title"><div class="container stack-40">
+  {section_head('Cómo funciona', '<span id="fl-title">Así viaja cada llamada y cada mensaje hasta tu equipo.</span>', 'Haz clic en cada parte para ver qué hace. Donde dice "o", eliges según lo que ya tienes.')}
+  <p class="fl-hint" aria-hidden="true">Desliza para ver el recorrido completo.</p>
+  <div class="fl-wrap"><svg class="fl-svg" viewBox="0 0 1200 446" role="img" aria-label="Diagrama: llamadas, WhatsApp, Instagram, chat y correo entran por una de dos conexiones a elegir (SBC AudioCodes o tu propio SBC para la voz; W-IT Bridge o un proveedor como Twilio para la mensajería) a Dynamics 365 Contact Center, los atiende primero un agente de IA y, si hace falta, deriva al ejecutivo con contexto">
+    {cols}{rutas}{puntos}{nodos}{oes}{deriv}
+  </svg></div>
+  <ul class="fl-legend" aria-hidden="true"><li class="fl-voz">Llamadas</li><li class="fl-wa">WhatsApp</li><li class="fl-ig">Instagram</li><li class="fl-chat">Chat web y correo</li></ul>
+  <div class="fl-panel">{infos}</div>
+</div></section>"""
+
+
 def solucion_page(s):
     def body(r):
         prods = product_cards(r, s)
@@ -882,6 +998,7 @@ def solucion_page(s):
         return page_hero(r, [('Soluciones', 'soluciones/'), (s['nombre'], f"soluciones/{s['slug']}/")], f"{escape(s['plataforma'])} · {escape(s['nombre'])}", s['h1'], s['bajada'],
                          h1_pe=s.get('h1_pe'), aside=aside) + f'''
 {senales}
+{flujo_section(r, s) if s.get('flujo') else ''}
 <section class="section bg-soft"><div class="container stack-40">
   {section_head('Qué implementamos', 'Tecnología Microsoft, elegida según tu proceso.')}
   <div class="product-grid">{prods}</div>

@@ -363,6 +363,31 @@
     if (!reduceMotion) loop();
   });
 
+  // ---------- "Cómo funciona": diagrama de flujo. El foco recorre los componentes cada 4,5 s hasta el primer clic;
+  // cada clic enciende el componente, sus rutas y su explicación. Puntos quietos si el usuario prefiere menos animación.
+  $$('[data-flujo]').forEach(sec => {
+    const nodes = $$('.fl-node', sec), routes = $$('.fl-route', sec), infos = $$('.fl-info', sec), svg = $('.fl-svg', sec);
+    if (nodes.length < 2) return;
+    if (reduceMotion && svg.pauseAnimations) svg.pauseAnimations();
+    let i = 0, t, manual = false, visible = false;
+    const show = n => {
+      i = (n + nodes.length) % nodes.length;
+      const id = nodes[i].dataset.id;
+      nodes.forEach((el, k) => el.classList.toggle('is-on', k === i));
+      routes.forEach(p => p.classList.toggle('is-on', p.dataset.nodes.split(' ').includes(id)));
+      infos.forEach(el => { el.hidden = el.dataset.id !== id; });
+    };
+    const loop = () => { clearTimeout(t); t = setTimeout(() => { if (!manual && visible && document.visibilityState === 'visible') show(i + 1); loop(); }, 4500); };
+    nodes.forEach((el, k) => {
+      const pick = () => { manual = true; clearTimeout(t); show(k); };
+      el.addEventListener('click', pick);
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+    });
+    show(0);
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: .3 }).observe(sec);
+    if (!reduceMotion) loop();
+  });
+
   // ---------- Metodología: línea de tiempo interactiva (una fase abierta a la vez; flechas del teclado entre fases)
   $$('[data-metodo]').forEach(m => {
     const rail = $('.mt-rail', m), steps = $$('.mt-step', m), btns = $$('.mt-btn', m), panels = $$('.mt-panel', m), count = $('.mt-count', m);

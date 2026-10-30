@@ -34,7 +34,7 @@ Los enlaces son rutas del sitio. Al responder, entrega la ruta como enlace Markd
 - [Agentes W-IT](/productos/agentes-w-it/): Agentes y aceleradores de W-IT.
 - [Productos](/productos/): Productos W-IT en Microsoft Marketplace.
 - [Automatización y apps](/soluciones/automatizacion-y-apps/): Microsoft Power Platform. Procesos sin planillas paralelas. Implementación en Chile y Perú.
-- [Contact center omnicanal y voz](/soluciones/contact-center/): Microsoft Dynamics 365 Contact Center. Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes. Implementación en Chile y Perú.
+- [Contact center omnicanal y voz](/soluciones/contact-center/): Microsoft Dynamics 365 Contact Center. Llamadas, WhatsApp e Instagram en un solo escritorio de agente, con IA al lado. Implementación en Chile y Perú.
 - [Datos y analítica](/soluciones/datos-y-analitica/): Microsoft Fabric y Power BI. Datos unificados para decidir. Implementación en Chile y Perú.
 - [Finanzas y operaciones](/soluciones/finanzas-y-operaciones/): Microsoft Dynamics 365 Business Central y Finance. ERP que cierra a tiempo y escala contigo. Implementación en Chile y Perú.
 - [IA y agentes](/soluciones/ia-y-agentes/): Microsoft 365 Copilot y agentes de IA. Copilot y agentes que trabajan sobre tus datos, con gobierno desde el inicio. Implementación en Chile y Perú.
@@ -945,7 +945,7 @@ Contact center omnicanal y voz
 Microsoft Dynamics 365 Contact Center
 
 [Página: Inicio · ruta /]
-Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes.
+Llamadas, WhatsApp e Instagram en un solo escritorio de agente, con IA al lado.
 Contact CenterVoz y telefoníaOmnicanal
 Ver solución →
 Finanzas y operaciones
@@ -1083,7 +1083,7 @@ Soluciones Microsoft
 Productos y soluciones que podrían aplicar.
 Contact center omnicanal y voz
 Microsoft Dynamics 365 Contact Center
-Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes.
+Llamadas, WhatsApp e Instagram en un solo escritorio de agente, con IA al lado.
 Contact CenterVoz y telefoníaOmnicanal
 Ver solución →
 IA y agentes
@@ -1400,7 +1400,7 @@ Soluciones Microsoft
 Productos y soluciones que podrían aplicar.
 Contact center omnicanal y voz
 Microsoft Dynamics 365 Contact Center
-Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes.
+Llamadas, WhatsApp e Instagram en un solo escritorio de agente, con IA al lado.
 Contact CenterVoz y telefoníaOmnicanal
 Ver solución →
 Ventas y servicio al cliente
@@ -1445,13 +1445,13 @@ Soluciones Microsoft
 Productos y soluciones que podrían aplicar.
 Contact center omnicanal y voz
 Microsoft Dynamics 365 Contact Center
-Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes.
+Llamadas, WhatsApp e Instagram en un solo escritorio de agente, con IA al lado.
 Contact CenterVoz y telefoníaOmnicanal
 Ver solución →
 Automatización y apps
-Microsoft Power Platform
 
 [Página: Sector público y corporaciones · ruta /industrias/sector-publico/]
+Microsoft Power Platform
 Procesos sin planillas paralelas.
 Power AppsPower AutomatePower Pages
 Ver solución →
@@ -1490,7 +1490,7 @@ Soluciones Microsoft
 Productos y soluciones que podrían aplicar.
 Contact center omnicanal y voz
 Microsoft Dynamics 365 Contact Center
-Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes.
+Llamadas, WhatsApp e Instagram en un solo escritorio de agente, con IA al lado.
 Contact CenterVoz y telefoníaOmnicanal
 Ver solución →
 Ventas y servicio al cliente
@@ -1534,7 +1534,7 @@ Soluciones Microsoft
 Productos y soluciones que podrían aplicar.
 Contact center omnicanal y voz
 Microsoft Dynamics 365 Contact Center
-Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes.
+Llamadas, WhatsApp e Instagram en un solo escritorio de agente, con IA al lado.
 Contact CenterVoz y telefoníaOmnicanal
 Ver solución →
 Ventas y servicio al cliente
@@ -2086,14 +2086,14 @@ ConversemosConversa con nuestro agente
 ### Contact center omnicanal y voz (/soluciones/contact-center/)
 
 [Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
-Microsoft Dynamics 365 Contact Center. Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes. Implementación en Chile y Perú.
+Microsoft Dynamics 365 Contact Center. Llamadas, WhatsApp e Instagram en un solo escritorio de agente, con IA al lado. Implementación en Chile y Perú.
 
-Secciones: ¿Te identificas con alguna de estas situaciones?; La central no conversa con el CRM; Canales desconectados; Colas sin visibilidad; Agentes sin contexto; Autoservicio limitado; Tecnología Microsoft, elegida según tu proceso.; Dynamics 365 Contact Center; Dynamics 365 Customer Service; Copilot Studio; Microsoft 365 Copilot; Azure; Success by Design, por olas.; Autodiagnóstico de atención y ventas; ¿Conversamos sobre tu caso?
+Secciones: ¿Te identificas con alguna de estas situaciones?; La central no conversa con el CRM; Canales desconectados; Colas sin visibilidad; Agentes sin contexto; Autoservicio limitado; Así viaja cada llamada y cada mensaje hasta tu equipo.; Llamadas por tu operador de siempre; Mensajes de WhatsApp Business; Mensajes directos de Instagram; Chat web y correo; Opción 1 de voz: SBC AudioCodes; Opción 2 de voz: tu propio SBC; Opción 1 de mensajería: W-IT Bridge; Opción 2 de mensajería: Twilio u otro proveedor; Plataforma: colas y habilidades por canal; Agente de IA: atiende primero, en voz y en chat; El ejecutivo recibe la derivación con contexto; Tecnología Microsoft, elegida según tu proceso.; Dynamics 365 Contact Center; Dynamics 365 Customer Service; Copilot Studio; Microsoft 365 Copilot; Microsoft Teams Phone; Success by Design, por olas.; Autodiagnóstico de atención y ventas; ¿Conversamos sobre tu caso?
 
 [Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Microsoft Dynamics 365 Contact Center · Contact center omnicanal y voz
-Toda la cadena de atención, de la llamada a la resolución.
-Implementamos Dynamics 365 Contact Center: telefonía en la nube, IVR conversacional, enrutamiento inteligente y canales digitales, integrados con tu CRM y con Copilot al lado de cada agente.
+Llamadas, WhatsApp e Instagram. Un escritorio, un responsable.
+Implementamos Dynamics 365 Contact Center y nos hacemos cargo de lo que suele quedar fuera: la telefonía, con Microsoft Teams Phone y un SBC certificado para Teams que conecta tu operador actual, y WhatsApp e Instagram, con un conector propio que los lleva al mismo escritorio del agente.
 ConversemosVer clientes
 Dynamics 365 Contact CenterDynamics 365 Customer ServiceCopilot Studio
 Señales de que lo necesitas
@@ -2105,11 +2105,11 @@ La central no conversa con el CRM
 Telefonía y casos viven en sistemas separados y el agente trabaja con dos pantallas.
 ?
 Canales desconectados
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Teléfono, WhatsApp, chat y correo no comparten historial ni prioridad.
 ?
 Colas sin visibilidad
-
-[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Tiempos de espera, abandono y SLA sin tableros en tiempo real.
 ?
 Agentes sin contexto
@@ -2117,34 +2117,85 @@ Cada llamada empieza de cero: el cliente repite lo que ya contó.
 ?
 Autoservicio limitado
 El IVR solo transfiere; no resuelve.
+Cómo funciona
+Así viaja cada llamada y cada mensaje hasta tu equipo.
+Haz clic en cada parte para ver qué hace. Donde dice "o", eliges según lo que ya tienes.
+Desliza para ver el recorrido completo.
+Llamadas
+WhatsApp
+Instagram
+Chat web y correo
+Llamadas por tu operador de siempre
+El cliente marca el número que ya conoce. La llamada entra por las troncales SIP de tu operador actual, sea Entel, Movistar, Claro, WOM, GTD u otro: conservas tu numeración y tu contrato.
+Troncales SIPTu numeraciónCualquier operador
+Mensajes de WhatsApp Business
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
+Hecho para cuentas Business de Meta: los mensajes llegan desde la API oficial de WhatsApp Business Platform. La cuenta, el número y la verificación en Meta Business Manager siguen siendo tuyos.
+WhatsApp Business PlatformMeta Business Manager
+Mensajes directos de Instagram
+Para cuentas profesionales de Instagram vinculadas a tu Meta Business Manager. Los mensajes directos entran al mismo escritorio que WhatsApp y las llamadas. Instagram no es un canal nativo de Dynamics 365: por eso existe W-IT Bridge.
+Instagram profesionalMeta Business Manager
+Chat web y correo
+Entran por los canales nativos de Dynamics 365 y comparten el mismo historial del cliente que las llamadas y los mensajes.
+Chat webCorreo
+Opción 1 de voz: SBC AudioCodes
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
+Un SBC AudioCodes, certificado para Microsoft Teams, conecta tu operador con Teams Phone mediante Direct Routing. Puede ser físico o virtual en Azure. W-IT diseña la arquitectura de voz, lo configura con el operador y prueba calidad y carga.
+SBC AudioCodesMicrosoft Teams PhoneDirect Routing
+Opción 2 de voz: tu propio SBC
+Si tu empresa ya opera un SBC certificado para Microsoft Teams, lo conectamos a Teams Phone por Direct Routing y no necesitas comprar otro. Es el caso típico de operadores y empresas de telecomunicaciones.
+SBC certificado para TeamsDirect Routing
+Opción 1 de mensajería: W-IT Bridge
+Desarrollado por W-IT para cuentas Business de Meta. Recibe cada mensaje de WhatsApp e Instagram directo desde las APIs de Meta, identifica al cliente en el CRM y lo entrega a la cola correcta. No almacena conversaciones y corre en la nube de W-IT o en la tuya.
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
+W-IT BridgeCuentas Business de MetaInstagram incluido
+Opción 2 de mensajería: Twilio u otro proveedor
+WhatsApp también puede entrar por un proveedor de mensajería (BSP) como Twilio, con el canal de WhatsApp de Dynamics 365. W-IT Bridge es la alternativa cuando quieres conexión directa con Meta, Instagram incluido y enrutamiento por regla.
+BSPCanal WhatsApp de Dynamics 365
+Plataforma: colas y habilidades por canal
+Cada canal tiene sus propias colas, habilidades (skills) y reglas: IVR y grabación en voz; plantillas y horarios en WhatsApp e Instagram; SLA y casos en chat y correo. El enrutamiento unificado asigna cada contacto por habilidad, prioridad y capacidad del equipo, y los supervisores ven todo en tiempo real.
+Colas por canalSkillsEnrutamiento unificadoSupervisión en tiempo real
+Agente de IA: atiende primero, en voz y en chat
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
+Un agente de Copilot Studio responde las consultas frecuentes a cualquier hora, consulta tus sistemas y resuelve lo que puede. Cuando hace falta una persona, deriva al ejecutivo con todo el contexto de la conversación.
+Copilot StudioIVR conversacionalDerivación con contexto
+El ejecutivo recibe la derivación con contexto
+Atiende llamadas y mensajes en una sola pantalla, con el resumen de lo que ya conversó el agente de IA, el historial del cliente y los casos y SLA de Dynamics 365 Customer Service. Copilot le sugiere respuestas y cierra el caso.
+Dynamics 365 Customer ServiceMicrosoft 365 Copilot
 Qué implementamos
 Tecnología Microsoft, elegida según tu proceso.
 Dynamics 365 Contact Center
 Voz en la nube, IVR conversacional, enrutamiento unificado y supervisión en tiempo real.
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Cuándo conviene: Cuando quieres reemplazar o integrar tu central telefónica con la atención digital.Ver detalle en Microsoft ↗
 Dynamics 365 Customer Service
 Casos, SLA, base de conocimiento y escritorio del agente.
 Cuándo conviene: Cuando cada interacción debe quedar registrada y resuelta con trazabilidad.Ver detalle en Microsoft ↗
 Copilot Studio
 Agentes de autoservicio en voz y chat que resuelven antes de transferir.
-
-[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Cuándo conviene: Cuando una parte importante de las consultas es repetitiva.Ver detalle en Microsoft ↗
 Microsoft 365 Copilot
 Copilot para el agente: resumen de la conversación, respuestas sugeridas y cierre automático del caso.
 Cuándo conviene: Cuando quieres bajar el tiempo de atención sin perder calidad.Ver detalle en Microsoft ↗
-Azure
-Azure Communication Services: voz, números y SMS sobre Azure, con la telefonía de nuestros aliados regulados.
-Cuándo conviene: Cuando necesitas numeración, conectividad con operadores o migrar tu central.Ver detalle en Microsoft ↗
-Cadena de voz completa. Resolvemos toda la cadena de voz, desde la numeración y la conectividad telefónica hasta el escritorio del agente en Dynamics 365, en alianza con empresas de telefonía reguladas.
-Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.
+Microsoft Teams Phone
+voz con Direct Routing y Teams Phone Extensibility; un SBC certificado para Teams conecta las troncales de tu operador.
 
 [Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
+Cuándo conviene: Cuando quieres conservar tu numeración y tu operador telefónico, o migrar tu central.Ver detalle en Microsoft ↗
+Cadena de voz completa. Resolvemos toda la cadena de voz, desde la numeración y la conectividad telefónica hasta el escritorio del agente en Dynamics 365, con Microsoft Teams Phone, un SBC certificado para Teams y en alianza con empresas de telefonía reguladas.
+Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.
 Cómo lo hacemos
 Success by Design, por olas.
 El marco de implementación de Microsoft para Dynamics 365, entregado en olas cortas: la primera sale a producción con el proceso más urgente y las siguientes amplían lo que ya está en uso.Cómo trabajamos →
 Entendemos tu negocio y definimos qué sale primero a producción.Success by Design · Se inicia el Solution Blueprint Review
 Qué hacemos
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Levantamiento y validación de requerimientos con los dueños de proceso.
 Mapeo de procesos, datos y sistemas actuales.
 Definición de olas: qué sale primero a producción y qué viene después.
@@ -2155,8 +2206,6 @@ Plan por olas con alcance y criterios de éxito.
 Riesgos identificados desde el inicio.
 IAIA en esta fase
 Análisis automático de entornos y del modelo entidad-relación, y priorización de casos de uso de IA.
-
-[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Diseñamos la solución completa antes de construir.Success by Design · Solution Blueprint Review
 Qué hacemos
 Definición de todos los frentes de trabajo y del plan detallado.
@@ -2164,6 +2213,8 @@ Arquitectura: modelo de datos, seguridad, integraciones y ALM.
 Alcance de cada agente y puntos de supervisión humana.
 Revisión de IA responsable: privacidad, transparencia y responsabilidad.
 Qué recibes
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Solution Blueprint: el diseño completo de la solución.
 Plan de proyecto actualizado.
 Estrategias de pruebas y de migración de datos.
@@ -2173,8 +2224,6 @@ Construimos por sprints, con demos y revisiones técnicas en el camino.Success b
 Qué hacemos
 Configuración y desarrollo en sprints, con demo al cierre de cada uno.
 Integraciones y migración de datos.
-
-[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Implementation Reviews: datos, seguridad, integración, ALM y pruebas.
 Prototipado y evaluación de agentes: precisión, cobertura, seguridad y latencia.
 Qué recibes
@@ -2183,6 +2232,8 @@ Hallazgos y recomendaciones de cada revisión.
 Agentes evaluados con escenarios reales.
 IAIA en esta fase
 Personalizaciones asistidas por IA y pruebas automatizadas.
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Preparamos a las personas y la salida a producción.Success by Design · Go-live Readiness Review
 Qué hacemos
 Pruebas de aceptación (UAT) y capacitación de usuarios.
@@ -2194,8 +2245,6 @@ Usuarios capacitados y UAT aprobada.
 Plan de cutover y runbook de despliegue.
 Go-live con soporte reforzado (hypercare).
 IAIA en esta fase
-
-[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Medición del uso real desde el primer día para guiar la adopción.
 Estabilizamos, medimos y preparamos la siguiente ola.Success by Design · Estabilización y transición a soporte
 Qué hacemos
@@ -2204,6 +2253,8 @@ Soporte y mantención de aplicaciones (AMS).
 Monitoreo continuo de agentes: calidad de respuestas, uso y desvíos.
 Siguiente ola: mejoras y nuevos casos de uso.
 Qué recibes
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Soporte AMS con niveles de servicio acordados.
 Evaluaciones periódicas de agentes y actualizaciones de plataforma.
 Roadmap de evolución de la solución.
@@ -2213,8 +2264,6 @@ Fases y revisiones según Microsoft Success by Design. Success by Design en Micr
 1 / 5
 Cofinanciamiento Microsoft
 Microsoft cofinancia el primer paso: taller, POC o MVP.
-
-[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Como Solutions Partner estamos habilitados en los programas de inversión de Microsoft. Evaluamos si tu empresa califica y gestionamos la solicitud.
 POC y MVP cofinanciados →
 Credencial que respalda esta solución
@@ -2223,6 +2272,8 @@ Herramienta relacionadaGratis
 Autodiagnóstico de atención y ventas
 Resultados orientativos. No son una cotización ni asesoría legal.Empezar →
 ¿Conversamos sobre tu caso?
+
+[Página: Contact center omnicanal y voz · ruta /soluciones/contact-center/]
 Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.
 ConversemosConversa con nuestro agente
 
@@ -2675,7 +2726,7 @@ Contact center omnicanal y voz
 Microsoft Dynamics 365 Contact Center
 
 [Página: Soluciones · ruta /soluciones/]
-Voz, chat, WhatsApp y correo en una sola plataforma, con IA para tus agentes.
+Llamadas, WhatsApp e Instagram en un solo escritorio de agente, con IA al lado.
 Contact CenterVoz y telefoníaOmnicanal
 Ver solución →
 Finanzas y operaciones
