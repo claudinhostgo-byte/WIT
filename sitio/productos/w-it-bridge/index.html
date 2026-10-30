@@ -10,7 +10,7 @@
 <meta name="wit-ads" content="{&quot;id&quot;: &quot;AW-634509758&quot;, &quot;formulario&quot;: &quot;Ll5tCKiBlpkdEL6zx64C&quot;, &quot;diagnostico&quot;: &quot;DWMrCKuBlpkdEL6zx64C&quot;}">
 <link rel="icon" type="image/png" href="../../assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="../../assets/marca/apple-touch-icon.png">
-<link rel="stylesheet" href="../../styles.css?v=47563ed5">
+<link rel="stylesheet" href="../../styles.css?v=36b8d8ba">
 <script src="../../main.js?v=e457c848" defer></script>
 </head>
 <body class="has-solid-header">
@@ -187,9 +187,9 @@
     <div class="page-hero-copy">
       <nav aria-label="Ruta"><ol class="crumbs"><li><a href="../../">Inicio</a></li><li><a href="../../productos/">Productos</a></li><li><a href="../../productos/w-it-bridge/">W-IT Bridge</a></li></ol></nav>
       <span class="eyebrow">Producto W-IT · Conector de mensajería</span>
-      <h1>WhatsApp e Instagram, conectados directo con Meta a tu CRM y a tu agente de IA.</h1>
-      <p class="lead">Para cuentas Business de Meta. Recibe cada mensaje desde las APIs oficiales, identifica al cliente y lo entrega a Dynamics 365 Customer Service, Dynamics 365 Contact Center o a un agente de Copilot Studio, sin un proveedor de mensajería en el medio.</p>
-      <div class="btn-row"><a class="btn btn-lg btn-primary" href="../../contacto/">Conversemos</a><a class="btn btn-lg btn-outline" href="../../soluciones/contact-center/">Ver el contact center completo</a></div>
+      <h1>WhatsApp e Instagram dentro de Dynamics 365, sin un proveedor de mensajería en el medio.</h1>
+      <p class="lead">Para cuentas Business de Meta. W-IT Bridge recibe cada mensaje desde las APIs oficiales, identifica al cliente y lo entrega a Dynamics 365 Customer Service, Dynamics 365 Contact Center o a un agente de Copilot Studio.</p>
+      <div class="btn-row"><a class="btn btn-lg btn-primary" href="#contacto">Conversemos</a><a class="btn btn-lg btn-outline" href="../../soluciones/contact-center/">Ver el contact center completo</a></div>
     </div><div class="page-hero-aside bridge-lockup"><img src="../../assets/logos/w-it-bridge.svg" alt="Logo de W-IT Bridge" width="150" height="75"><div><span class="bridge-name">W-IT Bridge</span><span class="bridge-tag">Conector de mensajería · Producto W-IT</span><div class="pills"><span class="pill">SaaS o en tu nube</span><span class="pill">Dynamics 365</span><span class="pill">Copilot Studio</span><span class="pill">Meta Business</span></div></div></div>
   </div>
 </section>
@@ -216,13 +216,40 @@
   <div><span class="eyebrow">Lo que incluye</span><h2 class="h2">Un producto con onboarding, operación y soporte.</h2><ul class="checks"><li>Onboarding: conexión con Meta y configuración del canal en Dynamics 365 o Copilot Studio.</li><li>Hosting, operación y monitoreo en el modelo SaaS; instalación documentada si corre en tu nube.</li><li>Plantillas de WhatsApp aprobadas por Meta, soporte y compatibilidad con cambios de sus APIs.</li></ul></div>
   <div><span class="eyebrow">Requisitos</span><h2 class="h2">Lo que necesitas para partir.</h2><ul class="checks"><li>Meta Business Manager verificado, con tu WhatsApp Business y, si aplica, tu Instagram profesional.</li><li>Dynamics 365 Customer Service o Contact Center con Omnichannel, o un agente de Copilot Studio.</li><li>Una suscripción de Azure, solo si prefieres que corra en tu nube.</li></ul></div>
 </div></section>
-
-<section class="cta-band">
-  <div class="container cta-band-inner">
-    <div><h2>¿Conversamos sobre W-IT Bridge?</h2><p>Cuéntanos qué canales atiendes hoy y con qué CRM, y vemos juntos cómo encaja.</p></div>
-    <div class="btn-row"><a class="btn btn-lg btn-green" href="../../contacto/">Conversemos</a><a class="btn btn-lg btn-ghost-light" href="#agente" data-open-agente>Conversa con nuestro agente</a></div>
+<section class="section section-compact bridge-contacto" id="contacto"><div class="container contact-layout">
+  <div class="contact-intro">
+    <span class="eyebrow">Conversemos</span>
+    <h2 class="h2">¿Conversamos sobre W-IT Bridge?</h2>
+    <p class="lead">Cuéntanos qué canales atiendes hoy y con qué CRM, y vemos juntos cómo encaja.</p>
+    <ol class="contact-pasos"><li><strong>Te respondemos</strong><span>En menos de 1 día hábil, al correo que nos dejes.</span></li><li><strong>Revisamos tu escenario</strong><span>Canales, CRM y si corre en SaaS o en tu nube.</span></li><li><strong>Demo con tu cuenta</strong><span>Si encaja, lo vemos funcionando con tu Meta Business.</span></li></ol>
   </div>
-</section>
+  <form class="form contact-form" id="form-contacto" data-api="/api/contacto" data-en-pagina novalidate>
+      <div class="form-head"><strong>Cuéntanos qué canales atiendes y con qué CRM</strong><span>Los campos con <abbr class="req" title="obligatorio">*</abbr> son obligatorios.</span></div>
+      <div class="form-row"><label><span>Nombre <abbr class="req" title="obligatorio">*</abbr></span><input name="nombre" required autocomplete="name" placeholder="Nombre y apellido"></label><label><span>Email corporativo <abbr class="req" title="obligatorio">*</abbr></span><input type="email" name="email" required autocomplete="email" placeholder="nombre@empresa.cl"></label></div>
+      <div class="form-row"><label>Empresa<input name="empresa" autocomplete="organization"></label><label>Cargo<input name="cargo" autocomplete="organization-title"></label></div>
+      <div class="form-row form-row-3"><label>Teléfono<input type="tel" name="telefono" autocomplete="tel" placeholder="+56 9"></label>
+        <label>País<select name="pais"><option>Chile</option><option>Perú</option><option>Otro</option></select></label>
+        <label>Tamaño<select name="tamano"><option>Menos de 200 personas</option><option>200 a 1.000</option><option>Más de 1.000</option></select></label></div>
+      <fieldset><legend>¿Qué te interesa?</legend><div class="chips"><label class="chip"><input type="checkbox" name="interes" value="ia-y-agentes"><span>IA y agentes</span></label><label class="chip"><input type="checkbox" name="interes" value="ventas-servicio-y-contact-center"><span>Ventas y servicio</span></label><label class="chip"><input type="checkbox" name="interes" value="contact-center" checked><span>Contact center</span></label><label class="chip"><input type="checkbox" name="interes" value="finanzas-y-operaciones"><span>Finanzas y operaciones</span></label><label class="chip"><input type="checkbox" name="interes" value="datos-y-analitica"><span>Datos y analítica</span></label><label class="chip"><input type="checkbox" name="interes" value="automatizacion-y-apps"><span>Automatización y apps</span></label><label class="chip"><input type="checkbox" name="interes" value="nube-azure-e-infraestructura"><span>Nube Azure</span></label><label class="chip"><input type="checkbox" name="interes" value="seguridad-y-cumplimiento"><span>Seguridad e identidades</span></label><label class="chip"><input type="checkbox" name="interes" value="licencias"><span>Licencias Microsoft</span></label><label class="chip"><input type="checkbox" name="interes" value="soporte"><span>Soporte</span></label></div></fieldset>
+      <label>Mensaje<textarea name="mensaje" rows="3" placeholder="Cuéntanos brevemente tu consulta"></textarea>
+        <span class="msg-ctx" hidden>Escribe tu consulta arriba. Bajo la línea «--» incluimos tus respuestas del autodiagnóstico para que no tengas que repetirlas; puedes editarlas o borrarlas.</span></label>
+      <label class="check"><input type="checkbox" name="consentimiento" required> <span>Acepto la <a href="../../privacidad/">política de privacidad</a> y el tratamiento de mis datos para responder esta solicitud. <abbr class="req" title="obligatorio">*</abbr></span></label>
+      <!-- Contexto para el CRM: lo completa main.js según desde dónde llegó la persona; no se muestra en pantalla -->
+      <input type="hidden" name="origen_pagina">
+      <input type="hidden" name="origen_cta">
+      <input type="hidden" name="diagnostico_herramienta">
+      <input type="hidden" name="diagnostico_resultado">
+      <input type="hidden" name="diagnostico_detalle">
+      <input type="hidden" name="utm">
+      <input type="hidden" name="t">
+      <!-- Antispam: campo que una persona no ve ni completa -->
+      <label class="hp" aria-hidden="true">Sitio web<input name="sitio_web" tabindex="-1" autocomplete="off"></label>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAFPqvaJaYodLrLEB" data-theme="light" data-language="es"></div>
+      <button class="btn btn-lg btn-primary" type="submit">Enviar solicitud</button>
+      <p class="form-msg" role="status" tabindex="-1" hidden></p>
+    </form>
+</div></section>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </main>
 
 <footer class="site-footer">

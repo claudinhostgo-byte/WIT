@@ -1505,3 +1505,7 @@ a.mega-js:hover { color: var(--green-dark); }
 .fl-more { margin: 6px 0 0; }
 @media (max-width: 900px) { .bridge-cols { grid-template-columns: 1fr; gap: 36px; } .bridge-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .bridge-stack { grid-template-columns: 1fr; } }
+
+/* W-IT Bridge: formulario en la propia página (campaña de Google Ads) */
+.bridge-contacto { background: var(--bg); }
+.bridge-contacto .contact-intro h2 { margin: 0; }

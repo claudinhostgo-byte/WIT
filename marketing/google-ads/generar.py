@@ -9,7 +9,8 @@ import os
 AQUI = os.path.dirname(os.path.abspath(__file__))
 SITIO = 'https://w-it.cl/'
 
-# Presupuesto total: máx. $200.000 CLP al mes. Google gasta como máximo 30,4 × el presupuesto diario en un mes.
+# Presupuesto: máx. $200.000 CLP al mes para Dynamics + IA, más $100.000 CLP por un mes para W-IT Bridge (2026-10-30).
+# Google gasta como máximo 30,4 × el presupuesto diario en un mes.
 CAMPANAS = {
     'dynamics': dict(nombre='W-IT | Búsqueda | Dynamics 365 | CL-PE', diario=4200,
                      url=SITIO + 'implementacion/dynamics-365/', ruta=('dynamics-365', 'implementacion'),
@@ -17,6 +18,10 @@ CAMPANAS = {
     'ia': dict(nombre='W-IT | Búsqueda | IA y agentes Microsoft | CL-PE', diario=2300,
                url=SITIO + 'implementacion/agentes-de-ia/', ruta=('agentes-ia', 'copilot'),
                sufijo='utm_source=google&utm_medium=cpc&utm_campaign=ia-agentes&utm_term={keyword}&utm_content={adgroupid}'),
+    # Producto W-IT Bridge: segmento muy acotado, búsquedas precisas. Un mes de prueba con fecha de término.
+    'bridge': dict(nombre='W-IT | Búsqueda | W-IT Bridge · WhatsApp e Instagram | CL-PE', diario=3200, cpc=1800, fin='2026-12-01',
+                   url=SITIO + 'productos/w-it-bridge/', ruta=('whatsapp', 'dynamics-365'),
+                   sufijo='utm_source=google&utm_medium=cpc&utm_campaign=bridge&utm_term={keyword}&utm_content={adgroupid}'),
 }
 
 # Títulos comunes de cada campaña + propios de cada grupo (máx. 15 por anuncio)
@@ -29,6 +34,10 @@ COMUNES = {
            'Copilot Jumpstart Partner', 'Solutions Partner Microsoft', 'Certificados ISO por SGS',
            'IA para Chile y Perú', 'Autodiagnóstico de IA gratis', 'Agentes sobre tus datos',
            'Conversemos sobre tu caso'],
+    'bridge': ['WhatsApp en Dynamics 365', 'Instagram en Dynamics 365', 'Conector WhatsApp e Instagram',
+               'W-IT Bridge · Producto W-IT', 'Directo con las APIs de Meta', 'SaaS o en tu nube de Azure',
+               'Partner Microsoft Chile y Perú', 'Agente IA con Copilot Studio', 'Sin proveedor de mensajería',
+               'Conversemos sobre tu caso'],
 }
 DESCRIPCIONES = {
     'dynamics': ['Implementamos Dynamics 365 Sales, Customer Service, Contact Center y Business Central.',
@@ -39,6 +48,10 @@ DESCRIPCIONES = {
            'Microsoft Copilot Jumpstart Partner y Solutions Partner for Microsoft Cloud. ISO 27001.',
            'Haz el autodiagnóstico de IA gratuito: nivel de preparación y próximo paso sugerido.',
            'Evaluamos cada agente antes de llevarlo a producción y lo monitoreamos de forma continua.'],
+    'bridge': ['WhatsApp e Instagram en Dynamics 365 Customer Service o Contact Center, con tus reglas.',
+               'APIs oficiales de Meta. Tus cuentas y números siguen en tu Business Manager.',
+               'Producto de W-IT, partner Microsoft en Chile y Perú. Onboarding, operación y soporte.',
+               'Opcional: un agente de Copilot Studio atiende primero y deriva al ejecutivo con contexto.'],
 }
 
 # Grupos de anuncios: títulos propios y palabras clave (F = frase, E = exacta). Sin concordancia amplia:
@@ -88,6 +101,26 @@ GRUPOS = [
       'IA responsable en producción', 'Partner Microsoft Data & AI'],
      [('azure ai foundry', 'F'), ('microsoft foundry', 'F'), ('azure openai empresas', 'F'),
       ('implementación inteligencia artificial empresas', 'F'), ('consultora inteligencia artificial microsoft', 'F')]),
+    # W-IT Bridge (2026-10-30): tres grupos, búsquedas precisas de quien integra mensajería de Meta a Dynamics
+    ('bridge', 'WhatsApp en Dynamics 365',
+     ['Integra WhatsApp a Dynamics', 'WhatsApp Business Platform', 'Omnichannel con WhatsApp', 'Colas, casos y SLA',
+      'Instagram incluido'],
+     [('whatsapp dynamics 365', 'F'), ('integrar whatsapp dynamics 365', 'F'), ('whatsapp dynamics 365 customer service', 'F'),
+      ('whatsapp dynamics 365 contact center', 'F'), ('omnichannel whatsapp dynamics', 'F'), ('whatsapp microsoft dynamics', 'F'),
+      ('conector whatsapp dynamics', 'F'), ('dynamics 365 whatsapp integration', 'F')]),
+    ('bridge', 'Instagram y mensajería en el CRM',
+     ['Instagram en tu CRM', 'Mensajes de Meta en tu CRM', 'WhatsApp e Instagram en el CRM', 'Un escritorio para todo',
+      'Para cuentas Meta Business'],
+     [('instagram dynamics 365', 'F'), ('instagram crm empresas', 'F'), ('integrar instagram crm', 'F'),
+      ('instagram direct crm', 'F'), ('whatsapp business api crm', 'F'), ('integración whatsapp crm empresa', 'F'),
+      ('whatsapp api dynamics', 'F'), ('mensajería meta crm', 'F')]),
+    # Quien ya paga un proveedor de mensajería (BSP). Google permite pujar por la marca; el anuncio no la nombra.
+    ('bridge', 'Alternativa a proveedores de mensajería',
+     ['Alternativa a tu BSP actual', 'Sin proveedor intermedio', 'Tus cuentas de Meta, tuyas', 'Enrutamiento por regla',
+      'Conector para Dynamics 365'],
+     [('alternativa twilio whatsapp', 'F'), ('twilio whatsapp chile', 'F'), ('twilio whatsapp peru', 'F'), ('twilio dynamics 365', 'F'),
+      ('proveedor whatsapp business api chile', 'F'), ('proveedor whatsapp business api peru', 'F'), ('bsp whatsapp chile', 'F'),
+      ('bsp whatsapp peru', 'F'), ('whatsapp business api empresas chile', 'F')]),
 ]
 
 # Negativas (frase) para ambas campañas
@@ -104,6 +137,10 @@ NEGATIVAS = {
            'tecla copilot', 'copilot key',
            # Control semana 2 (2026-10-28): compradores de licencias y precios, no empresas que buscan partner
            'pro', 'precio', 'cuánto cuesta', 'cuanto cuesta', 'planes de pago', 'https', 'com'],
+    # Bridge: otros CRM, herramientas para pymes/particulares, la app de WhatsApp y SMS; precios no se publican
+    'bridge': ['hubspot', 'salesforce', 'zoho', 'zendesk', 'bitrix', 'kommo', 'wati', '360dialog', 'sendgrid', 'sms',
+               'pymes', 'pyme', 'personal', 'whatsapp web', 'whatsapp business app', 'chatbot gratis', 'api gratis',
+               'precio', 'cuánto cuesta', 'cuanto cuesta'],
 }
 
 ENLACES = [  # (texto ≤25, descripción 1 ≤35, descripción 2 ≤35, ruta)
@@ -114,11 +151,15 @@ ENLACES = [  # (texto ≤25, descripción 1 ≤35, descripción 2 ≤35, ruta)
     ('Cofinanciamiento', 'Programas de inversión de', 'Microsoft para POC y MVP', 'cofinanciamiento-microsoft/'),
     ('Trust Center', 'Credenciales Microsoft e ISO', 'verificables', 'nosotros/confianza/'),
     ('Autodiagnóstico de IA', 'Nivel de preparación y', 'próximo paso, en 2 minutos', 'herramientas/autodiagnostico-ia/'),
+    ('Contact center completo', 'Llamadas, WhatsApp e Instagram', 'en un solo escritorio', 'soluciones/contact-center/'),
+    ('Contacto', 'Cuéntanos qué canales atiendes', 'y con qué CRM trabajas', 'contacto/'),
 ]
 # Qué vínculos van en cada campaña (por índice en ENLACES)
-ENLACES_CAMPANA = {'dynamics': [0, 1, 2, 4], 'ia': [3, 4, 5, 6]}
+ENLACES_CAMPANA = {'dynamics': [0, 1, 2, 4], 'ia': [3, 4, 5, 6], 'bridge': [7, 4, 5, 8]}
 DESTACADOS = ['6 designaciones Microsoft', 'Certificados ISO por SGS', 'Oficinas Santiago y Lima',
               'Con Microsoft desde 2014', 'Autodiagnóstico gratuito', 'Success by Design']
+# Textos destacados propios de una campaña (se importan con la columna Campaign)
+DESTACADOS_CAMPANA = {'bridge': ['Instagram incluido', 'Sin proveedor intermedio', 'SaaS o en tu nube', 'Copilot Studio opcional']}
 
 LIMITES = {'titulo': 30, 'descripcion': 90, 'ruta': 15, 'enlace': 25, 'enlace_desc': 35, 'destacado': 25}
 
@@ -147,7 +188,7 @@ def validar():
         chk('enlace', t, 'enlace')
         chk('enlace_desc', d1, t)
         chk('enlace_desc', d2, t)
-    for t in DESTACADOS:
+    for t in DESTACADOS + [t for ts in DESTACADOS_CAMPANA.values() for t in ts]:
         chk('destacado', t, 'destacado')
     if errores:
         raise SystemExit('\n'.join(errores))
@@ -199,7 +240,7 @@ CPC_MAXIMO = 2500  # CLP; CPC promedio histórico de la cuenta: ~2.380
 def escribir_editor(anuncios, tipo):
     cols = ['Campaign', 'Campaign Type', 'Campaign Status', 'Networks', 'Budget', 'Budget type',
             'Bid Strategy Type', 'Maximum CPC bid limit', 'Languages', 'Targeting method', 'Exclusion method',
-            'Ad Schedule', 'Final URL suffix', 'EU political ads', 'Location', 'Location ID',
+            'Ad Schedule', 'Final URL suffix', 'EU political ads', 'End Date', 'Location', 'Location ID',
             'Ad Group', 'Ad Group Status', 'Keyword', 'Criterion Type', 'Status', 'Ad type'] + \
            [f'Headline {i}' for i in range(1, 16)] + [f'Description {i}' for i in range(1, 5)] + \
            ['Path 1', 'Path 2', 'Final URL']
@@ -207,10 +248,11 @@ def escribir_editor(anuncios, tipo):
     for c, cfg in CAMPANAS.items():
         filas.append({'Campaign': cfg['nombre'], 'Campaign Type': 'Search', 'Campaign Status': 'Enabled',
                       'Networks': 'Google search', 'Budget': cfg['diario'], 'Budget type': 'Daily',
-                      'Bid Strategy Type': 'Maximize clicks', 'Maximum CPC bid limit': CPC_MAXIMO,
+                      'Bid Strategy Type': 'Maximize clicks', 'Maximum CPC bid limit': cfg.get('cpc', CPC_MAXIMO),
                       'Languages': 'es;en', 'Targeting method': 'Location of presence',
                       'Exclusion method': 'Location of presence', 'Ad Schedule': HORARIO,
-                      'Final URL suffix': cfg['sufijo'], 'EU political ads': "Doesn't have EU political ads"})
+                      'Final URL suffix': cfg['sufijo'], 'EU political ads': "Doesn't have EU political ads",
+                      'End Date': cfg.get('fin', '')})
         filas += [{'Campaign': cfg['nombre'], 'Location': n, 'Location ID': i} for n, i in UBICACIONES]
         filas += [{'Campaign': cfg['nombre'], 'Keyword': k, 'Criterion Type': 'Negative Phrase'}
                   for k in NEGATIVAS_COMUNES + NEGATIVAS[c]]
@@ -225,6 +267,9 @@ def escribir_editor(anuncios, tipo):
     g = 'Partner certificado Microsoft'
     escribir('google-ads-editor-partner-certificado.csv',
              [f for f in filas if f.get('Ad Group') == g], cols)
+    # Solo la campaña W-IT Bridge (2026-10-30): se importa aparte, las otras dos ya están publicadas
+    nb = CAMPANAS['bridge']['nombre']
+    escribir('google-ads-editor-bridge.csv', [f for f in filas if f.get('Campaign') == nb], cols)
     escribir_recursos()
 
 
@@ -246,6 +291,12 @@ def escribir_recursos():
             filas.append({'Campaign': cfg['nombre'], 'Sitelink text': t, 'Sitelink description line 1': d1,
                           'Sitelink description line 2': d2, 'Sitelink final URL': SITIO + ruta, 'Status': 'Enabled'})
     escribir('google-ads-editor-recursos.csv', filas, cols)
+    nb = CAMPANAS['bridge']['nombre']
+    escribir('google-ads-editor-recursos-bridge.csv', [f for f in filas if f['Campaign'] == nb], cols)
+    escribir('google-ads-editor-destacados-bridge.csv',
+             [{'Campaign': CAMPANAS[c]['nombre'], 'Callout text': t, 'Status': 'Enabled'}
+              for c, ts in DESTACADOS_CAMPANA.items() for t in ts],
+             ['Campaign', 'Callout text', 'Status'])
     # Textos destacados a nivel de cuenta: sin campaña ni grupo, igual que los que ya existen
     escribir('google-ads-editor-destacados.csv', [{'Callout text': t, 'Status': 'Enabled'} for t in DESTACADOS],
              ['Callout text', 'Status'])

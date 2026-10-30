@@ -1958,8 +1958,8 @@ Secciones: Del mensaje en Meta al escritorio de tu equipo.; W-IT Bridge; WhatsAp
 
 [Página: W-IT Bridge · ruta /productos/w-it-bridge/]
 Producto W-IT · Conector de mensajería
-WhatsApp e Instagram, conectados directo con Meta a tu CRM y a tu agente de IA.
-Para cuentas Business de Meta. Recibe cada mensaje desde las APIs oficiales, identifica al cliente y lo entrega a Dynamics 365 Customer Service, Dynamics 365 Contact Center o a un agente de Copilot Studio, sin un proveedor de mensajería en el medio.
+WhatsApp e Instagram dentro de Dynamics 365, sin un proveedor de mensajería en el medio.
+Para cuentas Business de Meta. W-IT Bridge recibe cada mensaje desde las APIs oficiales, identifica al cliente y lo entrega a Dynamics 365 Customer Service, Dynamics 365 Contact Center o a un agente de Copilot Studio.
 ConversemosVer el contact center completo
 W-IT BridgeConector de mensajería · Producto W-IT
 SaaS o en tu nubeDynamics 365Copilot StudioMeta Business
@@ -1969,9 +1969,9 @@ Haz clic en cada parte para ver qué hace.
 Desliza para ver el recorrido completo.
 W-IT Bridge
 Recibe el webhook de Meta, valida el origen, identifica al cliente en el CRM y aplica tus reglas de enrutamiento. No almacena conversaciones; corre en la nube de W-IT o en la tuya.
+Conexión directa con MetaEnrutamiento por reglaAzure
 
 [Página: W-IT Bridge · ruta /productos/w-it-bridge/]
-Conexión directa con MetaEnrutamiento por reglaAzure
 WhatsApp Business
 Los mensajes llegan desde la API oficial de WhatsApp Business Platform. La cuenta y el número siguen siendo tuyos.
 WhatsApp Business PlatformMeta Business Manager
@@ -1983,10 +1983,10 @@ Un agente de Copilot Studio atiende primero y resuelve lo frecuente; si hace fal
 Copilot StudioDerivación con contexto
 Dynamics 365 Customer Service y Contact Center
 La conversación llega a Omnichannel: colas, enrutamiento unificado, historial del cliente y casos. El ejecutivo responde desde su escritorio y la respuesta vuelve a Meta por el mismo camino.
-
-[Página: W-IT Bridge · ruta /productos/w-it-bridge/]
 OmnichannelColas y skillsCasos y SLA
 Qué hace
+
+[Página: W-IT Bridge · ruta /productos/w-it-bridge/]
 Cuatro cosas que un proveedor de mensajería no te da.
 Directo con MetaAPIs oficiales de WhatsApp Business Platform e Instagram. Tus cuentas quedan en tu Meta Business Manager.
 Instagram incluidoUn canal que Dynamics 365 no trae de forma nativa, en el mismo escritorio que WhatsApp y las llamadas.
@@ -2021,9 +2021,12 @@ Lo que necesitas para partir.
 Meta Business Manager verificado, con tu WhatsApp Business y, si aplica, tu Instagram profesional.
 Dynamics 365 Customer Service o Contact Center con Omnichannel, o un agente de Copilot Studio.
 Una suscripción de Azure, solo si prefieres que corra en tu nube.
+Conversemos
 ¿Conversamos sobre W-IT Bridge?
 Cuéntanos qué canales atiendes hoy y con qué CRM, y vemos juntos cómo encaja.
-ConversemosConversa con nuestro agente
+Te respondemosEn menos de 1 día hábil, al correo que nos dejes.
+Revisamos tu escenarioCanales, CRM y si corre en SaaS o en tu nube.
+Demo con tu cuentaSi encaja, lo vemos funcionando con tu Meta Business.
 
 ### Automatización y apps (/soluciones/automatizacion-y-apps/)
 

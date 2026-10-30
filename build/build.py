@@ -1338,6 +1338,9 @@ def bridge(r):
     incluye = ['Onboarding: conexión con Meta y configuración del canal en Dynamics 365 o Copilot Studio.',
                'Hosting, operación y monitoreo en el modelo SaaS; instalación documentada si corre en tu nube.',
                'Plantillas de WhatsApp aprobadas por Meta, soporte y compatibilidad con cambios de sus APIs.']
+    pasos_contacto = [('Te respondemos', 'En menos de 1 día hábil, al correo que nos dejes.'),
+                      ('Revisamos tu escenario', 'Canales, CRM y si corre en SaaS o en tu nube.'),
+                      ('Demo con tu cuenta', 'Si encaja, lo vemos funcionando con tu Meta Business.')]
     requisitos = ['Meta Business Manager verificado, con tu WhatsApp Business y, si aplica, tu Instagram profesional.',
                   'Dynamics 365 Customer Service o Contact Center con Omnichannel, o un agente de Copilot Studio.',
                   'Una suscripción de Azure, solo si prefieres que corra en tu nube.']
@@ -1347,14 +1350,14 @@ def bridge(r):
     seg = ''.join(f'<li><strong>{escape(t)}:</strong> {escape(d)}</li>' for t, d in seguridad)
     inc = ''.join(f'<li>{escape(t)}</li>' for t in incluye)
     req = ''.join(f'<li>{escape(t)}</li>' for t in requisitos)
-    extra = (f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Conversemos</a>'
+    extra = (f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="#contacto">Conversemos</a>'
              f'<a class="btn btn-lg btn-outline" href="{r}soluciones/contact-center/">Ver el contact center completo</a></div>')
     aside = (f'<div class="page-hero-aside bridge-lockup"><img src="{r}assets/logos/w-it-bridge.svg" alt="Logo de W-IT Bridge" width="150" height="75">'
              f'<div><span class="bridge-name">W-IT Bridge</span><span class="bridge-tag">Conector de mensajería · Producto W-IT</span>'
              f'{pills(["SaaS o en tu nube", "Dynamics 365", "Copilot Studio", "Meta Business"])}</div></div>')
     return page_hero(r, [('Productos', 'productos/'), ('W-IT Bridge', 'productos/w-it-bridge/')], 'Producto W-IT · Conector de mensajería',
-                     'WhatsApp e Instagram, conectados directo con Meta a tu CRM y a tu agente de IA.',
-                     'Para cuentas Business de Meta. Recibe cada mensaje desde las APIs oficiales, identifica al cliente y lo entrega a Dynamics 365 Customer Service, Dynamics 365 Contact Center o a un agente de Copilot Studio, sin un proveedor de mensajería en el medio.',
+                     'WhatsApp e Instagram dentro de Dynamics 365, sin un proveedor de mensajería en el medio.',
+                     'Para cuentas Business de Meta. W-IT Bridge recibe cada mensaje desde las APIs oficiales, identifica al cliente y lo entrega a Dynamics 365 Customer Service, Dynamics 365 Contact Center o a un agente de Copilot Studio.',
                      ctas=False, extra=extra, aside=aside) + f"""
 {bridge_flujo(r)}
 <section class="section section-compact bg-soft"><div class="container bridge-cols">
@@ -1372,7 +1375,16 @@ def bridge(r):
   <div><span class="eyebrow">Lo que incluye</span><h2 class="h2">Un producto con onboarding, operación y soporte.</h2><ul class="checks">{inc}</ul></div>
   <div><span class="eyebrow">Requisitos</span><h2 class="h2">Lo que necesitas para partir.</h2><ul class="checks">{req}</ul></div>
 </div></section>
-{cta_final(r, '¿Conversamos sobre W-IT Bridge?', 'Cuéntanos qué canales atiendes hoy y con qué CRM, y vemos juntos cómo encaja.')}"""
+<section class="section section-compact bridge-contacto" id="contacto"><div class="container contact-layout">
+  <div class="contact-intro">
+    <span class="eyebrow">Conversemos</span>
+    <h2 class="h2">¿Conversamos sobre W-IT Bridge?</h2>
+    <p class="lead">Cuéntanos qué canales atiendes hoy y con qué CRM, y vemos juntos cómo encaja.</p>
+    <ol class="contact-pasos">{''.join(f'<li><strong>{escape(a)}</strong><span>{escape(b)}</span></li>' for a, b in pasos_contacto)}</ol>
+  </div>
+  {contact_form(r, 'Cuéntanos qué canales atiendes y con qué CRM', ('contact-center',), en_pagina=True)}
+</div></section>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>"""
 
 
 def agentes(r):

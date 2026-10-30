@@ -78,3 +78,13 @@ Usar **`google-ads-editor.csv`**: un solo archivo con campañas, configuración,
 - **IA** (13–27 oct): $34.913, 99 clics, CTR 8,6 %, CPC $353, 1 conversión. Los términos de búsqueda estaban dominados por compradores de licencias y precios ("copilot 365", "copilot pro precio", "cuanto cuesta copilot studio", "copilot planes de pago", "https copilot studio").
 - **Dynamics** (13–27 oct): $65.361, 42 clics, CTR 4,5 %, CPC $1.556, 0 conversiones. Términos pertinentes (business central, crm dynamics, contact center).
 - **Acción A aplicada:** negativas nuevas en IA `pro`, `precio`, `cuánto cuesta`, `cuanto cuesta`, `planes de pago`, `https`, `com`; se quitó la palabra clave `licencias microsoft 365 copilot`. Archivo para importar solo las negativas nuevas: `google-ads-editor-negativas-ia-s2.csv`. Quitar la palabra clave se hace a mano en Editor (la importación no borra).
+
+## Campaña W-IT Bridge (2026-10-30)
+
+- Producto nuevo: conector de WhatsApp e Instagram a Dynamics 365 (`/productos/w-it-bridge/`). Segmento muy acotado: solo búsquedas precisas, concordancia de frase.
+- Campaña "W-IT | Búsqueda | W-IT Bridge · WhatsApp e Instagram | CL-PE": $3.200/día, CPC máx. $1.800, fin 2026-12-01 (máx. ≈ $97.000 en el mes). Presupuesto adicional a los $200.000 de Dynamics + IA.
+- 3 grupos: WhatsApp en Dynamics 365 · Instagram y mensajería en el CRM · Alternativa a proveedores de mensajería (puja por búsquedas con "twilio"; el anuncio no lo nombra ni compara precios).
+- Nombre provisorio: los anuncios venden "conector de WhatsApp e Instagram para Dynamics 365"; "W-IT Bridge" va como título secundario por si Comercial cambia la marca.
+- Página: título simplificado y formulario de contacto en la misma página (`#contacto`, interés "Contact center" marcado, `data-en-pagina`), como en las landings.
+- Archivos para Editor: `google-ads-editor-bridge.csv` (campaña, ubicaciones, negativas, grupos, palabras clave, anuncios), `google-ads-editor-recursos-bridge.csv` (vínculos) y `google-ads-editor-destacados-bridge.csv` (destacados de campaña). La columna `End Date` fija el término; si Editor la rechaza, poner la fecha a mano en la configuración de la campaña.
+- Expectativa realista: 50–70 clics y 0–2 conversaciones calificadas en el mes. Es una prueba de demanda, no una campaña de volumen.
