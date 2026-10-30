@@ -51,6 +51,7 @@ Mapa del sitio (página: ruta)
 - Privacidad: /privacidad/
 - Agentes W-IT: /productos/agentes-w-it/
 - Productos: /productos/
+- W-IT Bridge: /productos/w-it-bridge/
 - Automatización y apps: /soluciones/automatizacion-y-apps/
 - Contact center omnicanal y voz: /soluciones/contact-center/
 - Datos y analítica: /soluciones/datos-y-analitica/

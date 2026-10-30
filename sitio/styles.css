@@ -1473,3 +1473,35 @@ a.mega-js:hover { color: var(--green-dark); }
 @keyframes fl-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .fl-info { animation: none; } }
 @media (max-width: 640px) { .fl-panel { padding: 20px; } .fl-info h3 { font-size: 18px; } .fl-info p { font-size: 15px; } }
+
+/* Página de producto W-IT Bridge (compacta) */
+.section-compact { padding: 56px 0; }
+.bridge-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; align-items: start; }
+.bridge-cols .h2 { font-size: 26px; margin: 8px 0 20px; }
+.bridge-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; counter-reset: bl; }
+.bridge-list li { display: flex; flex-direction: column; gap: 2px; font-size: 15px; line-height: 1.5; color: var(--muted); }
+.bridge-list strong { font-size: 16px; color: var(--navy); }
+.bridge-num li { counter-increment: bl; position: relative; padding-left: 40px; }
+.bridge-num li::before { content: counter(bl); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: var(--green-tint); color: var(--green-dark); font-size: 13px; font-weight: 700; }
+.bridge-stack-wrap { display: flex; flex-direction: column; gap: 16px; }
+.bridge-stack.bridge-stack-col { grid-template-columns: 1fr; gap: 10px; margin-bottom: 14px; }
+.fl-svg-sm { min-width: 760px; }
+.fl-lbl.fl-xl { font-size: 20px; }
+.fl-node.fl-hero .fl-box { stroke: var(--navy); stroke-width: 2; filter: drop-shadow(0 6px 14px rgba(27,58,80,.18)); }
+.fl-node.fl-hero.is-on .fl-box { stroke: var(--green); stroke-width: 3; }
+.bridge-stack { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.bridge-stack li { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: 14px; font-weight: 600; color: var(--navy); }
+.bridge-stack img, .bridge-stack svg { flex: none; width: 32px; height: 32px; }
+.checks-light li { color: rgba(255,255,255,.85); font-size: 16px; }
+.checks-light strong { color: #fff; }
+.trust-copy .btn { align-self: flex-start; }
+.bridge-lockup { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-2); }
+.bridge-lockup img { width: 150px; height: 75px; }
+.bridge-mark-dark { width: 88px; height: 44px; margin-bottom: 4px; }
+.bridge-lockup > div { display: flex; flex-direction: column; gap: 8px; }
+.bridge-name { font-size: 24px; font-weight: 700; color: var(--navy); line-height: 1.1; }
+.bridge-tag { font-size: 14px; color: var(--muted); }
+.prod-mark { width: 72px; height: 36px; }
+.fl-more { margin: 6px 0 0; }
+@media (max-width: 900px) { .bridge-cols { grid-template-columns: 1fr; gap: 36px; } .bridge-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .bridge-stack { grid-template-columns: 1fr; } }

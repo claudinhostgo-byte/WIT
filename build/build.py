@@ -909,6 +909,13 @@ FLUJO_RUTAS = {  # id de ruta -> (trazo, clase de color, nodos que la encienden,
     'wa-b': (f'M190 216 C215 216 215 322 240 322 H400 C425 322 425 278 450 278 {_COLA_MSG}', 'fl-wa', ('whatsapp', 'twilio', 'plataforma', 'agente-ia', 'ejecutivo'), ['3.3s']),
     'ig': (f'M190 301 C215 301 215 234 240 234 H400 C425 234 425 278 450 278 {_COLA_MSG}', 'fl-ig', ('instagram', 'conector', 'plataforma', 'agente-ia', 'ejecutivo'), ['1.9s']),
     'chat': ('M190 401 H610 Q640 401 640 371 V241 Q640 226 655 226 H1070', 'fl-chat', ('chat', 'plataforma', 'agente-ia', 'ejecutivo'), ['1.3s'])}
+BRIDGE_MARK = ('<path d="M44 34 C78 20 92 36 110 56 S142 92 176 80" fill="none" stroke="#1B3A50" stroke-width="14" stroke-linecap="round"/>'
+               '<circle cx="42" cy="58" r="27" fill="#1B3A50"/><circle cx="42" cy="58" r="17" fill="#54BA00"/><circle cx="178" cy="58" r="27" fill="#1B3A50"/><circle cx="178" cy="58" r="17" fill="#54BA00"/>')  # marca de W-IT Bridge (assets/logos/w-it-bridge.svg, viewBox 220 x 110)
+
+
+def bridge_mark(x, y, w):
+    """Marca de W-IT Bridge inline en el SVG del diagrama, de ancho w (proporción 2:1)."""
+    return f'<svg x="{x}" y="{y}" width="{w}" height="{w / 2}" viewBox="0 0 220 110" aria-hidden="true">{BRIDGE_MARK}</svg>'
 # Íconos de 24×24 por nodo: ('ms', ícono oficial de Microsoft), ('logo', archivo en assets/logos, con texto si falta) o ('svg', trazado propio / Simple Icons CC0)
 _SVG_SBC = '<rect x="2.5" y="7" width="19" height="10" rx="2" fill="none" stroke="#1B3A50" stroke-width="2"/><path d="M6 12h2M10 12h2M14 12h2" stroke="#54BA00" stroke-width="2.4" stroke-linecap="round"/><path d="M8 7V4M16 7V4M8 17v3M16 17v3" stroke="#1B3A50" stroke-width="2" stroke-linecap="round"/>'
 FLUJO_ICONOS = {
@@ -918,7 +925,7 @@ FLUJO_ICONOS = {
     'chat': ('svg', '<rect x="2.5" y="5" width="19" height="14" rx="2.5" fill="none" stroke="#1B3A50" stroke-width="2"/><path d="M3.5 6.5 12 13l8.5-6.5" fill="none" stroke="#1B3A50" stroke-width="2" stroke-linejoin="round"/>'),
     'telefonia': ('logo', 'audiocodes'),
     'sbc-propio': ('svg', _SVG_SBC),
-    'conector': ('svg', '<circle cx="6" cy="12" r="3" fill="none" stroke="#1B3A50" stroke-width="2"/><circle cx="18" cy="12" r="3" fill="none" stroke="#1B3A50" stroke-width="2"/><path d="M9 12h6" stroke="#54BA00" stroke-width="2.4" stroke-linecap="round"/><path d="M12 9v6" stroke="#54BA00" stroke-width="2.4" stroke-linecap="round"/>'),
+    'conector': ('mark', ''),
     'twilio': ('svg', '<path d="M7 17.5h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 11.2 3.2 3.2 0 0 0 7 17.5z" fill="none" stroke="#616161" stroke-width="2" stroke-linejoin="round"/>'),
     'plataforma': ('ms', 'd365-contact-center'),
     'agente-ia': ('ms', 'copilot-studio'),
@@ -961,6 +968,9 @@ def flujo_section(r, s):
             logo = f'<image href="{r}assets/logos/{v}.svg" x="{cx - 55}" y="{y + 8}" width="110" height="22" preserveAspectRatio="xMidYMid meet"/>' if (LOGOS_DIR / f'{v}.svg').exists() else \
                    f'<text class="fl-lbl" x="{cx}" y="{y + 26}" text-anchor="middle">{escape(l1)}</text>'
             txt = logo + f'<text class="fl-sub" x="{cx}" y="{y + 46}" text-anchor="middle">{escape(l2)}</text>'
+        elif kind == 'mark':  # W-IT Bridge: su marca a la izquierda y texto compacto
+            txt = (f'{bridge_mark(x + 8, cy - 11, 44)}<text class="fl-lbl fl-sm" x="{x + 58}" y="{cy - 3}">{escape(l1)}</text>'
+                   f'<text class="fl-sub fl-xs" x="{x + 58}" y="{cy + 15}">{escape(l2)}</text>')
         elif w < 160:  # cajas de conexión (angostas): ícono a la izquierda y texto compacto
             txt = (f'{flujo_icono(r, nid, x + 9, cy - 11, 22)}<text class="fl-lbl fl-sm" x="{x + 38}" y="{cy - 3}">{escape(l1)}</text>'
                    f'<text class="fl-sub fl-xs" x="{x + 38}" y="{cy + 15}">{escape(l2)}</text>')
@@ -977,8 +987,11 @@ def flujo_section(r, s):
     cols = ''.join(f'<text class="fl-col" x="{cx}" y="12" text-anchor="middle">{t}</text>' for cx, t in
                    ((100, 'Canales'), (320, 'Conexión'), (705, 'Plataforma'), (940, 'Agente de IA'), (1135, 'Ejecutivo')))
     deriv = '<text class="fl-deriv" x="1045" y="204" text-anchor="middle">deriva con</text><text class="fl-deriv" x="1045" y="217" text-anchor="middle">contexto</text>'
-    infos = ''.join(f'<div class="fl-info" data-id="{nid}"{"" if n == 0 else " hidden"}><h3>{escape(t)}</h3><p>{escape(d)}</p>{pills(c)}</div>'
-                    for n, (nid, _, __, t, d, c) in enumerate(s['flujo']))
+    def info(n, f):
+        nid, _, __, t, d, c, *rest = f
+        more = f'<p class="fl-more"><a class="btn btn-green" href="{r}{rest[0]}">Conocer W-IT Bridge {ARROW}</a></p>' if rest else ''
+        return f'<div class="fl-info" data-id="{nid}"{"" if n == 0 else " hidden"}><h3>{escape(t)}</h3><p>{escape(d)}</p>{pills(c)}{more}</div>'
+    infos = ''.join(info(n, f) for n, f in enumerate(s['flujo']))
     return f"""<section class="section bg-white" data-flujo aria-labelledby="fl-title"><div class="container stack-40">
   {section_head('Cómo funciona', '<span id="fl-title">Así viaja cada llamada y cada mensaje hasta tu equipo.</span>', 'Haz clic en cada parte para ver qué hace. Donde dice "o", eliges según lo que ya tienes.')}
   <p class="fl-hint" aria-hidden="true">Desliza para ver el recorrido completo.</p>
@@ -1253,12 +1266,113 @@ def caso_page(c):
 
 
 def productos_index(r):
-    items = [('agentes-w-it', 'Agentes W-IT', 'Agentes y aceleradores publicados en Microsoft Marketplace.')]
-    cards = ''.join(f'<a class="card" href="{r}productos/{a}/"><span class="icon-slot" aria-hidden="true">{SHIELD}</span><h3>{b}</h3><p>{c}</p><span class="card-cta">Conocer {ARROW}</span></a>' for a, b, c in items)
+    items = [('w-it-bridge', 'W-IT Bridge', 'Conector de WhatsApp e Instagram para Dynamics 365 y Copilot Studio, con conexión directa a Meta.'),
+             ('agentes-w-it', 'Agentes W-IT', 'Agentes y aceleradores publicados en Microsoft Marketplace.')]
+    cards = ''.join(f'<a class="card" href="{r}productos/{a}/">{f"<img class=\"prod-mark\" src=\"{r}assets/logos/{a}.svg\" alt=\"\" width=\"44\" height=\"44\">" if a == "w-it-bridge" else f"<span class=\"icon-slot\" aria-hidden=\"true\">{SHIELD}</span>"}<h3>{b}</h3><p>{c}</p><span class="card-cta">Conocer {ARROW}</span></a>' for a, b, c in items)
     return page_hero(r, [('Productos', 'productos/')], 'Productos W-IT', 'Soluciones propias sobre la nube de Microsoft.',
-                     'Productos desarrollados por W-IT y publicados en Microsoft Marketplace.', ctas=False) + f'''
+                     'Productos desarrollados por W-IT sobre Azure y Dynamics 365.', ctas=False) + f'''
 <section class="section bg-soft"><div class="container"><div class="grid grid-300">{cards}</div></div></section>
 {cta_final(r)}'''
+
+
+# Diagrama reducido de W-IT Bridge (página de producto): WhatsApp e Instagram → W-IT Bridge → agente de IA (opcional) → Dynamics 365.
+BRIDGE_NODOS = [('conector', 'W-IT Bridge', 'Recibe · Identifica · Enruta', 'W-IT Bridge',
+                 'Recibe el webhook de Meta, valida el origen, identifica al cliente en el CRM y aplica tus reglas de enrutamiento. No almacena conversaciones; corre en la nube de W-IT o en la tuya.', ['Conexión directa con Meta', 'Enrutamiento por regla', 'Azure']),
+                ('whatsapp', 'WhatsApp', 'Cuenta Meta Business', 'WhatsApp Business',
+                 'Los mensajes llegan desde la API oficial de WhatsApp Business Platform. La cuenta y el número siguen siendo tuyos.', ['WhatsApp Business Platform', 'Meta Business Manager']),
+                ('instagram', 'Instagram', 'Cuenta Meta Business', 'Instagram profesional',
+                 'Mensajes directos de tus cuentas profesionales de Instagram, un canal que Dynamics 365 no trae de forma nativa.', ['Instagram profesional', 'Meta Business Manager']),
+                ('agente-ia', 'Agente de IA', 'Copilot Studio · opcional', 'Agente de IA, opcional',
+                 'Un agente de Copilot Studio atiende primero y resuelve lo frecuente; si hace falta una persona, deriva con el contexto. Si no quieres bot, el mensaje va directo al ejecutivo.', ['Copilot Studio', 'Derivación con contexto']),
+                ('d365', 'Dynamics 365', 'Ejecutivo, colas y casos', 'Dynamics 365 Customer Service y Contact Center',
+                 'La conversación llega a Omnichannel: colas, enrutamiento unificado, historial del cliente y casos. El ejecutivo responde desde su escritorio y la respuesta vuelve a Meta por el mismo camino.', ['Omnichannel', 'Colas y skills', 'Casos y SLA'])]
+BRIDGE_POS = {'whatsapp': (10, 20, 180, 66), 'instagram': (10, 134, 180, 66), 'conector': (260, 40, 260, 150), 'agente-ia': (580, 70, 170, 90), 'd365': (820, 70, 170, 90)}
+BRIDGE_RUTAS = {'wa': ('M190 53 C225 53 225 115 260 115 H820', 'fl-wa', ('whatsapp', 'conector', 'agente-ia', 'd365'), ['0s', '2.4s']),
+                'ig': ('M190 167 C225 167 225 115 260 115 H820', 'fl-ig', ('instagram', 'conector', 'agente-ia', 'd365'), ['1.2s'])}
+
+
+def bridge_flujo(r):
+    rutas = ''.join(f'<path id="bf-r-{k}" class="fl-route {c}" data-nodes="{" ".join(n)}" d="{d}"/>' for k, (d, c, n, _) in BRIDGE_RUTAS.items())
+    puntos = ''.join(f'<circle class="fl-dot {c}" r="7"><animateMotion dur="4s" begin="{bg}" repeatCount="indefinite"><mpath href="#bf-r-{k}"/></animateMotion></circle>'
+                     for k, (_, c, __, begins) in BRIDGE_RUTAS.items() for bg in begins)
+    nodos = ''
+    for n, (nid, l1, l2, *_rest) in enumerate(BRIDGE_NODOS):
+        x, y, w, h = BRIDGE_POS[nid]; cx, cy = x + w / 2, y + h / 2
+        if nid == 'conector':
+            txt = (f'{bridge_mark(cx - 50, y + 14, 100)}'
+                   f'<text class="fl-lbl fl-xl" x="{cx}" y="{y + 100}" text-anchor="middle">{escape(l1)}</text><text class="fl-sub" x="{cx}" y="{y + 124}" text-anchor="middle">{escape(l2)}</text>')
+        else:
+            ico = {'whatsapp': 'whatsapp', 'instagram': 'instagram', 'agente-ia': 'agente-ia', 'd365': 'plataforma'}[nid]
+            txt = (f'{flujo_icono(r, ico, x + 12, cy - 12, 24)}<text class="fl-lbl" x="{x + 46}" y="{cy - 3}">{escape(l1)}</text>'
+                   f'<text class="fl-sub fl-xs" x="{x + 46}" y="{cy + 16}">{escape(l2)}</text>')
+        nodos += (f'<g class="fl-node{" fl-hero" if nid == "conector" else ""}{" is-on" if n == 0 else ""}" data-id="{nid}" role="button" tabindex="0" aria-label="{escape(l1)}: ver explicación">'
+                  f'<rect class="fl-box" x="{x}" y="{y}" width="{w}" height="{h}" rx="14"/>{txt}</g>')
+    cols = ''.join(f'<text class="fl-col" x="{cx}" y="12" text-anchor="middle">{t}</text>' for cx, t in
+                   ((100, 'Canales'), (390, 'W-IT Bridge'), (665, 'Agente de IA'), (905, 'Tu CRM')))
+    deriv = '<text class="fl-deriv" x="785" y="105" text-anchor="middle">con contexto</text>'
+    infos = ''.join(f'<div class="fl-info" data-id="{nid}"{"" if n == 0 else " hidden"}><h3>{escape(t)}</h3><p>{escape(d)}</p>{pills(c)}</div>'
+                    for n, (nid, _, __, t, d, c) in enumerate(BRIDGE_NODOS))
+    return f"""<section class="section section-compact bg-white" data-flujo aria-labelledby="bf-title"><div class="container stack-40">
+  {section_head('Cómo funciona', '<span id="bf-title">Del mensaje en Meta al escritorio de tu equipo.</span>', 'Haz clic en cada parte para ver qué hace.')}
+  <p class="fl-hint" aria-hidden="true">Desliza para ver el recorrido completo.</p>
+  <div class="fl-wrap"><svg class="fl-svg fl-svg-sm" viewBox="0 0 1000 220" role="img" aria-label="Diagrama: WhatsApp e Instagram entran por W-IT Bridge, pasan por un agente de IA opcional y llegan a Dynamics 365">
+    {cols}{rutas}{puntos}{nodos}{deriv}
+  </svg></div>
+  <div class="fl-panel">{infos}</div>
+</div></section>"""
+
+
+def bridge(r):
+    """Página de producto de W-IT Bridge, compacta: qué hace y cómo funciona, sobre qué está construido, seguridad (solo lo confirmado), qué incluye y requisitos."""
+    pilares = [('Directo con Meta', 'APIs oficiales de WhatsApp Business Platform e Instagram. Tus cuentas quedan en tu Meta Business Manager.'),
+               ('Instagram incluido', 'Un canal que Dynamics 365 no trae de forma nativa, en el mismo escritorio que WhatsApp y las llamadas.'),
+               ('Enrutamiento por regla', 'Cada conversación al destino correcto: agente de IA, ejecutivo, segmento o el proveedor que ya usas.'),
+               ('Tu nube, tu CRM, tu IA', 'Entrega a Dynamics 365 o a Copilot Studio. Corre en la nube de W-IT o en tu suscripción de Azure.')]
+    pasos = [('Recibe', 'Meta envía el mensaje por webhook; W-IT Bridge valida el origen y normaliza texto, imágenes y plantillas.'),
+             ('Identifica y decide', 'Vincula al remitente con el contacto del CRM y aplica tus reglas de horario, segmento y destino.'),
+             ('Entrega y responde', 'Abre la conversación en Omnichannel o en Copilot Studio y devuelve la respuesta a Meta.')]
+    stack = [('azure-kubernetes-service', 'Contenedor en Azure Kubernetes Service o App Service'), ('d365-customer-service', 'Dynamics 365 Customer Service y Contact Center'),
+             ('copilot-studio', 'Copilot Studio'), ('', 'APIs oficiales de Meta')]
+    seguridad = [('No almacena conversaciones', 'es infraestructura de paso.'), ('Cifrado en tránsito', 'HTTPS con Meta y con Dynamics 365.'),
+                 ('Configuración protegida', 'base cifrada en reposo, sin acceso desde internet.'), ('Tus activos siguen siendo tuyos', 'cuentas, números y verificación en tu Business Manager.')]
+    incluye = ['Onboarding: conexión con Meta y configuración del canal en Dynamics 365 o Copilot Studio.',
+               'Hosting, operación y monitoreo en el modelo SaaS; instalación documentada si corre en tu nube.',
+               'Plantillas de WhatsApp aprobadas por Meta, soporte y compatibilidad con cambios de sus APIs.']
+    requisitos = ['Meta Business Manager verificado, con tu WhatsApp Business y, si aplica, tu Instagram profesional.',
+                  'Dynamics 365 Customer Service o Contact Center con Omnichannel, o un agente de Copilot Studio.',
+                  'Una suscripción de Azure, solo si prefieres que corra en tu nube.']
+    pil = ''.join(f'<li><strong>{escape(t)}</strong><span>{escape(d)}</span></li>' for t, d in pilares)
+    pas = ''.join(f'<li><strong>{escape(t)}</strong><span>{escape(d)}</span></li>' for t, d in pasos)
+    stk = ''.join((f'<li>{ms_icon(r, i, 32)}<span>{escape(t)}</span></li>' if i else f'<li><span class="icon-slot" aria-hidden="true">{SHIELD}</span><span>{escape(t)}</span></li>') for i, t in stack)
+    seg = ''.join(f'<li><strong>{escape(t)}:</strong> {escape(d)}</li>' for t, d in seguridad)
+    inc = ''.join(f'<li>{escape(t)}</li>' for t in incluye)
+    req = ''.join(f'<li>{escape(t)}</li>' for t in requisitos)
+    extra = (f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Conversemos</a>'
+             f'<a class="btn btn-lg btn-outline" href="{r}soluciones/contact-center/">Ver el contact center completo</a></div>')
+    aside = (f'<div class="page-hero-aside bridge-lockup"><img src="{r}assets/logos/w-it-bridge.svg" alt="Logo de W-IT Bridge" width="150" height="75">'
+             f'<div><span class="bridge-name">W-IT Bridge</span><span class="bridge-tag">Conector de mensajería · Producto W-IT</span>'
+             f'{pills(["SaaS o en tu nube", "Dynamics 365", "Copilot Studio", "Meta Business"])}</div></div>')
+    return page_hero(r, [('Productos', 'productos/'), ('W-IT Bridge', 'productos/w-it-bridge/')], 'Producto W-IT · Conector de mensajería',
+                     'WhatsApp e Instagram, conectados directo con Meta a tu CRM y a tu agente de IA.',
+                     'Para cuentas Business de Meta. Recibe cada mensaje desde las APIs oficiales, identifica al cliente y lo entrega a Dynamics 365 Customer Service, Dynamics 365 Contact Center o a un agente de Copilot Studio, sin un proveedor de mensajería en el medio.',
+                     ctas=False, extra=extra, aside=aside) + f"""
+{bridge_flujo(r)}
+<section class="section section-compact bg-soft"><div class="container bridge-cols">
+  <div><span class="eyebrow">Qué hace</span><h2 class="h2">Cuatro cosas que un proveedor de mensajería no te da.</h2><ol class="bridge-list">{pil}</ol></div>
+  <div><span class="eyebrow">Construido sobre</span><h2 class="h2">Azure, Dynamics 365 y las APIs oficiales de Meta.</h2><ul class="bridge-stack bridge-stack-col">{stk}</ul>
+  <p class="disclaimer">Los íconos y nombres de productos son marcas de Microsoft; WhatsApp e Instagram son marcas de Meta. Se usan solo para identificar los productos sobre los que trabajamos.</p></div>
+</div></section>
+<section class="section section-compact bg-dark"><div class="container bridge-cols">
+  <div class="trust-copy"><img class="bridge-mark-dark" src="{r}assets/logos/w-it-bridge-white.svg" alt="" width="88" height="44"><span class="eyebrow">Seguridad</span><h2 class="h2">Lo que podemos afirmar hoy.</h2>
+    <p>Publicamos solo los controles confirmados por el equipo que opera el conector. La ficha de seguridad completa se entrega bajo acuerdo de confidencialidad y la revisamos con tu equipo antes de cualquier proyecto.</p>
+    <a class="btn btn-green" href="{r}contacto/">Pedir la ficha de seguridad</a></div>
+  <ul class="checks checks-light">{seg}</ul>
+</div></section>
+<section class="section section-compact bg-soft"><div class="container bridge-cols">
+  <div><span class="eyebrow">Lo que incluye</span><h2 class="h2">Un producto con onboarding, operación y soporte.</h2><ul class="checks">{inc}</ul></div>
+  <div><span class="eyebrow">Requisitos</span><h2 class="h2">Lo que necesitas para partir.</h2><ul class="checks">{req}</ul></div>
+</div></section>
+{cta_final(r, '¿Conversamos sobre W-IT Bridge?', 'Cuéntanos qué canales atiendes hoy y con qué CRM, y vemos juntos cómo encaja.')}"""
 
 
 def agentes(r):
@@ -1864,6 +1978,7 @@ def main():
     # Los datos siguen en content.py (CASOS) y casos_index/caso_page quedan sin uso.
     pages.append(write('productos/', 'Productos · W-IT', 'Productos W-IT en Microsoft Marketplace.', productos_index, 'productos'))
     pages.append(write('productos/agentes-w-it/', 'Agentes W-IT', 'Agentes y aceleradores de W-IT.', agentes, 'productos'))
+    pages.append(write('productos/w-it-bridge/', 'W-IT Bridge: conector de WhatsApp e Instagram para Dynamics 365 · W-IT', 'W-IT Bridge conecta WhatsApp e Instagram directo con Meta a Dynamics 365 Customer Service, Contact Center y Copilot Studio. Sin proveedor de mensajería intermedio; no almacena conversaciones.', bridge, 'productos'))
     pages.append(write('herramientas/', 'Herramientas · W-IT', 'Herramientas gratuitas de W-IT.', herramientas_index, 'diagnosticos'))
     for h in HERRAMIENTAS:
         pages.append(write(f"herramientas/{h['slug']}/", f"{h['nombre']} · W-IT", h['que'], herramienta_page(h), 'diagnosticos'))

@@ -142,7 +142,7 @@ SOLUCIONES = [
                 ('sbc-propio', 'Tu propio SBC', 'si ya lo tienes', 'Opción 2 de voz: tu propio SBC',
                  'Si tu empresa ya opera un SBC certificado para Microsoft Teams, lo conectamos a Teams Phone por Direct Routing y no necesitas comprar otro. Es el caso típico de operadores y empresas de telecomunicaciones.', ['SBC certificado para Teams', 'Direct Routing']),
                 ('conector', 'W-IT Bridge', 'Conector de W-IT', 'Opción 1 de mensajería: W-IT Bridge',
-                 'Desarrollado por W-IT para cuentas Business de Meta. Recibe cada mensaje de WhatsApp e Instagram directo desde las APIs de Meta, identifica al cliente en el CRM y lo entrega a la cola correcta. No almacena conversaciones y corre en la nube de W-IT o en la tuya.', ['W-IT Bridge', 'Cuentas Business de Meta', 'Instagram incluido']),
+                 'Desarrollado por W-IT para cuentas Business de Meta. Recibe cada mensaje de WhatsApp e Instagram directo desde las APIs de Meta, identifica al cliente en el CRM y lo entrega a la cola correcta. No almacena conversaciones y corre en la nube de W-IT o en la tuya.', ['W-IT Bridge', 'Cuentas Business de Meta', 'Instagram incluido'], 'productos/w-it-bridge/'),
                 ('twilio', 'Twilio o un BSP', 'si ya lo usas', 'Opción 2 de mensajería: Twilio u otro proveedor',
                  'WhatsApp también puede entrar por un proveedor de mensajería (BSP) como Twilio, con el canal de WhatsApp de Dynamics 365. W-IT Bridge es la alternativa cuando quieres conexión directa con Meta, Instagram incluido y enrutamiento por regla.', ['BSP', 'Canal WhatsApp de Dynamics 365']),
                 ('plataforma', 'Dynamics 365 Contact Center', '', 'Plataforma: colas y habilidades por canal',

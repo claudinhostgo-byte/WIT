@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 110" role="img" aria-label="W-IT Bridge">
+  <path d="M44 34 C78 20 92 36 110 56 S142 92 176 80" fill="none" stroke="#1B3A50" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="42" cy="58" r="27" fill="#1B3A50"/>
+  <circle cx="42" cy="58" r="17" fill="#54BA00"/>
+  <circle cx="178" cy="58" r="27" fill="#1B3A50"/>
+  <circle cx="178" cy="58" r="17" fill="#54BA00"/>
+</svg>
