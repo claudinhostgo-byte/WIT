@@ -4,7 +4,7 @@
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const desktop = matchMedia('(min-width: 1241px)');
-  const root = (document.querySelector('link[rel="stylesheet"]').getAttribute('href') || '').replace('styles.css', '');
+  const root = (document.querySelector('link[rel="stylesheet"]').getAttribute('href') || '').replace(/\?.*$/, '').replace('styles.css', '');
 
   // ---------- Google Ads: medición de conversiones solo para quien llegó desde un aviso (gclid/gbraid/wbraid
   // en la URL; se recuerda 90 días, la ventana de conversión de Google). El ID y las etiquetas los pone build.py
