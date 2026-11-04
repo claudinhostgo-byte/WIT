@@ -46,6 +46,11 @@ COMUNES_V2 = {
                  'Consultora Microsoft Dynamics', 'Solutions Partner Microsoft', 'Con Microsoft desde 2014',
                  'Certificados ISO por SGS', 'Success by Design', 'Oficinas en Santiago y Lima',
                  'Conversemos sobre tu proyecto'],
+    # Bridge (2026-11-04): nadie busca el nombre del producto; buscan conectar WhatsApp o Instagram con Dynamics, o Twilio
+    'bridge': ['¿WhatsApp en Dynamics 365?', 'Conecta WhatsApp a Dynamics', 'Conecta Instagram a Dynamics',
+               'Sin proveedor intermedio', 'Directo con las APIs de Meta', 'Partner Microsoft Chile y Perú',
+               'Agente IA con Copilot Studio', 'SaaS o en tu nube de Azure', 'Conector hecho por W-IT',
+               'Conversemos sobre tu caso'],
 }
 TITULOS_V2 = {
     'Partner certificado Microsoft': ['Partner Certificado Microsoft', 'Consultora Microsoft Chile', 'Consultora Microsoft Perú',
@@ -58,6 +63,18 @@ TITULOS_V2 = {
                        'Omnichannel Dynamics 365', 'Voz, chat, WhatsApp y correo'],
     'ERP · Business Central y Finance': ['Partner Business Central', 'Dynamics 365 Business Central', 'Dynamics 365 Finance',
                                          'ERP Microsoft Dynamics', 'Business Central Chile y Perú'],
+    'WhatsApp en Dynamics 365': ['¿Cómo conectar WhatsApp?', 'WhatsApp Business en tu CRM', 'Colas, casos y SLA',
+                                 'Omnichannel con WhatsApp', 'Tu número sigue siendo tuyo'],
+    'Instagram y mensajería en el CRM': ['¿Instagram en Dynamics 365?', 'Mensajes directos en tu CRM', 'WhatsApp e Instagram juntos',
+                                         'Un escritorio para todo', 'Para cuentas Meta Business'],
+    'Alternativa a proveedores de mensajería': ['¿Pagas un BSP por WhatsApp?', 'Alternativa a tu proveedor', 'Tus cuentas de Meta, tuyas',
+                                                'Enrutamiento por regla', 'Conector para Dynamics 365'],
+}
+DESCRIPCIONES_V2 = {
+    'bridge': ['¿WhatsApp o Instagram en Dynamics 365? Directo con las APIs de Meta, sin intermediarios.',
+               'Escriben por WhatsApp o Instagram y la conversación llega a tu CRM con historial y colas.',
+               'Producto de W-IT, partner Microsoft en Chile y Perú. Onboarding, operación y soporte.',
+               'Opcional: un agente de Copilot Studio atiende primero y deriva al ejecutivo con contexto.'],
 }
 DESCRIPCIONES = {
     'dynamics': ['Implementamos Dynamics 365 Sales, Customer Service, Contact Center y Business Central.',
@@ -127,20 +144,29 @@ GRUPOS = [
       'Instagram incluido'],
      [('whatsapp dynamics 365', 'F'), ('integrar whatsapp dynamics 365', 'F'), ('whatsapp dynamics 365 customer service', 'F'),
       ('whatsapp dynamics 365 contact center', 'F'), ('omnichannel whatsapp dynamics', 'F'), ('whatsapp microsoft dynamics', 'F'),
-      ('conector whatsapp dynamics', 'F'), ('dynamics 365 whatsapp integration', 'F')]),
+      ('conector whatsapp dynamics', 'F'), ('dynamics 365 whatsapp integration', 'F'),
+      # s2 (2026-11-04): como lo plantea quien tiene el problema
+      ('conectar whatsapp con dynamics 365', 'F'), ('conectar whatsapp a dynamics', 'F'), ('como integrar whatsapp a dynamics 365', 'F'),
+      ('whatsapp dynamics 365 integracion', 'F'), ('whatsapp crm dynamics', 'F')]),
     ('bridge', 'Instagram y mensajería en el CRM',
      ['Instagram en tu CRM', 'Mensajes de Meta en tu CRM', 'WhatsApp e Instagram en el CRM', 'Un escritorio para todo',
       'Para cuentas Meta Business'],
      [('instagram dynamics 365', 'F'), ('instagram crm empresas', 'F'), ('integrar instagram crm', 'F'),
       ('instagram direct crm', 'F'), ('whatsapp business api crm', 'F'), ('integración whatsapp crm empresa', 'F'),
-      ('whatsapp api dynamics', 'F'), ('mensajería meta crm', 'F')]),
+      ('whatsapp api dynamics', 'F'), ('mensajería meta crm', 'F'),
+      # s2 (2026-11-04)
+      ('integrar instagram con dynamics 365', 'F'), ('conectar instagram con dynamics', 'F'), ('dynamics 365 instagram integration', 'F'),
+      ('instagram dynamics 365 customer service', 'F')]),
     # Quien ya paga un proveedor de mensajería (BSP). Google permite pujar por la marca; el anuncio no la nombra.
     ('bridge', 'Alternativa a proveedores de mensajería',
      ['Alternativa a tu BSP actual', 'Sin proveedor intermedio', 'Tus cuentas de Meta, tuyas', 'Enrutamiento por regla',
       'Conector para Dynamics 365'],
      [('alternativa twilio whatsapp', 'F'), ('twilio whatsapp chile', 'F'), ('twilio whatsapp peru', 'F'), ('twilio dynamics 365', 'F'),
       ('proveedor whatsapp business api chile', 'F'), ('proveedor whatsapp business api peru', 'F'), ('bsp whatsapp chile', 'F'),
-      ('bsp whatsapp peru', 'F'), ('whatsapp business api empresas chile', 'F')]),
+      ('bsp whatsapp peru', 'F'), ('whatsapp business api empresas chile', 'F'),
+      # s2 (2026-11-04): Twilio es más conocido que el producto; el anuncio no lo nombra
+      ('twilio whatsapp dynamics', 'F'), ('twilio microsoft dynamics', 'F'), ('twilio dynamics 365 whatsapp', 'F'),
+      ('twilio conversations dynamics', 'F'), ('whatsapp business api dynamics 365', 'F')]),
 ]
 
 # Negativas (frase) para ambas campañas
@@ -184,6 +210,7 @@ DESTACADOS = ['6 designaciones Microsoft', 'Certificados ISO por SGS', 'Oficinas
 # Textos destacados propios de una campaña (se importan con la columna Campaign)
 DESTACADOS_CAMPANA = {'bridge': ['Instagram incluido', 'Sin proveedor intermedio', 'SaaS o en tu nube', 'Copilot Studio opcional']}
 
+KEYWORDS_BRIDGE_S2 = ['conectar whatsapp con dynamics 365', 'conectar whatsapp a dynamics', 'como integrar whatsapp a dynamics 365', 'whatsapp dynamics 365 integracion', 'whatsapp crm dynamics', 'integrar instagram con dynamics 365', 'conectar instagram con dynamics', 'dynamics 365 instagram integration', 'instagram dynamics 365 customer service', 'twilio whatsapp dynamics', 'twilio microsoft dynamics', 'twilio dynamics 365 whatsapp', 'twilio conversations dynamics', 'whatsapp business api dynamics 365']
 NEGATIVAS_IA_S3 = ['precios', 'planes', 'plan', 'valor', 'costo', 'costos', 'cuánto vale', 'cuanto vale', 'premium', 'suscripción', 'suscripcion', 'tarifa', 'tarifas']
 LIMITES = {'titulo': 30, 'descripcion': 90, 'ruta': 15, 'enlace': 25, 'enlace_desc': 35, 'destacado': 25}
 
@@ -209,7 +236,9 @@ def validar():
         for t in todos:
             chk('titulo', t, g)
     for c, comunes in COMUNES_V2.items():
-        for g, titulos in TITULOS_V2.items():
+        for d in DESCRIPCIONES_V2.get(c, []):
+            chk('descripcion', d, c + ' v2')
+        for g, titulos in [(g, t) for cc, g, _, _ in GRUPOS if cc == c for t in [TITULOS_V2[g]]]:
             todos = comunes + titulos
             if len(todos) > 15 or len(set(todos)) != len(todos):
                 errores.append(f'{g} v2: {len(todos)} títulos o repetidos')
@@ -303,16 +332,21 @@ def escribir_editor(anuncios, tipo):
     escribir('google-ads-editor-bridge.csv', [f for f in filas if f.get('Campaign') == nb], cols)
     escribir_recursos()
     # Control semana 3 (2026-11-04): anuncios v2 de Dynamics y negativas nuevas de IA, para importar aparte
-    v2 = []
+    v2 = {}
     for c, g, _, _ in GRUPOS:
         if c in COMUNES_V2 and g in TITULOS_V2:
             cfg = CAMPANAS[c]
             fila = {'Campaign': cfg['nombre'], 'Ad Group': g, 'Ad type': 'Responsive search ad', 'Status': 'Enabled',
                     'Path 1': cfg['ruta'][0], 'Path 2': cfg['ruta'][1], 'Final URL': cfg['url']}
             fila.update({f'Headline {i}': t for i, t in enumerate(TITULOS_V2[g] + COMUNES_V2[c], 1)})
-            fila.update({f'Description {i}': d for i, d in enumerate(DESCRIPCIONES[c], 1)})
-            v2.append(fila)
-    escribir('google-ads-editor-anuncios-dynamics-v2.csv', v2, cols)
+            fila.update({f'Description {i}': d for i, d in enumerate(DESCRIPCIONES_V2.get(c, DESCRIPCIONES[c]), 1)})
+            v2.setdefault(c, []).append(fila)
+    escribir('google-ads-editor-anuncios-dynamics-v2.csv', v2.get('dynamics', []), cols)
+    # Bridge s2 (2026-11-04): anuncios v2 que plantean el problema + palabras clave nuevas, en un solo archivo
+    nb = CAMPANAS['bridge']['nombre']
+    kws = [{'Campaign': nb, 'Ad Group': g, 'Keyword': k, 'Criterion Type': tipo[m], 'Status': 'Enabled'}
+           for c, g, _, ks in GRUPOS if c == 'bridge' for k, m in ks if k in KEYWORDS_BRIDGE_S2]
+    escribir('google-ads-editor-bridge-s2.csv', kws + v2.get('bridge', []), cols)
     escribir('google-ads-editor-negativas-ia-s3.csv',
              [{'Campaign': CAMPANAS['ia']['nombre'], 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_IA_S3],
              cols)
