@@ -97,3 +97,4 @@ Usar **`google-ads-editor.csv`**: un solo archivo con campañas, configuración,
 - **CRM**: 4 leads desde el 28-oct, todos con origen Web (8) y asignados. W-IT: 1 (IA). WITEDUCA: 3. Orgánico/directo W-IT: 0.
 - Proyección Dynamics + IA: ≈ $190.000/mes (95 % del tope).
 - Cloudflare no se leyó: pide iniciar sesión con Google.
+- **Preparado tras el control (2026-11-04), pendiente de aprobación e importación:** `google-ads-editor-anuncios-dynamics-v2.csv` (un anuncio adicional por grupo de Dynamics con títulos cortos que repiten la búsqueda; el original sigue activo, Google rota) y `google-ads-editor-negativas-ia-s3.csv` (13 negativas de plurales y variantes de precio; "licencias" se mantiene porque trajo el lead de Fidelya). Decisión Bridge el viernes 7-nov; decisión de presupuesto Dynamics/IA el 10-nov.

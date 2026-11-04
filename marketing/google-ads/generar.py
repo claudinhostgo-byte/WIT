@@ -39,6 +39,26 @@ COMUNES = {
                'Partner Microsoft Chile y Perú', 'Agente IA con Copilot Studio', 'Sin proveedor de mensajería',
                'Conversemos sobre tu caso'],
 }
+# Variante B (control semana 3, 2026-11-04): títulos cortos que repiten la búsqueda literal. Se importa como un
+# anuncio adicional por grupo de Dynamics; el original sigue activo y Google rota según rendimiento.
+COMUNES_V2 = {
+    'dynamics': ['Implementador Dynamics 365', 'Partner Dynamics 365 Chile', 'Partner Dynamics 365 Perú',
+                 'Consultora Microsoft Dynamics', 'Solutions Partner Microsoft', 'Con Microsoft desde 2014',
+                 'Certificados ISO por SGS', 'Success by Design', 'Oficinas en Santiago y Lima',
+                 'Conversemos sobre tu proyecto'],
+}
+TITULOS_V2 = {
+    'Partner certificado Microsoft': ['Partner Certificado Microsoft', 'Consultora Microsoft Chile', 'Consultora Microsoft Perú',
+                                      'Seis designaciones vigentes', 'Credenciales verificables'],
+    'Dynamics 365 · Partner e implementación': ['Implementación Dynamics 365', 'Partner Microsoft Dynamics', 'Consultores Dynamics 365',
+                                                'Dynamics 365 en Chile y Perú', 'Premio Microsoft 2019 y 2020'],
+    'CRM · Sales y Customer Service': ['CRM Dynamics 365', 'Implementación CRM Microsoft', 'Dynamics 365 Sales',
+                                       'Dynamics 365 Customer Service', 'CRM Microsoft Dynamics'],
+    'Contact Center': ['Dynamics 365 Contact Center', 'Contact Center Microsoft', 'Contact Center Omnicanal',
+                       'Omnichannel Dynamics 365', 'Voz, chat, WhatsApp y correo'],
+    'ERP · Business Central y Finance': ['Partner Business Central', 'Dynamics 365 Business Central', 'Dynamics 365 Finance',
+                                         'ERP Microsoft Dynamics', 'Business Central Chile y Perú'],
+}
 DESCRIPCIONES = {
     'dynamics': ['Implementamos Dynamics 365 Sales, Customer Service, Contact Center y Business Central.',
                  'Solutions Partner for Microsoft Cloud, con las seis designaciones. Certificados ISO.',
@@ -136,7 +156,10 @@ NEGATIVAS = {
            'imagen', 'imágenes', 'prompt', 'prompts', 'cómo usar', 'como usar', 'estudiantes', 'tarea', 'windows',
            'tecla copilot', 'copilot key',
            # Control semana 2 (2026-10-28): compradores de licencias y precios, no empresas que buscan partner
-           'pro', 'precio', 'cuánto cuesta', 'cuanto cuesta', 'planes de pago', 'https', 'com'],
+           'pro', 'precio', 'cuánto cuesta', 'cuanto cuesta', 'planes de pago', 'https', 'com',
+           # Control semana 3 (2026-11-04): plurales y variantes de precio; "licencias" se mantiene (trajo el lead de Fidelya)
+           'precios', 'planes', 'plan', 'valor', 'costo', 'costos', 'cuánto vale', 'cuanto vale', 'premium',
+           'suscripción', 'suscripcion', 'tarifa', 'tarifas'],
     # Bridge: otros CRM, herramientas para pymes/particulares, la app de WhatsApp y SMS; precios no se publican
     'bridge': ['hubspot', 'salesforce', 'zoho', 'zendesk', 'bitrix', 'kommo', 'wati', '360dialog', 'sendgrid', 'sms',
                'pymes', 'pyme', 'personal', 'whatsapp web', 'whatsapp business app', 'chatbot gratis', 'api gratis',
@@ -161,6 +184,7 @@ DESTACADOS = ['6 designaciones Microsoft', 'Certificados ISO por SGS', 'Oficinas
 # Textos destacados propios de una campaña (se importan con la columna Campaign)
 DESTACADOS_CAMPANA = {'bridge': ['Instagram incluido', 'Sin proveedor intermedio', 'SaaS o en tu nube', 'Copilot Studio opcional']}
 
+NEGATIVAS_IA_S3 = ['precios', 'planes', 'plan', 'valor', 'costo', 'costos', 'cuánto vale', 'cuanto vale', 'premium', 'suscripción', 'suscripcion', 'tarifa', 'tarifas']
 LIMITES = {'titulo': 30, 'descripcion': 90, 'ruta': 15, 'enlace': 25, 'enlace_desc': 35, 'destacado': 25}
 
 
@@ -184,6 +208,13 @@ def validar():
             errores.append(f'{g}: títulos repetidos')
         for t in todos:
             chk('titulo', t, g)
+    for c, comunes in COMUNES_V2.items():
+        for g, titulos in TITULOS_V2.items():
+            todos = comunes + titulos
+            if len(todos) > 15 or len(set(todos)) != len(todos):
+                errores.append(f'{g} v2: {len(todos)} títulos o repetidos')
+            for t in todos:
+                chk('titulo', t, g + ' v2')
     for t, d1, d2, _ in ENLACES:
         chk('enlace', t, 'enlace')
         chk('enlace_desc', d1, t)
@@ -271,6 +302,20 @@ def escribir_editor(anuncios, tipo):
     nb = CAMPANAS['bridge']['nombre']
     escribir('google-ads-editor-bridge.csv', [f for f in filas if f.get('Campaign') == nb], cols)
     escribir_recursos()
+    # Control semana 3 (2026-11-04): anuncios v2 de Dynamics y negativas nuevas de IA, para importar aparte
+    v2 = []
+    for c, g, _, _ in GRUPOS:
+        if c in COMUNES_V2 and g in TITULOS_V2:
+            cfg = CAMPANAS[c]
+            fila = {'Campaign': cfg['nombre'], 'Ad Group': g, 'Ad type': 'Responsive search ad', 'Status': 'Enabled',
+                    'Path 1': cfg['ruta'][0], 'Path 2': cfg['ruta'][1], 'Final URL': cfg['url']}
+            fila.update({f'Headline {i}': t for i, t in enumerate(TITULOS_V2[g] + COMUNES_V2[c], 1)})
+            fila.update({f'Description {i}': d for i, d in enumerate(DESCRIPCIONES[c], 1)})
+            v2.append(fila)
+    escribir('google-ads-editor-anuncios-dynamics-v2.csv', v2, cols)
+    escribir('google-ads-editor-negativas-ia-s3.csv',
+             [{'Campaign': CAMPANAS['ia']['nombre'], 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_IA_S3],
+             cols)
 
 
 def escribir_recursos():
