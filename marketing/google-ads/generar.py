@@ -211,6 +211,13 @@ DESTACADOS = ['6 designaciones Microsoft', 'Certificados ISO por SGS', 'Oficinas
 DESTACADOS_CAMPANA = {'bridge': ['Instagram incluido', 'Sin proveedor intermedio', 'SaaS o en tu nube', 'Copilot Studio opcional']}
 
 KEYWORDS_BRIDGE_S2 = ['conectar whatsapp con dynamics 365', 'conectar whatsapp a dynamics', 'como integrar whatsapp a dynamics 365', 'whatsapp dynamics 365 integracion', 'whatsapp crm dynamics', 'integrar instagram con dynamics 365', 'conectar instagram con dynamics', 'dynamics 365 instagram integration', 'instagram dynamics 365 customer service', 'twilio whatsapp dynamics', 'twilio microsoft dynamics', 'twilio dynamics 365 whatsapp', 'twilio conversations dynamics', 'whatsapp business api dynamics 365']
+# Bridge, concordancia amplia (preparado 2026-11-04, se importa solo si el viernes 7-nov sigue en 0 impresiones):
+# 4 búsquedas centrales en amplia para que Google capture variantes; las negativas de la campaña frenan lo ajeno.
+KEYWORDS_BRIDGE_AMPLIAS = [('WhatsApp en Dynamics 365', 'whatsapp dynamics 365'), ('WhatsApp en Dynamics 365', 'whatsapp microsoft dynamics'),
+                           ('Instagram y mensajería en el CRM', 'instagram dynamics 365'),
+                           ('Alternativa a proveedores de mensajería', 'twilio whatsapp dynamics')]
+# Horario de 7 días para Bridge (misma decisión del viernes): el CSV solo trae la fila de campaña con el nuevo horario
+HORARIO_7DIAS = ';'.join(f'({d}[08:00-20:00])' for d in ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'))
 NEGATIVAS_IA_S3 = ['precios', 'planes', 'plan', 'valor', 'costo', 'costos', 'cuánto vale', 'cuanto vale', 'premium', 'suscripción', 'suscripcion', 'tarifa', 'tarifas']
 LIMITES = {'titulo': 30, 'descripcion': 90, 'ruta': 15, 'enlace': 25, 'enlace_desc': 35, 'destacado': 25}
 
@@ -347,6 +354,11 @@ def escribir_editor(anuncios, tipo):
     kws = [{'Campaign': nb, 'Ad Group': g, 'Keyword': k, 'Criterion Type': tipo[m], 'Status': 'Enabled'}
            for c, g, _, ks in GRUPOS if c == 'bridge' for k, m in ks if k in KEYWORDS_BRIDGE_S2]
     escribir('google-ads-editor-bridge-s2.csv', kws + v2.get('bridge', []), cols)
+    escribir('google-ads-editor-bridge-amplias.csv',
+             [{'Campaign': nb, 'Ad Group': g, 'Keyword': k, 'Criterion Type': 'Broad', 'Status': 'Enabled'}
+              for g, k in KEYWORDS_BRIDGE_AMPLIAS], cols)
+    escribir('google-ads-editor-bridge-horario-7dias.csv',
+             [{'Campaign': nb, 'Ad Schedule': HORARIO_7DIAS}], cols)
     escribir('google-ads-editor-negativas-ia-s3.csv',
              [{'Campaign': CAMPANAS['ia']['nombre'], 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_IA_S3],
              cols)
