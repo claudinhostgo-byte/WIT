@@ -88,3 +88,12 @@ Usar **`google-ads-editor.csv`**: un solo archivo con campañas, configuración,
 - Página: título simplificado y formulario de contacto en la misma página (`#contacto`, interés "Contact center" marcado, `data-en-pagina`), como en las landings.
 - Archivos para Editor: `google-ads-editor-bridge.csv` (campaña, ubicaciones, negativas, grupos, palabras clave, anuncios), `google-ads-editor-recursos-bridge.csv` (vínculos) y `google-ads-editor-destacados-bridge.csv` (destacados de campaña). La columna `End Date` fija el término; si Editor la rechaza, poner la fecha a mano en la configuración de la campaña.
 - Expectativa realista: 50–70 clics y 0–2 conversaciones calificadas en el mes. Es una prueba de demanda, no una campaña de volumen.
+
+## Control semana 3 (2026-11-04, período 28 oct – 3 nov)
+
+- **IA**: $14.578, 551 impr., 39 clics, CTR 7,1 %, CPC $374, 2 conv. (1 solo lead en el CRM: Fidelya, cotización de licencias Copilot + implementación). Términos de licencias/precios/planes: 6 clics, $2.298 (≈19 % de lo visible en el informe de términos; antes, la palabra clave de licencias sola era ≈50 % del gasto). Siguen entrando plurales y variantes que las negativas de frase no cubren ("precios", "planes", "valor", "costo", "licencia").
+- **Dynamics**: $29.783, 383 impr., 21 clics, CTR 5,5 %, CPC $1.418, 0 conv., 0 leads.
+- **Bridge**: 0 impresiones. Campaña "Apta (en aprendizaje)", 3 anuncios Aptos; de 25 palabras clave, 2 con "volumen bajo" (se revisaron 10 filas, el resto no se verificó una por una). Horario lun–vie 08–20: desde el 31-oct solo sirvió 2 días hábiles.
+- **CRM**: 4 leads desde el 28-oct, todos con origen Web (8) y asignados. W-IT: 1 (IA). WITEDUCA: 3. Orgánico/directo W-IT: 0.
+- Proyección Dynamics + IA: ≈ $190.000/mes (95 % del tope).
+- Cloudflare no se leyó: pide iniciar sesión con Google.
