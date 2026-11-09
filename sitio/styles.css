@@ -205,6 +205,9 @@ a.card:hover { box-shadow: var(--shadow-8); transform: translateY(-2px); text-de
 .header-actions { display: flex; align-items: center; gap: 12px; flex: none; }
 .presence { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.3); }
 .presence img { width: 21px; height: 14px; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
+.lang-switch { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: inherit; text-decoration: none; line-height: 14px; }
+.lang-switch:hover { border-color: var(--green); color: var(--green); }
+.site-header:is(.is-solid, .mega-open, .nav-open) .lang-switch:hover { color: var(--navy); border-color: var(--navy); }
 .site-header:is(.is-solid, .mega-open, .nav-open) .presence { border-color: var(--line-strong); }
 .header-cta { background: var(--green); color: var(--navy-deep); white-space: nowrap; }
 .header-cta:hover { background: var(--green-light); color: var(--navy-deep); }

@@ -6,6 +6,38 @@
   const desktop = matchMedia('(min-width: 1241px)');
   const root = (document.querySelector('link[rel="stylesheet"]').getAttribute('href') || '').replace(/\?.*$/, '').replace('styles.css', '');
 
+  // ---------- Idioma: en /en/ (html lang="en") los textos que genera este script se traducen con este diccionario;
+  // en español se usa el texto tal cual. Solo cubre lo que aparece en las páginas que existen en inglés.
+  const EN = document.documentElement.lang === 'en';
+  const TXT = {
+    'Cerrar menú': 'Close menu', 'Abrir menú': 'Open menu',
+    'Servicio': 'Service', '¿Qué casos críticos vencen hoy?': 'Which critical cases are due today?',
+    'Consultando casos abiertos en Dynamics 365 Customer Service': 'Checking open cases in Dynamics 365 Customer Service',
+    'Cruzando historial del cliente en Dataverse': 'Cross-referencing customer history in Dataverse',
+    'Aplicando permisos del usuario y política de datos': 'Applying user permissions and data policy',
+    'Casos priorizados por vencimiento de SLA, con borradores de respuesta listos para revisión humana.': 'Cases prioritized by SLA due date, with draft replies ready for human review.',
+    'Finanzas': 'Finance', 'Prepara el cierre de septiembre': 'Prepare the September close',
+    'Revisando asientos pendientes en Business Central': 'Reviewing pending journal entries in Business Central',
+    'Conciliando cartolas bancarias con Power Automate': 'Reconciling bank statements with Power Automate',
+    'Registrando cada acción para auditoría': 'Logging every action for audit',
+    'Partidas por conciliar identificadas e informe enviado al controller para aprobación.': 'Unreconciled items identified and report sent to the controller for approval.',
+    'Ventas': 'Sales', '¿Qué oportunidades debo priorizar esta semana?': 'Which opportunities should I prioritize this week?',
+    'Analizando el pipeline en Dynamics 365 Sales': 'Analyzing the pipeline in Dynamics 365 Sales',
+    'Resumiendo correos y reuniones recientes con Copilot': 'Summarizing recent emails and meetings with Copilot',
+    'Usando solo datos que el vendedor puede ver': 'Using only data the seller is allowed to see',
+    'Oportunidades ordenadas por probabilidad, con el siguiente paso sugerido para cada una.': 'Opportunities ranked by probability, with a suggested next step for each.',
+    'en producción': 'in production', 'Pregúntale al agente': 'Ask the agent', 'Disponible': 'Available', 'Escribe un mensaje': 'Type a message',
+    'en línea': 'online', 'Mensaje': 'Message', 'Activo · Espacio Operaciones': 'Active · Operations space', 'Mensaje para Agente W-IT': 'Message to W-IT Agent',
+    'Enviando…': 'Sending…',
+    '¡Gracias! Recibimos tu solicitud y te responderemos en menos de 1 día hábil al correo que nos dejaste.': 'Thank you! We received your request and will reply within 1 business day to the email you provided.',
+    'Completa la verificación de seguridad antes de enviar.': 'Complete the security check before sending.',
+    'Revisa los campos obligatorios: nombre, un email válido y la aceptación de la política de privacidad.': 'Check the required fields: name, a valid email and acceptance of the privacy policy.',
+    'Recibimos varios envíos desde tu conexión. Intenta más tarde o escríbenos a info@w-it.cl.': 'We received several submissions from your connection. Try again later or email us at info@w-it.cl.',
+    'No pudimos enviar tu solicitud. Intenta de nuevo en unos minutos o escríbenos a info@w-it.cl.': 'We could not send your request. Try again in a few minutes or email us at info@w-it.cl.',
+    'Cerrar': 'Close', 'Ubicación': 'Location', 'Mapa: ': 'Map: ', 'Abrir en Google Maps ↗': 'Open in Google Maps ↗',
+  };
+  const tr = t => (EN && TXT[t]) || t;
+
   // ---------- Google Ads: medición de conversiones solo para quien llegó desde un aviso (gclid/gbraid/wbraid
   // en la URL; se recuerda 90 días, la ventana de conversión de Google). El ID y las etiquetas los pone build.py
   // en <meta name="wit-ads">; sin esa meta, o para el resto de las visitas, no se carga nada de Google.
@@ -64,7 +96,7 @@
     header.classList.toggle('nav-open', open);
     document.body.classList.toggle('nav-locked', open);
     navToggle.setAttribute('aria-expanded', String(open));
-    navToggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    navToggle.setAttribute('aria-label', tr(open ? 'Cerrar menú' : 'Abrir menú'));
     if (!open) closeMegas();
   };
   navToggle.addEventListener('click', () => setDrawer(!header.classList.contains('nav-open')));
@@ -111,28 +143,28 @@
     const icon = slug => `<img src="${root}assets/ms/${slug}.svg" alt="" width="24" height="24">`;
     const shield = '<svg class="step-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>';
     const escenarios = [
-      { tab: 'Servicio', prompt: '¿Qué casos críticos vencen hoy?',
-        steps: [[icon('d365-customer-service'), 'Consultando casos abiertos en Dynamics 365 Customer Service', '🔎'],
-                [icon('dataverse'), 'Cruzando historial del cliente en Dataverse', '🗂️'],
-                [shield, 'Aplicando permisos del usuario y política de datos', '🔐']],
-        result: 'Casos priorizados por vencimiento de SLA, con borradores de respuesta listos para revisión humana.' },
-      { tab: 'Finanzas', prompt: 'Prepara el cierre de septiembre',
-        steps: [[icon('d365-business-central'), 'Revisando asientos pendientes en Business Central', '📒'],
-                [icon('power-automate'), 'Conciliando cartolas bancarias con Power Automate', '🏦'],
-                [shield, 'Registrando cada acción para auditoría', '🧾']],
-        result: 'Partidas por conciliar identificadas e informe enviado al controller para aprobación.' },
-      { tab: 'Ventas', prompt: '¿Qué oportunidades debo priorizar esta semana?',
-        steps: [[icon('d365-sales'), 'Analizando el pipeline en Dynamics 365 Sales', '📈'],
-                [icon('m365-copilot'), 'Resumiendo correos y reuniones recientes con Copilot', '✉️'],
-                [shield, 'Usando solo datos que el vendedor puede ver', '🔐']],
-        result: 'Oportunidades ordenadas por probabilidad, con el siguiente paso sugerido para cada una.' },
+      { tab: tr('Servicio'), prompt: tr('¿Qué casos críticos vencen hoy?'),
+        steps: [[icon('d365-customer-service'), tr('Consultando casos abiertos en Dynamics 365 Customer Service'), '🔎'],
+                [icon('dataverse'), tr('Cruzando historial del cliente en Dataverse'), '🗂️'],
+                [shield, tr('Aplicando permisos del usuario y política de datos'), '🔐']],
+        result: tr('Casos priorizados por vencimiento de SLA, con borradores de respuesta listos para revisión humana.') },
+      { tab: tr('Finanzas'), prompt: tr('Prepara el cierre de septiembre'),
+        steps: [[icon('d365-business-central'), tr('Revisando asientos pendientes en Business Central'), '📒'],
+                [icon('power-automate'), tr('Conciliando cartolas bancarias con Power Automate'), '🏦'],
+                [shield, tr('Registrando cada acción para auditoría'), '🧾']],
+        result: tr('Partidas por conciliar identificadas e informe enviado al controller para aprobación.') },
+      { tab: tr('Ventas'), prompt: tr('¿Qué oportunidades debo priorizar esta semana?'),
+        steps: [[icon('d365-sales'), tr('Analizando el pipeline en Dynamics 365 Sales'), '📈'],
+                [icon('m365-copilot'), tr('Resumiendo correos y reuniones recientes con Copilot'), '✉️'],
+                [shield, tr('Usando solo datos que el vendedor puede ver'), '🔐']],
+        result: tr('Oportunidades ordenadas por probabilidad, con el siguiente paso sugerido para cada una.') },
     ];
     // Canales: misma conversación, distinto look & feel
     const canales = {
-      web: { sub: 'en producción', ph: 'Pregúntale al agente' },
-      teams: { sub: 'Disponible', ph: 'Escribe un mensaje' },
-      whatsapp: { sub: 'en línea', ph: 'Mensaje' },
-      gchat: { sub: 'Activo · Espacio Operaciones', ph: 'Mensaje para Agente W-IT' },
+      web: { sub: tr('en producción'), ph: tr('Pregúntale al agente') },
+      teams: { sub: tr('Disponible'), ph: tr('Escribe un mensaje') },
+      whatsapp: { sub: tr('en línea'), ph: tr('Mensaje') },
+      gchat: { sub: tr('Activo · Espacio Operaciones'), ph: tr('Mensaje para Agente W-IT') },
     };
     const setCanal = c => {
       consoleEl.dataset.canal = c;
@@ -143,7 +175,7 @@
     $$('.canales button').forEach(b => b.addEventListener('click', () => { setCanal(b.dataset.canal); $('.canales').classList.add('used'); }));
     const bodyEl = $('.console-body', consoleEl);
     const scrollDown = () => { bodyEl.scrollTop = bodyEl.scrollHeight; };
-    const hora = new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', hour12: false });
+    const hora = new Date().toLocaleTimeString(EN ? 'en-US' : 'es-CL', { hour: '2-digit', minute: '2-digit', hour12: false });
     $$('[data-c="time"]', consoleEl).forEach(t => { t.textContent = hora; });
     setCanal('web');
     const tabs = $('.console-tabs', consoleEl);
@@ -237,7 +269,7 @@
       data.interes = fd.getAll('interes');
       data.consentimiento = form.elements.consentimiento.checked;
       btn.disabled = true;
-      btn.textContent = 'Enviando…';
+      btn.textContent = tr('Enviando…');
       try {
         const res = await fetch(form.dataset.api, {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data),
@@ -248,17 +280,17 @@
           try { sessionStorage.removeItem('wit-diag'); } catch (err) { /* sin almacenamiento */ }
           $$('.form-row, fieldset, label, .form-head', form).forEach(el => { el.hidden = true; });
           btn.hidden = true;
-          aviso('¡Gracias! Recibimos tu solicitud y te responderemos en menos de 1 día hábil al correo que nos dejaste.');
+          aviso(tr('¡Gracias! Recibimos tu solicitud y te responderemos en menos de 1 día hábil al correo que nos dejaste.'));
           msg.focus?.();
           return;
         }
         const err = res.status === 400 ? await res.json().catch(() => ({})) : {};
-        if (err.campos && err.campos.includes('captcha')) aviso('Completa la verificación de seguridad antes de enviar.', true);
-        else if (res.status === 400) aviso('Revisa los campos obligatorios: nombre, un email válido y la aceptación de la política de privacidad.', true);
-        else if (res.status === 429) aviso('Recibimos varios envíos desde tu conexión. Intenta más tarde o escríbenos a info@w-it.cl.', true);
+        if (err.campos && err.campos.includes('captcha')) aviso(tr('Completa la verificación de seguridad antes de enviar.'), true);
+        else if (res.status === 400) aviso(tr('Revisa los campos obligatorios: nombre, un email válido y la aceptación de la política de privacidad.'), true);
+        else if (res.status === 429) aviso(tr('Recibimos varios envíos desde tu conexión. Intenta más tarde o escríbenos a info@w-it.cl.'), true);
         else throw new Error(res.status);
       } catch (err) {
-        aviso('No pudimos enviar tu solicitud. Intenta de nuevo en unos minutos o escríbenos a info@w-it.cl.', true);
+        aviso(tr('No pudimos enviar tu solicitud. Intenta de nuevo en unos minutos o escríbenos a info@w-it.cl.'), true);
       }
       // Cada token de Turnstile sirve una sola vez: se renueva para el siguiente intento
       try { window.turnstile && window.turnstile.reset(); } catch (err) { /* sin captcha */ }
@@ -632,7 +664,7 @@
   // así que se abren en una ventana emergente del navegador; si el navegador la bloquea, en una pestaña nueva.
   const modal = document.createElement('dialog');
   modal.className = 'wit-modal';
-  modal.innerHTML = `<div class="wit-modal-head"><strong></strong><button type="button" class="wit-modal-close" aria-label="Cerrar">×</button></div>
+  modal.innerHTML = `<div class="wit-modal-head"><strong></strong><button type="button" class="wit-modal-close" aria-label="${tr('Cerrar')}">×</button></div>
     <div class="wit-modal-body"></div><div class="wit-modal-foot"></div>`;
   document.body.appendChild(modal);
   const cerrar = () => { modal.close(); $('.wit-modal-body', modal).innerHTML = ''; };
@@ -651,10 +683,10 @@
     if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     if (a.dataset.mapa) {
       e.preventDefault();
-      $('.wit-modal-head strong', modal).textContent = a.dataset.mapaTitulo || 'Ubicación';
-      $('.wit-modal-body', modal).innerHTML = `<iframe title="Mapa: ${a.dataset.mapa.replace(/"/g, '&quot;')}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      $('.wit-modal-head strong', modal).textContent = a.dataset.mapaTitulo || tr('Ubicación');
+      $('.wit-modal-body', modal).innerHTML = `<iframe title="${tr('Mapa: ')}${a.dataset.mapa.replace(/"/g, '&quot;')}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
         src="https://www.google.com/maps?q=${encodeURIComponent(a.dataset.mapa)}&output=embed"></iframe>`;
-      $('.wit-modal-foot', modal).innerHTML = `<span>${a.dataset.mapa.replace(/</g, '&lt;')}</span><a class="link-strong" href="${a.href}" data-externo>Abrir en Google Maps ↗</a>`;
+      $('.wit-modal-foot', modal).innerHTML = `<span>${a.dataset.mapa.replace(/</g, '&lt;')}</span><a class="link-strong" href="${a.href}" data-externo>${tr('Abrir en Google Maps ↗')}</a>`;
       modal.showModal();
       return;
     }
@@ -718,6 +750,7 @@
   // sessionStorage para seguirla al navegar por los enlaces que entrega el agente.
   const fab = $('.agente-fab');
   const agentePanel = $('#agente-panel');
+  if (!agentePanel) return; // en /en/ no hay agente flotante (responde solo en español)
   const agenteLog = $('.agente-log', agentePanel);
   const agenteForm = $('.agente-form', agentePanel);
   const agenteInput = $('input', agenteForm);

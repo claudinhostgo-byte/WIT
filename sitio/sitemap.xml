@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://w-it.cl/</loc></url>
+  <url><loc>https://w-it.cl/en/</loc></url>
   <url><loc>https://w-it.cl/soluciones/</loc></url>
+  <url><loc>https://w-it.cl/en/soluciones/</loc></url>
   <url><loc>https://w-it.cl/soluciones/ia-y-agentes/</loc></url>
+  <url><loc>https://w-it.cl/en/soluciones/ia-y-agentes/</loc></url>
   <url><loc>https://w-it.cl/soluciones/ventas-servicio-y-contact-center/</loc></url>
+  <url><loc>https://w-it.cl/en/soluciones/ventas-servicio-y-contact-center/</loc></url>
   <url><loc>https://w-it.cl/soluciones/contact-center/</loc></url>
+  <url><loc>https://w-it.cl/en/soluciones/contact-center/</loc></url>
   <url><loc>https://w-it.cl/soluciones/finanzas-y-operaciones/</loc></url>
+  <url><loc>https://w-it.cl/en/soluciones/finanzas-y-operaciones/</loc></url>
   <url><loc>https://w-it.cl/soluciones/datos-y-analitica/</loc></url>
+  <url><loc>https://w-it.cl/en/soluciones/datos-y-analitica/</loc></url>
   <url><loc>https://w-it.cl/soluciones/automatizacion-y-apps/</loc></url>
+  <url><loc>https://w-it.cl/en/soluciones/automatizacion-y-apps/</loc></url>
   <url><loc>https://w-it.cl/soluciones/nube-azure-e-infraestructura/</loc></url>
+  <url><loc>https://w-it.cl/en/soluciones/nube-azure-e-infraestructura/</loc></url>
   <url><loc>https://w-it.cl/soluciones/seguridad-y-cumplimiento/</loc></url>
+  <url><loc>https://w-it.cl/en/soluciones/seguridad-y-cumplimiento/</loc></url>
   <url><loc>https://w-it.cl/industrias/</loc></url>
   <url><loc>https://w-it.cl/industrias/servicios-financieros/</loc></url>
   <url><loc>https://w-it.cl/industrias/salud-y-seguros/</loc></url>
@@ -25,6 +35,7 @@
   <url><loc>https://w-it.cl/productos/</loc></url>
   <url><loc>https://w-it.cl/productos/agentes-w-it/</loc></url>
   <url><loc>https://w-it.cl/productos/w-it-bridge/</loc></url>
+  <url><loc>https://w-it.cl/en/productos/w-it-bridge/</loc></url>
   <url><loc>https://w-it.cl/herramientas/</loc></url>
   <url><loc>https://w-it.cl/herramientas/calculadora-copilot/</loc></url>
   <url><loc>https://w-it.cl/herramientas/autodiagnostico-ia/</loc></url>
@@ -33,10 +44,13 @@
   <url><loc>https://w-it.cl/como-trabajamos/</loc></url>
   <url><loc>https://w-it.cl/cofinanciamiento-microsoft/</loc></url>
   <url><loc>https://w-it.cl/nosotros/</loc></url>
+  <url><loc>https://w-it.cl/en/nosotros/</loc></url>
   <url><loc>https://w-it.cl/microsoft-copilot-jumpstart/</loc></url>
   <url><loc>https://w-it.cl/nosotros/aprende/</loc></url>
   <url><loc>https://w-it.cl/nosotros/trabaja-con-nosotros/</loc></url>
   <url><loc>https://w-it.cl/nosotros/confianza/</loc></url>
+  <url><loc>https://w-it.cl/en/nosotros/confianza/</loc></url>
   <url><loc>https://w-it.cl/contacto/</loc></url>
+  <url><loc>https://w-it.cl/en/contacto/</loc></url>
   <url><loc>https://w-it.cl/privacidad/</loc></url>
 </urlset>

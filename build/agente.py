@@ -130,6 +130,8 @@ class _Pagina(HTMLParser):
 def _paginas():
     paginas = []
     for f in sorted(glob.glob(os.path.join(SITIO, '**', 'index.html'), recursive=True)):
+        if os.path.relpath(f, SITIO).replace(os.sep, '/').startswith('en/'):
+            continue  # la versión en inglés no va al agente (responde en español)
         rel = os.path.relpath(os.path.dirname(f), SITIO).replace(os.sep, '/')
         ruta = '/' if rel == '.' else f'/{rel}/'
         html = open(f, encoding='utf-8').read()

@@ -10,6 +10,7 @@ from pathlib import Path
 from html import escape
 from PIL import Image
 import agente
+import i18n
 from content import (MS, MS_URL, PLATAFORMAS, SOLUCIONES, INDUSTRIAS, CLIENTES, ALIANZAS, CASOS, METODOS, METODO, HERRAMIENTAS, FAQ_HOME,
                      COFIN_PROGRAMAS, COFIN_PROCESO, COFIN_COMPARA, COFIN_POC, COFIN_MVP, COFIN_FAQ, DIAG_IA, DIAG_ERP, DIAG_CRM)
 
@@ -27,6 +28,9 @@ ASSET_VER = {n: _asset_ver(n) for n in ('styles.css', 'main.js')}
 SOL = {s['slug']: s for s in SOLUCIONES}
 IND = {i['slug']: i for i in INDUSTRIAS}
 CASO = {c['slug']: c for c in CASOS}
+# Páginas con versión en inglés (/en/...). El resto del sitio sigue solo en español; ver i18n.py.
+i18n.EN_PAGES = {'', 'soluciones/', 'nosotros/', 'nosotros/confianza/', 'contacto/', 'productos/w-it-bridge/',
+                 *(f"soluciones/{s['slug']}/" for s in SOLUCIONES)}
 # Programa Microsoft Copilot Jumpstart (W-IT: Ready Tier)
 JUMPSTART_PAGE = 'microsoft-copilot-jumpstart/'
 COFIN_PAGE = 'cofinanciamiento-microsoft/'
@@ -104,7 +108,8 @@ def pais_attr(cl, pe):
 
 # ---------------------------------------------------------------- layout
 
-def header(r, active, solid):
+def header(r, active, solid, lang='es', path=''):
+    en = lang == 'en'
     sol_cards = ''.join(f'''
           <a class="mega-card" href="{r}soluciones/{s['slug']}/">
             {sol_icons(r, s, 24)}
@@ -124,27 +129,14 @@ def header(r, active, solid):
         return (f'<button class="nav-link{" is-active" if active == key else ""}" type="button" '
                 f'aria-expanded="false" aria-controls="mega-{key}">{label}{CHEV}</button>')
 
-    return f'''
-<header class="site-header{' is-solid is-solid-page' if solid else ''}" id="header">
-  <div class="container header-bar">
-    <a class="brand" href="{r or './'}" aria-label="W-IT, inicio">
-      <img class="brand-logo brand-logo-white" src="{r}assets/marca/logo-white-mark.png" alt="W-IT" width="54" height="40">
-      <img class="brand-logo brand-logo-color" src="{r}assets/marca/logo-color-mark.png" alt="" width="54" height="40">
-      <span class="brand-sep"></span>
-      <span class="brand-tag">Microsoft Solutions Partner</span>
-    </a>
-    <nav class="main-nav" id="main-nav" aria-label="Principal">
-      <ul class="nav-list">
-        <li class="nav-item">{btn('soluciones', 'Soluciones')}
-          <div class="mega" id="mega-soluciones">
-            <div class="container mega-inner">
-              <div class="mega-head"><span class="eyebrow">Soluciones</span><a href="{r}soluciones/">Ver todas las soluciones {ARROW}</a></div>
-              <div class="mega-grid">{sol_cards}
-              </div>
-              <a class="mega-foot" href="{r}herramientas/autodiagnostico-ia/">¿No sabes por dónde empezar? <strong>Autodiagnóstico de madurez en IA {ARROW}</strong></a>
-            </div>
-          </div>
-        </li>
+    # Selector de idioma: solo en páginas que existen en ambos idiomas; nunca se redirige por idioma del navegador.
+    lang_switch = ''
+    if path in i18n.EN_PAGES:
+        alt = f'{r}{path}' if en else f'{r}en/{path}'
+        lang_switch = (f'\n      <a class="presence lang-switch" href="{alt}" hreflang="{"es-CL" if en else "en"}" lang="{"es" if en else "en"}" '
+                       f'title="{"Versión en español" if en else "English version"}" data-nolang>{"ES" if en else "EN"}</a>')
+    mega_foot = '' if en else f'<a class="mega-foot" href="{r}herramientas/autodiagnostico-ia/">¿No sabes por dónde empezar? <strong>Autodiagnóstico de madurez en IA {ARROW}</strong></a>'
+    nav_ind = '' if en else f'''
         <li class="nav-item">{btn('industrias', 'Clientes')}
           <div class="mega" id="mega-industrias">
             <div class="container mega-inner">
@@ -169,7 +161,36 @@ def header(r, active, solid):
             </div>
           </div>
         </li>
-        <li class="nav-item"><a class="nav-link" href="{r}como-trabajamos/"{cur('metodo')}>Cómo trabajamos</a></li>
+        <li class="nav-item"><a class="nav-link" href="{r}como-trabajamos/"{cur('metodo')}>Cómo trabajamos</a></li>'''
+    nos_trabaja = '' if en else f'<a href="{r}{TRABAJA_PAGE}"><strong>Trabaja con nosotros</strong><span>Envíanos tu currículum.</span></a>'
+    nos_aprende = '' if en else f'''<div class="mega-list">
+                <span class="eyebrow">Aprende</span>
+                <a href="{r}nosotros/aprende/"><strong>Formación y adopción</strong><span>Nuestra unidad exclusiva para aprender y adoptar IA.</span></a>
+                <a href="{r}{COFIN_PAGE}"><strong>Cofinanciamiento Microsoft</strong><span>POC y MVP con programas de inversión de Microsoft.</span></a>
+              </div>'''
+    nos_js = '' if en else f'<a class="mega-js" href="{r}{JUMPSTART_PAGE}">Microsoft Copilot Jumpstart Partner · Ready Tier {ARROW}</a>'
+
+    return f'''
+<header class="site-header{' is-solid is-solid-page' if solid else ''}" id="header">
+  <div class="container header-bar">
+    <a class="brand" href="{r or './'}" aria-label="W-IT, inicio">
+      <img class="brand-logo brand-logo-white" src="{r}assets/marca/logo-white-mark.png" alt="W-IT" width="54" height="40">
+      <img class="brand-logo brand-logo-color" src="{r}assets/marca/logo-color-mark.png" alt="" width="54" height="40">
+      <span class="brand-sep"></span>
+      <span class="brand-tag">Microsoft Solutions Partner</span>
+    </a>
+    <nav class="main-nav" id="main-nav" aria-label="Principal">
+      <ul class="nav-list">
+        <li class="nav-item">{btn('soluciones', 'Soluciones')}
+          <div class="mega" id="mega-soluciones">
+            <div class="container mega-inner">
+              <div class="mega-head"><span class="eyebrow">Soluciones</span><a href="{r}soluciones/">Ver todas las soluciones {ARROW}</a></div>
+              <div class="mega-grid">{sol_cards}
+              </div>
+              {mega_foot}
+            </div>
+          </div>
+        </li>{nav_ind}
         <li class="nav-item">{btn('nosotros', 'Nosotros')}
           <div class="mega" id="mega-nosotros">
             <div class="container mega-inner mega-split">
@@ -177,16 +198,12 @@ def header(r, active, solid):
                 <span class="eyebrow">Empresa</span>
                 <a href="{r}nosotros/"><strong>Quiénes somos</strong><span>Historia, misión, visión y presencia.</span></a>
                 <a href="{r}nosotros/confianza/"><strong>Trust Center</strong><span>Credenciales verificables, ISO y datos en Chile.</span></a>
-                <a href="{r}{TRABAJA_PAGE}"><strong>Trabaja con nosotros</strong><span>Envíanos tu currículum.</span></a>
+                {nos_trabaja}
               </div>
-              <div class="mega-list">
-                <span class="eyebrow">Aprende</span>
-                <a href="{r}nosotros/aprende/"><strong>Formación y adopción</strong><span>Nuestra unidad exclusiva para aprender y adoptar IA.</span></a>
-                <a href="{r}{COFIN_PAGE}"><strong>Cofinanciamiento Microsoft</strong><span>POC y MVP con programas de inversión de Microsoft.</span></a>
-              </div>
+              {nos_aprende}
               <div class="mega-promo mega-promo-badge">
                 <img src="{r}assets/credenciales/WIT-MicrosoftCloud-color.png" alt="Microsoft Solutions Partner for Microsoft Cloud" width="160" height="105">
-                <a class="mega-js" href="{r}{JUMPSTART_PAGE}">Microsoft Copilot Jumpstart Partner · Ready Tier {ARROW}</a>
+                {nos_js}
                 <a href="{r}nosotros/confianza/">Ver todas las credenciales {ARROW}</a>
               </div>
             </div>
@@ -198,7 +215,7 @@ def header(r, active, solid):
       </div>
     </nav>
     <div class="header-actions">
-      <span class="presence" title="Presencia en Chile y Perú"><img src="{r}assets/img/chile.svg" alt="Chile" width="21" height="14"><img src="{r}assets/img/peru.svg" alt="Perú" width="21" height="14"></span>
+      <span class="presence" title="Presencia en Chile y Perú"><img src="{r}assets/img/chile.svg" alt="Chile" width="21" height="14"><img src="{r}assets/img/peru.svg" alt="Perú" width="21" height="14"></span>{lang_switch}
       <a class="btn header-cta" href="{r}contacto/">Contáctanos</a>
     </div>
     <button class="nav-toggle" type="button" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú"><span></span><span></span><span></span></button>
@@ -206,7 +223,8 @@ def header(r, active, solid):
 </header>'''
 
 
-def footer(r):
+def footer(r, lang='es'):
+    en = lang == 'en'
     col = lambda t, items: f'<nav class="footer-col" aria-label="{t}"><strong>{t}</strong>' + ''.join(f'<a href="{h}">{escape(l)}</a>' for l, h in items) + '</nav>'
     return f'''
 <footer class="site-footer">
@@ -218,8 +236,8 @@ def footer(r):
         <img class="footer-ms" src="{r}assets/credenciales/WIT-MicrosoftPartner-singleline-white.png" alt="Microsoft Partner" width="200" height="40">
         <span>ISO 9001 · ISO 27001 (SGS)</span>
       </div>
-      {col('Explora', [('Soluciones', f'{r}soluciones/'), ('Clientes por industria', f'{r}industrias/'), ('Productos', f'{r}productos/'), ('Herramientas', f'{r}herramientas/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}')])}
-      {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Trabaja con nosotros', f'{r}{TRABAJA_PAGE}')])}
+      {col('Explora', [('Soluciones', f'{r}soluciones/'), ('W-IT Bridge', f'{r}productos/w-it-bridge/')] if en else [('Soluciones', f'{r}soluciones/'), ('Clientes por industria', f'{r}industrias/'), ('Productos', f'{r}productos/'), ('Herramientas', f'{r}herramientas/'), ('Cofinanciamiento Microsoft', f'{r}{COFIN_PAGE}')])}
+      {col('Empresa', [('Quiénes somos', f'{r}nosotros/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Contacto', f'{r}contacto/')] if en else [('Quiénes somos', f'{r}nosotros/'), ('Cómo trabajamos', f'{r}como-trabajamos/'), ('Trust Center', f'{r}nosotros/confianza/'), ('Trabaja con nosotros', f'{r}{TRABAJA_PAGE}')])}
       <address class="footer-col"><strong>Contacto</strong><span><b class="footer-pais"><img class="flag" src="{r}assets/img/chile.svg" alt="" width="21" height="14">Chile</b>Av. Apoquindo 3039<br>Las Condes, Santiago</span><span><b class="footer-pais"><img class="flag" src="{r}assets/img/peru.svg" alt="" width="21" height="14">Perú</b>Av. Circunvalación del Golf Los Incas 170, Int. 702<br>Santiago de Surco, Lima</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
     </div>
     <div class="footer-bottom">
@@ -228,7 +246,7 @@ def footer(r):
     </div>
   </div>
 </footer>
-
+''' + ('' if en else f'''
 <div class="agente" id="agente">
   <div class="agente-panel" id="agente-panel" role="dialog" aria-labelledby="agente-titulo" hidden data-token-url="{escape(AGENTE_TOKEN_URL)}">
     <div class="agente-head">
@@ -249,7 +267,7 @@ def footer(r):
     <span class="clip-say" aria-hidden="true">¿Te ayudo?</span>
     <picture class="clip" aria-hidden="true"><source srcset="{r}assets/img/clippy.webp" type="image/webp"><img src="{r}assets/img/clippy.png" alt="" width="96" height="124"></picture>
   </button>
-</div>'''
+</div>''')
 
 
 SITIO_URL = 'https://w-it.cl/'  # dominio canónico: www.w-it.cl y *.azurestaticapps.net apuntan acá.
@@ -294,39 +312,50 @@ def servicio_ld(s):
             'areaServed': [{'@type': 'Country', 'name': 'Chile'}, {'@type': 'Country', 'name': 'Perú'}]}
 
 
-def write(path, title, desc, body, active=None, solid=True, ld=None, noindex=False):
-    depth = path.strip('/').count('/') + 1 if path else 0
+def write(path, title, desc, body, active=None, solid=True, ld=None, noindex=False, lang='es'):
+    """Escribe la página en sitio/<path>/. Con lang='en' la escribe en sitio/en/<path>/ traducida (ver i18n.py)."""
+    en = lang == 'en'
+    out_path = f'en/{path}' if en else path
+    depth = out_path.strip('/').count('/') + 1 if out_path else 0
     r = '../' * depth
+    i18n.LANG = lang
+    alternas = ''
+    if path in i18n.EN_PAGES and not noindex:
+        alternas = (f'<link rel="alternate" hreflang="es-CL" href="{SITIO_URL}{path}">\n<link rel="alternate" hreflang="es" href="{SITIO_URL}{path}">\n'
+                    f'<link rel="alternate" hreflang="en" href="{SITIO_URL}en/{path}">\n<link rel="alternate" hreflang="x-default" href="{SITIO_URL}{path}">\n')
     ld_html = ''.join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>\n' for x in (ld or []))
     html = f'''<!DOCTYPE html>
-<html lang="es-CL">
+<html lang="{'en' if en else 'es-CL'}">
 <head>
 <meta charset="utf-8">
 <script>if(location.hostname==="www.w-it.cl")location.replace("https://w-it.cl"+location.pathname+location.search+location.hash)</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{escape(title)}</title>
 <meta name="description" content="{escape(desc)}">
-<link rel="canonical" href="{SITIO_URL}{path}">
-{'<meta name="robots" content="noindex">' + chr(10) if noindex else ''}{google_ads_meta()}<link rel="icon" type="image/png" href="{r}assets/marca/favicon.png">
+<link rel="canonical" href="{SITIO_URL}{out_path}">
+{alternas}{'<meta name="robots" content="noindex">' + chr(10) if noindex else ''}{google_ads_meta()}<link rel="icon" type="image/png" href="{r}assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="{r}assets/marca/apple-touch-icon.png">
 <link rel="stylesheet" href="{r}styles.css?v={ASSET_VER['styles.css']}">
 <script src="{r}main.js?v={ASSET_VER['main.js']}" defer></script>
 {ld_html}</head>
 <body{' class="has-solid-header"' if solid else ''}>
 <a class="skip" href="#main">Saltar al contenido</a>
-{header(r, active, solid)}
+{header(r, active, solid, lang, path)}
 <main id="main">
 {body(r) if callable(body) else body}
 </main>
-{footer(r)}
+{footer(r, lang)}
 {cf_web_analytics()}</body>
 </html>
 '''
-    out = os.path.join(ROOT, path, 'index.html')
+    if en:
+        html = i18n.translate_html(html, r, path, SITIO_URL)
+    i18n.LANG = 'es'
+    out = os.path.join(ROOT, out_path, 'index.html')
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, 'w', encoding='utf-8', newline='\n') as f:
         f.write(html)
-    return path
+    return out_path
 
 
 # ---------------------------------------------------------------- componentes
@@ -334,8 +363,8 @@ def write(path, title, desc, body, active=None, solid=True, ld=None, noindex=Fal
 def page_hero(r, crumbs, eyebrow, h1, bajada, ctas=True, extra='', h1_pe=None, aside='', cls='', ver_href=None):
     bc = ''.join(f'<li><a href="{r}{h}">{escape(l)}</a></li>' for l, h in crumbs)
     h1_attr = pais_attr(h1, h1_pe) if h1_pe else ''
-    cta = (f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Conversemos</a>'
-           f'<a class="btn btn-lg btn-outline" href="{ver_href or r + 'industrias/'}">Ver clientes</a></div>') if ctas else ''
+    cta = (f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="{r}contacto/">Conversemos</a>' +
+           ('' if i18n.en() else f'<a class="btn btn-lg btn-outline" href="{ver_href or r + 'industrias/'}">Ver clientes</a>') + '</div>') if ctas else ''
     return f'''
 <section class="page-hero{(" " + cls) if cls else ""}">
   <div class="page-hero-trazo" aria-hidden="true"></div>
@@ -356,7 +385,7 @@ def cta_final(r, titulo='¿Conversamos sobre tu caso?', texto='Cuéntanos qué t
 <section class="cta-band">
   <div class="container cta-band-inner">
     <div><h2>{escape(titulo)}</h2><p>{texto}</p></div>
-    <div class="btn-row"><a class="btn btn-lg btn-green" href="{r}contacto/">Conversemos</a><a class="btn btn-lg btn-ghost-light" href="#agente" data-open-agente>Conversa con nuestro agente</a></div>
+    <div class="btn-row"><a class="btn btn-lg btn-green" href="{r}contacto/">Conversemos</a>{'' if i18n.en() else '<a class="btn btn-lg btn-ghost-light" href="#agente" data-open-agente>Conversa con nuestro agente</a>'}</div>
   </div>
 </section>'''
 
@@ -530,11 +559,13 @@ def cofinanciamiento(r):
 
 def metodos_cards(r):
     """Home: las cuatro metodologías como tarjetas uniformes que llevan a /como-trabajamos/#slug."""
+    en = i18n.en()
+    tag = 'div' if en else 'a'
     return '<div class="metodos-grid">' + ''.join(
-        f'<a class="metodo-card" href="{r}como-trabajamos/#{m["slug"]}">'
+        f'<{tag} class="metodo-card"{"" if en else f" href=\"{r}como-trabajamos/#{m['slug']}\""}>'
         f'<span class="eyebrow">{escape(m["para"])}</span><h3>{escape(m["titulo"])}</h3><p>{escape(m["resumen"].split(". Sobre ")[0].rstrip(".") + ".")}</p>'
         f'<ol class="mc-steps">{"".join(f"<li>{escape(f['nombre'])}</li>" for f in m["fases"])}</ol>'
-        f'<span class="card-cta">Ver metodología {ARROW}</span></a>' for m in METODOS) + '</div>'
+        f'{"" if en else f"<span class=\"card-cta\">Ver metodología {ARROW}</span>"}</{tag}>' for m in METODOS) + '</div>'
 
 
 def badge_img(r, f, h=96):
@@ -612,7 +643,7 @@ def jumpstart_strip(r, extra_cls=''):
         <strong>Microsoft Copilot Jumpstart Partner</strong>
         <p>Somos parte del programa oficial de Microsoft que acelera la adopción de IA con Copilot y agentes, con recursos, talleres y engagements financiados por Microsoft para evaluar, planificar e implementar.</p>
       </div>
-      <a class="btn btn-outline" href="{r}{JUMPSTART_PAGE}">Conoce el programa {ARROW}</a>
+      {'' if i18n.en() else f'<a class="btn btn-outline" href="{r}{JUMPSTART_PAGE}">Conoce el programa {ARROW}</a>'}
     </div>'''
 
 
@@ -721,7 +752,7 @@ def home(r):
         <p class="hero-lead">Implementamos Dynamics 365, Power Platform, Azure y agentes de IA en grandes empresas y organismos públicos. Con equipo propio certificado y resultados medidos.</p>
         <div class="btn-row">
           <a class="btn btn-lg btn-green" href="{r}contacto/">Conversemos</a>
-          <a class="btn btn-lg btn-ghost-light" href="#agente" data-open-agente>Conversa con nuestro agente</a>
+          {'' if i18n.en() else '<a class="btn btn-lg btn-ghost-light" href="#agente" data-open-agente>Conversa con nuestro agente</a>'}
         </div>
       </div>
       <div class="hero-demo">
@@ -761,7 +792,7 @@ def home(r):
 <section class="logos" aria-label="Clientes" id="marquee">
   <div class="container logos-head">
     <span>Más de 60 organizaciones han confiado en W-IT</span>
-    <a href="{r}industrias/">Ver clientes por industria {ARROW}</a>
+    {'' if i18n.en() else f'<a href="{r}industrias/">Ver clientes por industria {ARROW}</a>'}
   </div>
   {marquee}
 </section>
@@ -782,7 +813,7 @@ def home(r):
 
 <section class="section bg-soft" id="soluciones">
   <div class="container stack-48">
-    {section_head('Soluciones Microsoft', 'Implementamos Microsoft Dynamics 365, Power Platform, Azure y Copilot.', 'Primero entendemos el proceso. Después elegimos la tecnología Microsoft que corresponde.', f'<a class="link-strong" href="{r}herramientas/autodiagnostico-ia/">¿No sabes por dónde empezar? Autodiagnóstico {ARROW}</a>')}
+    {section_head('Soluciones Microsoft', 'Implementamos Microsoft Dynamics 365, Power Platform, Azure y Copilot.', 'Primero entendemos el proceso. Después elegimos la tecnología Microsoft que corresponde.', '' if i18n.en() else f'<a class="link-strong" href="{r}herramientas/autodiagnostico-ia/">¿No sabes por dónde empezar? Autodiagnóstico {ARROW}</a>')}
     {plataformas_strip(r)}
     <div class="grid sol-grid">{''.join(sol_card(r, s) for s in SOLUCIONES)}
     </div>
@@ -793,11 +824,11 @@ def home(r):
   <div class="container stack-48">
     {section_head('Cómo trabajamos', METODO_H2, METODO_LEAD, '<span class="chip-live">Adopción medida en cada proyecto</span>')}
     {metodos_cards(r)}
-    <a class="link-strong" href="{r}como-trabajamos/">Conoce las cuatro metodologías {ARROW}</a>
-    {cofin_strip(r)}
+    {'' if i18n.en() else f'<a class="link-strong" href="{r}como-trabajamos/">Conoce las cuatro metodologías {ARROW}</a>'}
+    {'' if i18n.en() else cofin_strip(r)}
   </div>
 </section>
-
+''' + ('' if i18n.en() else f'''
 <section class="section bg-green" id="herramientas">
   <div class="container stack-40">
     {section_head('Herramientas', 'Estima, compara y diagnostica en pocos minutos.', link=f'<a class="link-strong" href="{r}herramientas/">Todas las herramientas {ARROW}</a>')}
@@ -806,6 +837,7 @@ def home(r):
     <p class="disclaimer">Los resultados no son una cotización ni asesoría legal.</p>
   </div>
 </section>
+''') + f'''
 
 <section class="section bg-dark" id="confianza">
   <div class="container grid grid-2 trust-grid">
@@ -1020,13 +1052,13 @@ def solucion_page(s):
   <p class="disclaimer">Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.</p>
 </div></section>
 <section class="section bg-blue"><div class="container stack-40">
-  {section_head('Cómo lo hacemos', METODO[s['metodo']]['titulo'], METODO[s['metodo']]['resumen'], f'<a class="link-strong" href="{r}como-trabajamos/">Cómo trabajamos {ARROW}</a>')}
+  {section_head('Cómo lo hacemos', METODO[s['metodo']]['titulo'], METODO[s['metodo']]['resumen'], '' if i18n.en() else f'<a class="link-strong" href="{r}como-trabajamos/">Cómo trabajamos {ARROW}</a>')}
   {metodo_html(r, METODO[s['metodo']])}
-  {cofin_strip(r)}
+  {'' if i18n.en() else cofin_strip(r)}
 </div></section>
 <section class="section bg-soft"><div class="container grid grid-2 aligned">
   <div class="cred-card"><span class="eyebrow">Credencial que respalda esta solución</span>{badge_img(r, s['credencial'], 110)}<p>{escape(s['credencial_txt'])}</p><a href="{r}nosotros/confianza/">Ver Trust Center {ARROW}</a></div>
-  <a class="card tool-card" href="{r}{s['herramienta'][1]}"><div class="tool-top"><span>Herramienta relacionada</span><span class="pill">Gratis</span></div><h3>{escape(s['herramienta'][0])}</h3><p>Resultados orientativos. No son una cotización ni asesoría legal.</p><span class="card-cta">Empezar {ARROW}</span></a>
+  {'' if i18n.en() else f'<a class="card tool-card" href="{r}{s["herramienta"][1]}"><div class="tool-top"><span>Herramienta relacionada</span><span class="pill">Gratis</span></div><h3>{escape(s["herramienta"][0])}</h3><p>Resultados orientativos. No son una cotización ni asesoría legal.</p><span class="card-cta">Empezar {ARROW}</span></a>'}
 </div></section>
 {peru_ia(r) if s['slug'] == 'ia-y-agentes' else ''}
 {cta_final(r)}'''
@@ -1978,11 +2010,17 @@ def privacidad_page(r):
 
 def main():
     pages = []
-    pages.append(write('', 'W-IT · Partner Microsoft Dynamics 365, Power Platform, Azure y Copilot en Chile y Perú',
-                       'Solutions Partner for Microsoft Cloud, con las seis designaciones Microsoft, en Chile y Perú. Implementamos Dynamics 365, Power Platform, Azure y agentes de IA.', home, solid=False, ld=[organizacion_ld()]))
-    pages.append(write('soluciones/', 'Soluciones Microsoft Dynamics 365, Power Platform, Azure y Copilot · W-IT', 'Partner Microsoft en Chile y Perú: implementamos Dynamics 365, Power Platform, Azure y Copilot.', soluciones_index, 'soluciones'))
+
+    def ambos(path, *a, **k):
+        """Escribe la página en español y, si está en i18n.EN_PAGES, también en inglés bajo /en/."""
+        pages.append(write(path, *a, **k))
+        if path in i18n.EN_PAGES:
+            pages.append(write(path, *a, lang='en', **k))
+    ambos('', 'W-IT · Partner Microsoft Dynamics 365, Power Platform, Azure y Copilot en Chile y Perú',
+                       'Solutions Partner for Microsoft Cloud, con las seis designaciones Microsoft, en Chile y Perú. Implementamos Dynamics 365, Power Platform, Azure y agentes de IA.', home, solid=False, ld=[organizacion_ld()])
+    ambos('soluciones/', 'Soluciones Microsoft Dynamics 365, Power Platform, Azure y Copilot · W-IT', 'Partner Microsoft en Chile y Perú: implementamos Dynamics 365, Power Platform, Azure y Copilot.', soluciones_index, 'soluciones')
     for s in SOLUCIONES:
-        pages.append(write(f"soluciones/{s['slug']}/", f"{s['plataforma']}: {s['nombre']} · W-IT", f"{s['plataforma']}. {s['linea']} Implementación en Chile y Perú.", solucion_page(s), 'soluciones', ld=[servicio_ld(s)]))
+        ambos(f"soluciones/{s['slug']}/", f"{s['plataforma']}: {s['nombre']} · W-IT", f"{s['plataforma']}. {s['linea']} Implementación en Chile y Perú.", solucion_page(s), 'soluciones', ld=[servicio_ld(s)])
     pages.append(write('industrias/', 'Clientes por industria · W-IT', 'Clientes de W-IT por industria.', industrias_index, 'industrias'))
     for i in INDUSTRIAS:
         pages.append(write(f"industrias/{i['slug']}/", f"{i['nombre']} · W-IT", i['h1'], industria_page(i), 'industrias'))
@@ -1990,18 +2028,18 @@ def main():
     # Los datos siguen en content.py (CASOS) y casos_index/caso_page quedan sin uso.
     pages.append(write('productos/', 'Productos · W-IT', 'Productos W-IT en Microsoft Marketplace.', productos_index, 'productos'))
     pages.append(write('productos/agentes-w-it/', 'Agentes W-IT', 'Agentes y aceleradores de W-IT.', agentes, 'productos'))
-    pages.append(write('productos/w-it-bridge/', 'W-IT Bridge: conector de WhatsApp e Instagram para Dynamics 365 · W-IT', 'W-IT Bridge conecta WhatsApp e Instagram directo con Meta a Dynamics 365 Customer Service, Contact Center y Copilot Studio. Sin proveedor de mensajería intermedio; no almacena conversaciones.', bridge, 'productos'))
+    ambos('productos/w-it-bridge/', 'W-IT Bridge: conector de WhatsApp e Instagram para Dynamics 365 · W-IT', 'W-IT Bridge conecta WhatsApp e Instagram directo con Meta a Dynamics 365 Customer Service, Contact Center y Copilot Studio. Sin proveedor de mensajería intermedio; no almacena conversaciones.', bridge, 'productos')
     pages.append(write('herramientas/', 'Herramientas · W-IT', 'Herramientas gratuitas de W-IT.', herramientas_index, 'diagnosticos'))
     for h in HERRAMIENTAS:
         pages.append(write(f"herramientas/{h['slug']}/", f"{h['nombre']} · W-IT", h['que'], herramienta_page(h), 'diagnosticos'))
     pages.append(write('como-trabajamos/', 'Cómo trabajamos · W-IT', 'Cuatro metodologías ágiles sobre marcos probados de Microsoft.', como_trabajamos, 'metodo'))
     pages.append(write(COFIN_PAGE, 'Cofinanciamiento Microsoft: POC y MVP · W-IT', 'Programas de inversión de Microsoft que cofinancian talleres, pruebas de concepto (POC) y productos mínimos viables (MVP) con W-IT. Evaluamos tu elegibilidad.', cofinanciamiento, 'metodo'))
-    pages.append(write('nosotros/', 'Nosotros · W-IT', 'Historia, misión, visión y presencia de W-IT en Chile y Perú.', nosotros, 'nosotros'))
+    ambos('nosotros/', 'Nosotros · W-IT', 'Historia, misión, visión y presencia de W-IT en Chile y Perú.', nosotros, 'nosotros')
     pages.append(write(JUMPSTART_PAGE, 'Microsoft Copilot Jumpstart Partner · Ready Tier · W-IT', 'W-IT es partner Ready Tier del programa Microsoft Copilot Jumpstart: talleres y engagements financiados por Microsoft para adoptar Copilot y agentes.', jumpstart_page, 'nosotros'))
     pages.append(write('nosotros/aprende/', 'Aprende: formación y adopción de IA con WITEDUCA · W-IT', 'WITEDUCA es la unidad de W-IT dedicada exclusivamente a la formación y adopción de IA y tecnologías Microsoft.', aprende_page, 'nosotros'))
     pages.append(write(TRABAJA_PAGE, 'Trabaja con nosotros · W-IT', 'Envía tu currículum a W-IT, partner Microsoft en Chile y Perú.', trabaja_page, 'nosotros'))
-    pages.append(write('nosotros/confianza/', 'Trust Center · W-IT', 'Credenciales verificables de W-IT.', confianza, 'nosotros'))
-    pages.append(write('contacto/', 'Contacto · W-IT', 'Contacta a W-IT: proyectos, licencias y soporte Microsoft en Chile y Perú.', contacto))
+    ambos('nosotros/confianza/', 'Trust Center · W-IT', 'Credenciales verificables de W-IT.', confianza, 'nosotros')
+    ambos('contacto/', 'Contacto · W-IT', 'Contacta a W-IT: proyectos, licencias y soporte Microsoft en Chile y Perú.', contacto)
     pages.append(write('privacidad/', 'Aviso de privacidad y tratamiento de datos · W-IT', 'Qué datos recolectamos en w-it.cl, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.', privacidad_page))
     # Equipo y Recursos/Observatorio IA: ocultos hasta tener contenido real (2026-10-01)
     # Cookies y Términos: ocultos hasta tener el texto de Administración y Finanzas (2026-10-07);
@@ -2011,6 +2049,8 @@ def main():
         write(l['path'], l['title'], l['desc'], landing_page(l), noindex=True)
     indexacion(pages)
     print(f'{len(pages)} páginas generadas')
+    faltan = i18n.informe(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'i18n_faltan.txt'))
+    print(f'Inglés: {faltan} textos sin traducir (build/i18n_faltan.txt)' if faltan else 'Inglés: traducción completa')
     check_css()
     agente.generar()
 
