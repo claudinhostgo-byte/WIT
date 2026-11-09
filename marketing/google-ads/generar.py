@@ -12,7 +12,7 @@ SITIO = 'https://w-it.cl/'
 # Presupuesto: máx. $200.000 CLP al mes para Dynamics + IA, más $100.000 CLP por un mes para W-IT Bridge (2026-10-30).
 # Google gasta como máximo 30,4 × el presupuesto diario en un mes.
 CAMPANAS = {
-    'dynamics': dict(nombre='W-IT | Búsqueda | Dynamics 365 | CL-PE', diario=4200,
+    'dynamics': dict(nombre='W-IT | Búsqueda | Dynamics 365 | CL-PE', diario=2000,  # 4.200 hasta el 2026-11-09
                      url=SITIO + 'implementacion/dynamics-365/', ruta=('dynamics-365', 'implementacion'),
                      sufijo='utm_source=google&utm_medium=cpc&utm_campaign=dynamics-365&utm_term={keyword}&utm_content={adgroupid}'),
     'ia': dict(nombre='W-IT | Búsqueda | IA y agentes Microsoft | CL-PE', diario=2300,
@@ -177,7 +177,8 @@ NEGATIVAS_COMUNES = [
     'login', 'iniciar sesión', 'sign in', 'soporte técnico microsoft', 'mb-210', 'mb-230', 'mb-910', 'pl-900', 'ai-900',
 ]
 NEGATIVAS = {
-    'dynamics': ['dynamics ax 2009', 'navision gratis', 'dynamics gp'],
+    'dynamics': ['dynamics ax 2009', 'navision gratis', 'dynamics gp',
+                 'dynamics ax', 'level up'],  # control 2026-11-09
     'ia': ['chatgpt', 'gemini', 'claude', 'anthropic', 'github copilot', 'copilot app', 'copilot gratis', 'bing',
            'imagen', 'imágenes', 'prompt', 'prompts', 'cómo usar', 'como usar', 'estudiantes', 'tarea', 'windows',
            'tecla copilot', 'copilot key',
@@ -218,6 +219,13 @@ KEYWORDS_BRIDGE_AMPLIAS = [('WhatsApp en Dynamics 365', 'whatsapp dynamics 365')
                            ('Alternativa a proveedores de mensajería', 'twilio whatsapp dynamics')]
 # Horario de 7 días para Bridge (misma decisión del viernes): el CSV solo trae la fila de campaña con el nuevo horario
 HORARIO_7DIAS = ';'.join(f'({d}[08:00-20:00])' for d in ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'))
+NEGATIVAS_DYNAMICS_S3 = ['dynamics ax', 'level up']
+# WITEDUCA (campaña hermana, misma cuenta): revisión de términos de 30 días (2026-11-09). Solo lo que no vende cursos
+# a empresas: competidores, licencias/precios, búsquedas de programadores y estudiantes, frases genéricas en inglés.
+NEGATIVAS_WITEDUCA = ['hazloconia', 'centeia', 'premium', 'licencia', 'licencias', 'programador', 'desarrollo de software',
+                      'clase 1', 'best', 'platforms', 'conclusion', 'conclusión', 'importancia', 'como funciona', 'cómo funciona',
+                      'como utilizar', 'cómo utilizar']
+CAMPANA_WITEDUCA = 'WITEDUCA - Asesorías y Capacitaciones'
 NEGATIVAS_IA_S3 = ['precios', 'planes', 'plan', 'valor', 'costo', 'costos', 'cuánto vale', 'cuanto vale', 'premium', 'suscripción', 'suscripcion', 'tarifa', 'tarifas']
 LIMITES = {'titulo': 30, 'descripcion': 90, 'ruta': 15, 'enlace': 25, 'enlace_desc': 35, 'destacado': 25}
 
@@ -359,6 +367,13 @@ def escribir_editor(anuncios, tipo):
               for g, k in KEYWORDS_BRIDGE_AMPLIAS], cols)
     escribir('google-ads-editor-bridge-horario-7dias.csv',
              [{'Campaign': nb, 'Ad Schedule': HORARIO_7DIAS}], cols)
+    # Control 2026-11-09: Dynamics baja a $2.000/día y suma 2 negativas; WITEDUCA recibe negativas de su revisión de términos
+    nd = CAMPANAS['dynamics']['nombre']
+    escribir('google-ads-editor-dynamics-s3.csv',
+             [{'Campaign': nd, 'Budget': CAMPANAS['dynamics']['diario'], 'Budget type': 'Daily'}]
+             + [{'Campaign': nd, 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_DYNAMICS_S3], cols)
+    escribir('google-ads-editor-negativas-witeduca.csv',
+             [{'Campaign': CAMPANA_WITEDUCA, 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_WITEDUCA], cols)
     escribir('google-ads-editor-negativas-ia-s3.csv',
              [{'Campaign': CAMPANAS['ia']['nombre'], 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_IA_S3],
              cols)

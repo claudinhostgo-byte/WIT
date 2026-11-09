@@ -1,5 +1,5 @@
 ﻿Campaign,Campaign Type,Campaign Status,Networks,Budget,Budget type,Bid Strategy Type,Maximum CPC bid limit,Languages,Targeting method,Exclusion method,Ad Schedule,Final URL suffix,EU political ads,End Date,Location,Location ID,Ad Group,Ad Group Status,Keyword,Criterion Type,Status,Ad type,Headline 1,Headline 2,Headline 3,Headline 4,Headline 5,Headline 6,Headline 7,Headline 8,Headline 9,Headline 10,Headline 11,Headline 12,Headline 13,Headline 14,Headline 15,Description 1,Description 2,Description 3,Description 4,Path 1,Path 2,Final URL
-W-IT | Búsqueda | Dynamics 365 | CL-PE,Search,Enabled,Google search,4200,Daily,Maximize clicks,2500,es;en,Location of presence,Location of presence,(Monday[08:00-20:00]);(Tuesday[08:00-20:00]);(Wednesday[08:00-20:00]);(Thursday[08:00-20:00]);(Friday[08:00-20:00]),utm_source=google&utm_medium=cpc&utm_campaign=dynamics-365&utm_term={keyword}&utm_content={adgroupid},Doesn't have EU political ads,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+W-IT | Búsqueda | Dynamics 365 | CL-PE,Search,Enabled,Google search,2000,Daily,Maximize clicks,2500,es;en,Location of presence,Location of presence,(Monday[08:00-20:00]);(Tuesday[08:00-20:00]);(Wednesday[08:00-20:00]);(Thursday[08:00-20:00]);(Friday[08:00-20:00]),utm_source=google&utm_medium=cpc&utm_campaign=dynamics-365&utm_term={keyword}&utm_content={adgroupid},Doesn't have EU political ads,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 W-IT | Búsqueda | Dynamics 365 | CL-PE,,,,,,,,,,,,,,,Chile,2152,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 W-IT | Búsqueda | Dynamics 365 | CL-PE,,,,,,,,,,,,,,,Peru,2604,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 W-IT | Búsqueda | Dynamics 365 | CL-PE,,,,,,,,,,,,,,,,,,,curso,Negative Phrase,,,,,,,,,,,,,,,,,,,,,,,,
@@ -41,6 +41,8 @@ W-IT | Búsqueda | Dynamics 365 | CL-PE,,,,,,,,,,,,,,,,,,,ai-900,Negative Phrase
 W-IT | Búsqueda | Dynamics 365 | CL-PE,,,,,,,,,,,,,,,,,,,dynamics ax 2009,Negative Phrase,,,,,,,,,,,,,,,,,,,,,,,,
 W-IT | Búsqueda | Dynamics 365 | CL-PE,,,,,,,,,,,,,,,,,,,navision gratis,Negative Phrase,,,,,,,,,,,,,,,,,,,,,,,,
 W-IT | Búsqueda | Dynamics 365 | CL-PE,,,,,,,,,,,,,,,,,,,dynamics gp,Negative Phrase,,,,,,,,,,,,,,,,,,,,,,,,
+W-IT | Búsqueda | Dynamics 365 | CL-PE,,,,,,,,,,,,,,,,,,,dynamics ax,Negative Phrase,,,,,,,,,,,,,,,,,,,,,,,,
+W-IT | Búsqueda | Dynamics 365 | CL-PE,,,,,,,,,,,,,,,,,,,level up,Negative Phrase,,,,,,,,,,,,,,,,,,,,,,,,
 W-IT | Búsqueda | IA y agentes Microsoft | CL-PE,Search,Enabled,Google search,2300,Daily,Maximize clicks,2500,es;en,Location of presence,Location of presence,(Monday[08:00-20:00]);(Tuesday[08:00-20:00]);(Wednesday[08:00-20:00]);(Thursday[08:00-20:00]);(Friday[08:00-20:00]),utm_source=google&utm_medium=cpc&utm_campaign=ia-agentes&utm_term={keyword}&utm_content={adgroupid},Doesn't have EU political ads,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 W-IT | Búsqueda | IA y agentes Microsoft | CL-PE,,,,,,,,,,,,,,,Chile,2152,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 W-IT | Búsqueda | IA y agentes Microsoft | CL-PE,,,,,,,,,,,,,,,Peru,2604,,,,,,,,,,,,,,,,,,,,,,,,,,,,
