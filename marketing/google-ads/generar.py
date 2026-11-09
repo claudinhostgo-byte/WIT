@@ -372,6 +372,9 @@ def escribir_editor(anuncios, tipo):
     escribir('google-ads-editor-dynamics-s3.csv',
              [{'Campaign': nd, 'Budget': CAMPANAS['dynamics']['diario'], 'Budget type': 'Daily'}]
              + [{'Campaign': nd, 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_DYNAMICS_S3], cols)
+    # WITEDUCA en Perú (prueba, 2026-11-09): agrega la ubicación; la negativa "peru" se quita a mano en Editor
+    escribir('google-ads-editor-witeduca-peru.csv',
+             [{'Campaign': CAMPANA_WITEDUCA, 'Location': 'Peru', 'Location ID': '2604'}], cols)
     escribir('google-ads-editor-negativas-witeduca.csv',
              [{'Campaign': CAMPANA_WITEDUCA, 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_WITEDUCA], cols)
     escribir('google-ads-editor-negativas-ia-s3.csv',
