@@ -219,6 +219,13 @@ KEYWORDS_BRIDGE_AMPLIAS = [('WhatsApp en Dynamics 365', 'whatsapp dynamics 365')
                            ('Alternativa a proveedores de mensajería', 'twilio whatsapp dynamics')]
 # Horario de 7 días para Bridge (misma decisión del viernes): el CSV solo trae la fila de campaña con el nuevo horario
 HORARIO_7DIAS = ';'.join(f'({d}[08:00-20:00])' for d in ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'))
+# Bridge fase 1 (2026-11-09): ampliar a Hispanoamérica, España y EE. UU. con los mismos anuncios en español.
+# IDs de destino geográfico de Google Ads = 2000 + código numérico ISO 3166-1 del país.
+UBICACIONES_BRIDGE_AMPLIACION = [('Argentina', '2032'), ('Bolivia', '2068'), ('Colombia', '2170'), ('Costa Rica', '2188'),
+                                 ('Dominican Republic', '2214'), ('Ecuador', '2218'), ('El Salvador', '2222'), ('Guatemala', '2320'),
+                                 ('Honduras', '2340'), ('Mexico', '2484'), ('Nicaragua', '2558'), ('Panama', '2591'),
+                                 ('Paraguay', '2600'), ('Puerto Rico', '2630'), ('Spain', '2724'), ('United States', '2840'),
+                                 ('Uruguay', '2858'), ('Venezuela', '2862')]
 NEGATIVAS_DYNAMICS_S3 = ['dynamics ax', 'level up']
 # WITEDUCA (campaña hermana, misma cuenta): revisión de términos de 30 días (2026-11-09). Solo lo que no vende cursos
 # a empresas: competidores, licencias/precios, búsquedas de programadores y estudiantes, frases genéricas en inglés.
@@ -362,6 +369,8 @@ def escribir_editor(anuncios, tipo):
     kws = [{'Campaign': nb, 'Ad Group': g, 'Keyword': k, 'Criterion Type': tipo[m], 'Status': 'Enabled'}
            for c, g, _, ks in GRUPOS if c == 'bridge' for k, m in ks if k in KEYWORDS_BRIDGE_S2]
     escribir('google-ads-editor-bridge-s2.csv', kws + v2.get('bridge', []), cols)
+    escribir('google-ads-editor-bridge-paises.csv',
+             [{'Campaign': nb, 'Location': n, 'Location ID': i} for n, i in UBICACIONES_BRIDGE_AMPLIACION], cols)
     escribir('google-ads-editor-bridge-amplias.csv',
              [{'Campaign': nb, 'Ad Group': g, 'Keyword': k, 'Criterion Type': 'Broad', 'Status': 'Enabled'}
               for g, k in KEYWORDS_BRIDGE_AMPLIAS], cols)
