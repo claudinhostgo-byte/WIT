@@ -46,6 +46,7 @@ Mapa del sitio (página: ruta)
 - Microsoft Copilot Jumpstart: /microsoft-copilot-jumpstart/
 - Aprende: /nosotros/aprende/
 - Trust Center: /nosotros/confianza/
+- Política del SGI: /nosotros/confianza/politica-sgi/
 - Nosotros: /nosotros/
 - Trabaja con nosotros: /nosotros/trabaja-con-nosotros/
 - Privacidad: /privacidad/

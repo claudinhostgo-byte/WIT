@@ -93,4 +93,5 @@ EN = {
         "Data protection is part of how we implement. In every project we take into account Chile's Law 21,719 and Peru's Law 29,733: we access only the personal data the project needs, we prefer test environments without real data, and we agree with the client on permissions, retention and traceability of the solution. When the client needs legal advice, we complement it with",
     'RegulaTec': 'RegulaTec',
     ', empresa legal aliada.': ', our partner law firm.',
+    'Lee nuestra Política del Sistema de Gestión Integrado →': 'Read our Integrated Management System Policy (in Spanish) →',
 }

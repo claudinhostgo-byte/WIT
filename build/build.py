@@ -241,7 +241,7 @@ def footer(r, lang='es'):
       <address class="footer-col"><strong>Contacto</strong><span><b class="footer-pais"><img class="flag" src="{r}assets/img/chile.svg" alt="" width="21" height="14">Chile</b>Av. Apoquindo 3039<br>Las Condes, Santiago</span><span><b class="footer-pais"><img class="flag" src="{r}assets/img/peru.svg" alt="" width="21" height="14">Perú</b>Av. Circunvalación del Golf Los Incas 170, Int. 702<br>Santiago de Surco, Lima</span><a href="tel:+56224096112">+56 2 2409 6112</a><a href="mailto:info@w-it.cl">info@w-it.cl</a><a class="link-green" href="{r}contacto/">Escríbenos →</a></address>
     </div>
     <div class="footer-bottom">
-      <nav aria-label="Legal"><a href="{r}privacidad/">Privacidad</a></nav>
+      <nav aria-label="Legal"><a href="{r}privacidad/">Privacidad</a>{"" if en else f'<a href="{r}{POLITICA_SGI_PAGE}">Política del SGI</a>'}</nav>
       <span>© 2026 W-IT SpA</span>
     </div>
   </div>
@@ -1641,7 +1641,8 @@ def confianza(r):
 {premios_section(r, fotos=False, bg='bg-blue')}
 <section class="section bg-soft"><div class="container grid grid-2 aligned">
   <div class="stack-20"><span class="eyebrow">ISO · SGS</span><h2 class="h2">ISO 9001 e ISO/IEC 27001</h2>
-    <p class="lead">Calidad y seguridad de la información, certificadas por SGS.</p></div>
+    <p class="lead">Calidad y seguridad de la información, certificadas por SGS.</p>
+    <p><a class="link-green" href="{r}{POLITICA_SGI_PAGE}">Lee nuestra Política del Sistema de Gestión Integrado →</a></p></div>
   <div class="iso-row"><img src="{r}assets/credenciales/SGS_ISO_9001_round_TCL_LR.jpg" alt="SGS ISO 9001" width="140" height="136"><img src="{r}assets/credenciales/SGS_ISO-IEC_27001_TCL_LR.jpg" alt="SGS ISO/IEC 27001" width="140" height="137"></div>
 </div></section>
 <section class="section bg-dark"><div class="container stack-40">
@@ -1653,6 +1654,52 @@ def confianza(r):
   </div>
 </div></section>
 {cta_final(r)}'''
+
+
+POLITICA_SGI_PAGE = 'nosotros/confianza/politica-sgi/'
+# Texto literal de "Política del SGI v03" (aprobada por el Gerente General y Representante Legal el 09-10-2026).
+# Si cambia la política, reemplazar el texto completo y la versión/fecha; no editar la redacción en el sitio.
+POLITICA_SGI_VERSION = ('3', '9 de octubre de 2026')
+POLITICA_SGI_COMPROMISOS = [
+    ('Proteger la información de W-IT', 'Implementar los controles necesarios para resguardar su confidencialidad, integridad y disponibilidad frente a accesos no autorizados, pérdidas, alteraciones o divulgaciones indebidas.'),
+    ('Cumplir los requisitos aplicables', 'Cumplir los requisitos legales, contractuales y de la organización relacionados con nuestros servicios, la seguridad de la información de W-IT y el uso y gestión responsable de herramientas de inteligencia artificial. Cuando trabajemos en los entornos de nuestros clientes, respetar los lineamientos de seguridad que ellos definan.'),
+    ('Identificar y gestionar los riesgos', 'Evaluar periódicamente los riesgos de calidad y de seguridad de la información, incluidas las amenazas y vulnerabilidades que puedan afectarla, junto con el impacto asociado a la inteligencia artificial, y adoptar medidas preventivas y correctivas para mitigarlos.'),
+    ('Mejora continua', 'Establecer objetivos medibles y revisar periódicamente nuestro desempeño en calidad, seguridad de la información y uso de la inteligencia artificial, para fortalecer de forma continua el SGI, nuestros procesos y nuestros servicios.'),
+    ('Fomentar la participación y la capacitación', 'Promover la participación de nuestros colaboradores y partes interesadas, y entregar la capacitación y concientización necesarias en calidad, seguridad de la información y uso responsable de herramientas de inteligencia artificial.'),
+    ('Gestionar el ciclo de vida de la información, los servicios y la inteligencia artificial', 'Incorporar la seguridad de la información y la calidad en todo el ciclo de vida de nuestros activos de información, servicios y soluciones tecnológicas, desde su diseño, desarrollo, adquisición y validación hasta su implementación, operación, monitoreo y retiro o eliminación segura. En las soluciones y herramientas de inteligencia artificial, asegurar además, en cada etapa, la supervisión humana, la trazabilidad de las decisiones y la rendición de cuentas sobre sus resultados.'),
+]
+
+
+def politica_sgi_page(r):
+    """Política del Sistema de Gestión Integrado (texto oficial v03), enlazada desde el Trust Center y el pie."""
+    v, fecha = POLITICA_SGI_VERSION
+    compromisos = ''.join(f'<li><strong>{escape(t)}:</strong> {escape(d)}</li>' for t, d in POLITICA_SGI_COMPROMISOS)
+    return f"""
+<section class="page-hero">
+  <div class="page-hero-trazo" aria-hidden="true"></div>
+  <div class="container page-hero-inner">
+    <div class="page-hero-copy">
+      <nav aria-label="Ruta"><ol class="crumbs"><li><a href="{r}">Inicio</a></li><li><a href="{r}nosotros/">Nosotros</a></li><li><a href="{r}nosotros/confianza/">Trust Center</a></li><li><a href="{r}{POLITICA_SGI_PAGE}">Política del SGI</a></li></ol></nav>
+      <span class="eyebrow">Trust Center</span>
+      <h1>Política del Sistema de Gestión Integrado</h1>
+      <p class="lead">Calidad, seguridad de la información y uso responsable de la inteligencia artificial.</p>
+      <p class="disclaimer">Versión {v} · Aprobada el {fecha}</p>
+    </div>
+  </div>
+</section>
+<section class="section bg-white"><div class="container legal">
+  <p>Esta política forma parte de la estrategia de W-IT, que busca desarrollar capacidades, personas y soluciones tecnológicas que generen valor sostenible.</p>
+  <p>Entregamos servicios de asesoría, consultoría, diseño y desarrollo de soluciones tecnológicas que acompañan el crecimiento de nuestros clientes. Nuestro trabajo se sustenta en una cultura de colaboración, aprendizaje continuo y responsabilidad, que promueve la calidad, la seguridad de la información y el uso responsable de la inteligencia artificial.</p>
+  <p>Para lograrlo, mantenemos un Sistema de Gestión Integrado (SGI) basado en las normas ISO 9001:2015, ISO/IEC 27001:2022 e ISO/IEC 42001:2023, que nos permite trabajar de forma planificada, segura y con foco en la mejora continua.</p>
+
+  <h2>Con esta política, nos comprometemos a:</h2>
+  <ol class="legal-list">{compromisos}</ol>
+
+  <h2>Alcance y revisión</h2>
+  <p>Esta política aplica a todas las personas que participan en las actividades incluidas en el alcance del SGI de W-IT y será revisada periódicamente para asegurar que se mantenga vigente, pertinente y eficaz.</p>
+  <p><strong>Gerente General y Representante Legal</strong><br>W-IT SpA</p>
+</div></section>
+{cta_final(r)}"""
 
 
 def simple_page(eyebrow, h1, bajada, crumbs, contenido):
@@ -2040,6 +2087,7 @@ def main():
     pages.append(write(TRABAJA_PAGE, 'Trabaja con nosotros · W-IT', 'Envía tu currículum a W-IT, partner Microsoft en Chile y Perú.', trabaja_page, 'nosotros'))
     ambos('nosotros/confianza/', 'Trust Center · W-IT', 'Credenciales verificables de W-IT.', confianza, 'nosotros')
     ambos('contacto/', 'Contacto · W-IT', 'Contacta a W-IT: proyectos, licencias y soporte Microsoft en Chile y Perú.', contacto)
+    pages.append(write(POLITICA_SGI_PAGE, 'Política del Sistema de Gestión Integrado (SGI) · W-IT', 'Política de calidad, seguridad de la información e inteligencia artificial de W-IT, basada en ISO 9001, ISO/IEC 27001 e ISO/IEC 42001.', politica_sgi_page, 'nosotros'))
     pages.append(write('privacidad/', 'Aviso de privacidad y tratamiento de datos · W-IT', 'Qué datos recolectamos en w-it.cl, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.', privacidad_page))
     # Equipo y Recursos/Observatorio IA: ocultos hasta tener contenido real (2026-10-01)
     # Cookies y Términos: ocultos hasta tener el texto de Administración y Finanzas (2026-10-07);

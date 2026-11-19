@@ -28,6 +28,7 @@ Los enlaces son rutas del sitio. Al responder, entrega la ruta como enlace Markd
 - [Microsoft Copilot Jumpstart](/microsoft-copilot-jumpstart/): W-IT es partner Ready Tier del programa Microsoft Copilot Jumpstart: talleres y engagements financiados por Microsoft para adoptar Copilot y agentes.
 - [Aprende](/nosotros/aprende/): WITEDUCA es la unidad de W-IT dedicada exclusivamente a la formación y adopción de IA y tecnologías Microsoft.
 - [Trust Center](/nosotros/confianza/): Credenciales verificables de W-IT.
+- [Política del SGI](/nosotros/confianza/politica-sgi/): Política de calidad, seguridad de la información e inteligencia artificial de W-IT, basada en ISO 9001, ISO/IEC 27001 e ISO/IEC 42001.
 - [Nosotros](/nosotros/): Historia, misión, visión y presencia de W-IT en Chile y Perú.
 - [Trabaja con nosotros](/nosotros/trabaja-con-nosotros/): Envía tu currículum a W-IT, partner Microsoft en Chile y Perú.
 - [Privacidad](/privacidad/): Qué datos recolectamos en w-it.cl, para qué los usamos, con quién los compartimos y cómo puedes controlarlos.
@@ -1742,19 +1743,60 @@ Microsoft Partner of the Year2020 WinnerProactive Customer ServiceLatinoamérica
 ISO · SGS
 ISO 9001 e ISO/IEC 27001
 Calidad y seguridad de la información, certificadas por SGS.
+Lee nuestra Política del Sistema de Gestión Integrado →
 Datos e IA
 Cómo protegemos tu información.
 MicrosoftSolutions Partner for Microsoft CloudLas seis designaciones Solutions Partner de Microsoft.
 MicrosoftAI Business SolutionsBusiness Applications y Modern Work, con especialización en Agentic Business Solutions.
 MicrosoftCloud & AI Platforms · SecurityData & AI, Digital & App Innovation, Infrastructure y Security.
-SGSISO 9001 · ISO/IEC 27001Calidad y seguridad de la información, certificadas por SGS.
 
 [Página: Trust Center · ruta /nosotros/confianza/]
+SGSISO 9001 · ISO/IEC 27001Calidad y seguridad de la información, certificadas por SGS.
 Azure Chile CentralDatos en Chile, en tu tenantImplementaciones en la región desde 2025.
 Política publicadaIA responsableSupervisión humana, trazabilidad y datos que no entrenan modelos.
 Protección de datos personales en cada implementación
 La protección de datos forma parte de nuestra forma de implementar. En cada proyecto consideramos la Ley 21.719 en Chile y la Ley 29733 en Perú: accedemos solo a los datos personales que el proyecto necesita, preferimos ambientes de prueba sin datos reales y acordamos con el cliente los permisos, la retención y la trazabilidad de la solución. Cuando el cliente necesita asesoría legal, la complementamos con RegulaTec, empresa legal aliada.
 ¿Conversamos sobre tu caso?
+Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.
+
+[Página: Trust Center · ruta /nosotros/confianza/]
+ConversemosConversa con nuestro agente
+
+### Política del SGI (/nosotros/confianza/politica-sgi/)
+
+[Página: Política del SGI · ruta /nosotros/confianza/politica-sgi/]
+Política de calidad, seguridad de la información e inteligencia artificial de W-IT, basada en ISO 9001, ISO/IEC 27001 e ISO/IEC 42001.
+
+Secciones: Con esta política, nos comprometemos a:; Alcance y revisión; ¿Conversamos sobre tu caso?
+
+[Página: Política del SGI · ruta /nosotros/confianza/politica-sgi/]
+Trust Center
+Política del Sistema de Gestión Integrado
+Calidad, seguridad de la información y uso responsable de la inteligencia artificial.
+Versión 3 · Aprobada el 9 de octubre de 2026
+Esta política forma parte de la estrategia de W-IT, que busca desarrollar capacidades, personas y soluciones tecnológicas que generen valor sostenible.
+Entregamos servicios de asesoría, consultoría, diseño y desarrollo de soluciones tecnológicas que acompañan el crecimiento de nuestros clientes. Nuestro trabajo se sustenta en una cultura de colaboración, aprendizaje continuo y responsabilidad, que promueve la calidad, la seguridad de la información y el uso responsable de la inteligencia artificial.
+
+[Página: Política del SGI · ruta /nosotros/confianza/politica-sgi/]
+Para lograrlo, mantenemos un Sistema de Gestión Integrado (SGI) basado en las normas ISO 9001:2015, ISO/IEC 27001:2022 e ISO/IEC 42001:2023, que nos permite trabajar de forma planificada, segura y con foco en la mejora continua.
+Con esta política, nos comprometemos a:
+Proteger la información de W-IT: Implementar los controles necesarios para resguardar su confidencialidad, integridad y disponibilidad frente a accesos no autorizados, pérdidas, alteraciones o divulgaciones indebidas.
+Cumplir los requisitos aplicables: Cumplir los requisitos legales, contractuales y de la organización relacionados con nuestros servicios, la seguridad de la información de W-IT y el uso y gestión responsable de herramientas de inteligencia artificial. Cuando trabajemos en los entornos de nuestros clientes, respetar los lineamientos de seguridad que ellos definan.
+
+[Página: Política del SGI · ruta /nosotros/confianza/politica-sgi/]
+Identificar y gestionar los riesgos: Evaluar periódicamente los riesgos de calidad y de seguridad de la información, incluidas las amenazas y vulnerabilidades que puedan afectarla, junto con el impacto asociado a la inteligencia artificial, y adoptar medidas preventivas y correctivas para mitigarlos.
+Mejora continua: Establecer objetivos medibles y revisar periódicamente nuestro desempeño en calidad, seguridad de la información y uso de la inteligencia artificial, para fortalecer de forma continua el SGI, nuestros procesos y nuestros servicios.
+Fomentar la participación y la capacitación: Promover la participación de nuestros colaboradores y partes interesadas, y entregar la capacitación y concientización necesarias en calidad, seguridad de la información y uso responsable de herramientas de inteligencia artificial.
+
+[Página: Política del SGI · ruta /nosotros/confianza/politica-sgi/]
+Gestionar el ciclo de vida de la información, los servicios y la inteligencia artificial: Incorporar la seguridad de la información y la calidad en todo el ciclo de vida de nuestros activos de información, servicios y soluciones tecnológicas, desde su diseño, desarrollo, adquisición y validación hasta su implementación, operación, monitoreo y retiro o eliminación segura. En las soluciones y herramientas de inteligencia artificial, asegurar además, en cada etapa, la supervisión humana, la trazabilidad de las decisiones y la rendición de cuentas sobre sus resultados.
+Alcance y revisión
+Esta política aplica a todas las personas que participan en las actividades incluidas en el alcance del SGI de W-IT y será revisada periódicamente para asegurar que se mantenga vigente, pertinente y eficaz.
+Gerente General y Representante Legal
+W-IT SpA
+¿Conversamos sobre tu caso?
+
+[Página: Política del SGI · ruta /nosotros/confianza/politica-sgi/]
 Cuéntanos qué tienes en mente y conversamos sobre tu escenario, sin compromiso.
 ConversemosConversa con nuestro agente
 
