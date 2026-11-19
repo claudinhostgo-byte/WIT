@@ -1793,7 +1793,7 @@ Gestionar el ciclo de vida de la información, los servicios y la inteligencia a
 Alcance y revisión
 Esta política aplica a todas las personas que participan en las actividades incluidas en el alcance del SGI de W-IT y será revisada periódicamente para asegurar que se mantenga vigente, pertinente y eficaz.
 Gerente General y Representante Legal
-W-IT SpA
+W-IT
 ¿Conversamos sobre tu caso?
 
 [Página: Política del SGI · ruta /nosotros/confianza/politica-sgi/]

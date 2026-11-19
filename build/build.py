@@ -1697,7 +1697,7 @@ def politica_sgi_page(r):
 
   <h2>Alcance y revisión</h2>
   <p>Esta política aplica a todas las personas que participan en las actividades incluidas en el alcance del SGI de W-IT y será revisada periódicamente para asegurar que se mantenga vigente, pertinente y eficaz.</p>
-  <p><strong>Gerente General y Representante Legal</strong><br>W-IT SpA</p>
+  <p><strong>Gerente General y Representante Legal</strong><br>W-IT</p>
 </div></section>
 {cta_final(r)}"""
 
