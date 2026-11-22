@@ -12,7 +12,7 @@ SITIO = 'https://w-it.cl/'
 # Presupuesto: máx. $200.000 CLP al mes para Dynamics + IA, más $100.000 CLP por un mes para W-IT Bridge (2026-10-30).
 # Google gasta como máximo 30,4 × el presupuesto diario en un mes.
 CAMPANAS = {
-    'dynamics': dict(nombre='W-IT | Búsqueda | Dynamics 365 | CL-PE', diario=2000,  # 4.200 hasta el 2026-11-09
+    'dynamics': dict(nombre='W-IT | Búsqueda | Dynamics 365 | CL-PE', diario=5000,  # 4.200 hasta el 2026-11-09; 2.000 hasta el 2026-11-22; horario lun–vie 10–17 desde el 2026-11-22 (aplicado en la web)
                      url=SITIO + 'implementacion/dynamics-365/', ruta=('dynamics-365', 'implementacion'),
                      sufijo='utm_source=google&utm_medium=cpc&utm_campaign=dynamics-365&utm_term={keyword}&utm_content={adgroupid}'),
     'ia': dict(nombre='W-IT | Búsqueda | IA y agentes Microsoft | CL-PE', diario=2300,
