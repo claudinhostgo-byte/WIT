@@ -234,6 +234,69 @@ NEGATIVAS_WITEDUCA = ['hazloconia', 'centeia', 'premium', 'licencia', 'licencias
                       'como utilizar', 'cómo utilizar']
 CAMPANA_WITEDUCA = 'WITEDUCA - Asesorías y Capacitaciones'
 NEGATIVAS_IA_S3 = ['precios', 'planes', 'plan', 'valor', 'costo', 'costos', 'cuánto vale', 'cuanto vale', 'premium', 'suscripción', 'suscripcion', 'tarifa', 'tarifas']
+# Control 2026-11-10: en 30 días los términos pelados de producto (124 clics, $44.686, 61 % del gasto de IA) no convirtieron.
+# Negativas de concordancia EXACTA: bloquean solo esa consulta y dejan pasar las largas ("implementar copilot studio", "licencias copilot").
+NEGATIVAS_IA_S4_EXACTAS = ['copilot', 'copilot 365', 'copilot studio', 'ia copilot', 'copilot ai', 'copilot 365 ai',
+                           'microsoft copilot', 'm365 copilot', 'copilot microsoft', 'copilot studio microsoft',
+                           'microsoft copilot studio', 'copilot pro', 'copilot ia']
+# WITEDUCA s2 (2026-11-11): filtrar a quien busca formación a medida para su equipo. La consulta ("curso de copilot") no
+# distingue al que quiere un tutorial del que quiere capacitar a su empresa, así que el filtro va en tres capas:
+# negativas de autoaprendizaje, palabras clave de frase (se pausan las amplias sin conversiones) y un anuncio que califica.
+GRUPO_WITEDUCA = 'ANUNCIOS WIT EDUCA'
+URL_WITEDUCA = 'https://witeduca.cl/oferta/'
+NEGATIVAS_WITEDUCA_S2 = ['tutorial', 'tutoriales', 'gratis', 'gratuito', 'gratuitos', 'gratuita', 'youtube', 'video', 'videos',
+                         'pdf', 'descargar', 'desde cero', 'principiantes', 'qué es', 'que es', 'cómo usar', 'como usar',
+                         'cómo crear', 'como crear', 'cómo hacer', 'como hacer', 'cómo automatizar', 'como automatizar',
+                         'udemy', 'coursera', 'platzi', 'domestika', 'edx', 'linkedin learning', 'google',
+                         'clases particulares', 'ejemplos']
+KEYWORDS_WITEDUCA_S2 = ['curso de ia para empresas', 'cursos de ia para empresas', 'curso inteligencia artificial para empresas',
+                        'capacitación ia para empresas', 'capacitación ia empresas', 'capacitación ia para equipos',
+                        'capacitación inteligencia artificial', 'capacitación ia', 'taller de ia para empresas',
+                        'clases de ia para empresas', 'capacitación in company', 'curso in company ia', 'curso cerrado para empresas',
+                        'capacitación a medida ia', 'curso copilot', 'curso copilot microsoft 365', 'taller copilot',
+                        'capacitación copilot', 'capacitación copilot empresas', 'curso claude para empresas',
+                        'capacitación claude', 'curso power automate para empresas', 'capacitación power platform empresas']
+# Amplias activas sin conversiones en 30 días (o con nivel de calidad bajo): se pausan; su versión de frase va arriba.
+# Se mantienen las dos amplias que convirtieron: "capacitacion inteligencia artificial" (6) y "capacitación ia empresas" (1).
+AMPLIAS_WITEDUCA_PAUSAR = ['curso copilot', 'capacitacion ia', 'curso copilot microsoft 365', 'capacitación ia para empresas',
+                           'implementación copilot', 'curso agentes de ia', 'consultoria inteligencia artificial',
+                           'consultora inteligencia artificial', 'consultora ia', 'gobernanza de ia',
+                           'curso copilot para empresas', 'capacitacion copilot', 'capacitación ia para equipos',
+                           'adopción copilot', 'política de uso de ia']
+# Anuncio que califica: todo lo que dice está en witeduca.cl/oferta/ (grupos cerrados, contenido adaptado, diagnóstico de brecha).
+TITULOS_WITEDUCA_S2 = ['Capacitación IA para Empresas', 'Cursos de IA para tu Equipo', 'Programa a Medida por Rol',
+                       'Grupos Cerrados por Empresa', 'Capacitación In-Company de IA', 'Curso Cerrado para tu Empresa',
+                       'Taller de Copilot para Equipos', 'Curso Microsoft 365 Copilot', 'Diagnóstico de Brecha por Rol',
+                       'Ejercicios con tus Documentos', 'Enseñan quienes Implementan IA', 'Para Equipos de tu Empresa',
+                       'Copilot y Power Platform', 'Cotiza un Programa a Medida', 'Agenda un Diagnóstico']
+DESCRIPCIONES_WITEDUCA_S2 = [
+    'Formación in-company para equipos de empresas: Microsoft 365 Copilot y Power Platform.',
+    'Grupos cerrados de tu organización. Ejercicios sobre tus propios documentos y procesos.',
+    'Aprende IA con quienes la implementan. Diagnóstico de brecha previo y rutas por nivel.',
+    'Para empresas que capacitan a sus equipos. Cotiza un programa a la medida de tu operación.']
+# Dynamics s4 (2026-11-22): grupo "Power Platform" en la campaña Dynamics 365 (negocio central: Dynamics 365 + Power Platform).
+# Landing propia /implementacion/power-platform/ con formulario. Las negativas de cursos, empleo y certificaciones ya están
+# a nivel de campaña (NEGATIVAS_COMUNES); aquí van solo las propias del grupo.
+GRUPO_PP = 'Power Platform · Apps y automatización'
+URL_PP = SITIO + 'implementacion/power-platform/'
+KEYWORDS_PP = [('implementación power platform', 'F'), ('partner power platform', 'F'), ('partner microsoft power platform', 'F'),
+               ('consultora power platform', 'F'), ('consultores power platform', 'F'), ('power platform empresas', 'F'),
+               ('implementación power apps', 'F'), ('desarrollo power apps', 'F'), ('consultora power apps', 'F'),
+               ('implementación power automate', 'F'), ('consultora power automate', 'F'),
+               ('automatización de procesos power automate', 'F'), ('power pages portal', 'F'),
+               ('power platform chile', 'E'), ('power platform peru', 'E'), ('power apps chile', 'E')]
+NEGATIVAS_PP = ['licencia', 'licencias', 'precio', 'precios', 'plantilla', 'plantillas', 'templates', 'ejemplos',
+                'pl-200', 'pl-300', 'pl-400', 'pl-600', 'developer plan', 'community', 'desktop']
+TITULOS_PP = ['Implementación Power Platform', 'Partner Power Platform', 'Consultora Power Platform',
+              'Power Apps y Power Automate', 'Apps de Negocio con Power Apps', 'Automatiza con Power Automate',
+              'Portales con Power Pages', 'Prototipo Antes de Construir', 'Gobierno y Políticas DLP',
+              'Power Platform en Chile y Perú', 'Solutions Partner Microsoft', 'Certificados ISO por SGS',
+              'Partner Microsoft desde 2014', 'Oficinas en Santiago y Lima', 'Conversemos sobre tu Proceso']
+DESCRIPCIONES_PP = [
+    'Implementamos Power Apps, Power Automate y Power Pages con gobierno y seguridad de TI.',
+    'Tus usuarios prueban un prototipo antes de construir. Sprints cortos con demo en cada uno.',
+    'Entornos, políticas de datos (DLP) y centro de excelencia para crecer con control.',
+    'Solutions Partner for Microsoft Cloud, con seis designaciones. Certificados ISO por SGS.']
 LIMITES = {'titulo': 30, 'descripcion': 90, 'ruta': 15, 'enlace': 25, 'enlace_desc': 35, 'destacado': 25}
 
 
@@ -272,6 +335,20 @@ def validar():
         chk('enlace_desc', d2, t)
     for t in DESTACADOS + [t for ts in DESTACADOS_CAMPANA.values() for t in ts]:
         chk('destacado', t, 'destacado')
+    for t in TITULOS_WITEDUCA_S2:
+        chk('titulo', t, 'WITEDUCA s2')
+    for d in DESCRIPCIONES_WITEDUCA_S2:
+        chk('descripcion', d, 'WITEDUCA s2')
+    if len(TITULOS_WITEDUCA_S2) > 15 or len(set(TITULOS_WITEDUCA_S2)) != len(TITULOS_WITEDUCA_S2):
+        errores.append('WITEDUCA s2: más de 15 títulos o repetidos')
+    for t in TITULOS_PP:
+        chk('titulo', t, 'Power Platform')
+    for d in DESCRIPCIONES_PP:
+        chk('descripcion', d, 'Power Platform')
+    if len(TITULOS_PP) > 15 or len(set(TITULOS_PP)) != len(TITULOS_PP):
+        errores.append('Power Platform: más de 15 títulos o repetidos')
+    for ruta in ('power-platform', 'implementacion'):
+        chk('ruta', ruta, 'Power Platform')
     if errores:
         raise SystemExit('\n'.join(errores))
 
@@ -388,6 +465,32 @@ def escribir_editor(anuncios, tipo):
              [{'Campaign': CAMPANA_WITEDUCA, 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_WITEDUCA], cols)
     escribir('google-ads-editor-negativas-ia-s3.csv',
              [{'Campaign': CAMPANAS['ia']['nombre'], 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_IA_S3],
+             cols)
+    # WITEDUCA s2 (2026-11-11): negativas de autoaprendizaje, palabras de frase, pausa de amplias y anuncio que califica
+    base = {'Campaign': CAMPANA_WITEDUCA, 'Ad Group': GRUPO_WITEDUCA}
+    anuncio = {**base, 'Ad type': 'Responsive search ad', 'Status': 'Enabled', 'Path 1': 'oferta', 'Path 2': 'ia-empresas',
+               'Final URL': URL_WITEDUCA}
+    anuncio.update({f'Headline {i}': t for i, t in enumerate(TITULOS_WITEDUCA_S2, 1)})
+    anuncio.update({f'Description {i}': d for i, d in enumerate(DESCRIPCIONES_WITEDUCA_S2, 1)})
+    escribir('google-ads-editor-witeduca-s2.csv',
+             [{'Campaign': CAMPANA_WITEDUCA, 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_WITEDUCA_S2]
+             + [{**base, 'Keyword': k, 'Criterion Type': 'Phrase', 'Status': 'Enabled'} for k in KEYWORDS_WITEDUCA_S2]
+             + [{**base, 'Keyword': k, 'Criterion Type': 'Broad', 'Status': 'Paused'} for k in AMPLIAS_WITEDUCA_PAUSAR]
+             + [anuncio], cols)
+    # Dynamics s4 (2026-11-22): grupo Power Platform con su landing, palabras, negativas del grupo y anuncio propio
+    nd4 = CAMPANAS['dynamics']['nombre']
+    base_pp = {'Campaign': nd4, 'Ad Group': GRUPO_PP}
+    anuncio_pp = {**base_pp, 'Ad type': 'Responsive search ad', 'Status': 'Enabled', 'Path 1': 'power-platform',
+                  'Path 2': 'implementacion', 'Final URL': URL_PP}
+    anuncio_pp.update({f'Headline {i}': t for i, t in enumerate(TITULOS_PP, 1)})
+    anuncio_pp.update({f'Description {i}': d for i, d in enumerate(DESCRIPCIONES_PP, 1)})
+    escribir('google-ads-editor-dynamics-power-platform.csv',
+             [{**base_pp, 'Ad Group Status': 'Enabled'}]
+             + [{**base_pp, 'Keyword': k, 'Criterion Type': tipo[m], 'Status': 'Enabled'} for k, m in KEYWORDS_PP]
+             + [{**base_pp, 'Keyword': k, 'Criterion Type': 'Negative Phrase'} for k in NEGATIVAS_PP]
+             + [anuncio_pp], cols)
+    escribir('google-ads-editor-negativas-ia-s4-exactas.csv',
+             [{'Campaign': CAMPANAS['ia']['nombre'], 'Keyword': k, 'Criterion Type': 'Negative Exact'} for k in NEGATIVAS_IA_S4_EXACTAS],
              cols)
 
 

@@ -1114,6 +1114,22 @@ LANDINGS = [
          productos='ia-y-agentes',
          herramientas=['autodiagnostico-ia', 'calculadora-copilot'],
          metodo='agentes'),
+    # Grupo "Power Platform" de la campaña Dynamics 365 (2026-11-22): Power Platform es parte del negocio central
+    dict(path='implementacion/power-platform/', campana='power-platform',
+         title='Implementación de Microsoft Power Platform en Chile y Perú · W-IT',
+         desc='Partner Microsoft que implementa Power Apps, Power Automate y Power Pages con gobierno y seguridad corporativa, para empresas en Chile y Perú.',
+         eyebrow='Microsoft Power Platform · Chile y Perú',
+         h1='Implementación de Microsoft Power Platform para empresas.',
+         lead='Construimos aplicaciones con Power Apps, automatizamos procesos con Power Automate y habilitamos portales con Power Pages, con gobierno y seguridad corporativa, para empresas en Chile y Perú.',
+         hechos=[('Solutions Partner for Microsoft Cloud', 'Con las seis designaciones Solutions Partner de Microsoft.'),
+                 ('Prototipo validado antes de construir', 'Tus usuarios prueban la solución en Power Apps o Power Automate antes de la construcción.'),
+                 ('Gobierno de Power Platform', 'Entornos, políticas de datos (DLP) y centro de excelencia para crecer con control.'),
+                 ('ISO 9001 · ISO/IEC 27001', 'Calidad y seguridad de la información, certificadas por SGS.')],
+         form_titulo='Conversemos sobre tu proyecto Power Platform',
+         intereses=('automatizacion-y-apps',),
+         productos='automatizacion-y-apps',
+         herramientas=[],
+         metodo='power-platform'),
 ]
 
 
@@ -1126,6 +1142,13 @@ def landing_page(l):
             que = f'<div class="grid sol-grid">{"".join(sol_card(r, SOL[x]) for x in l["soluciones"])}</div>'
         herr = {h['slug']: h for h in HERRAMIENTAS}
         tools = ''.join(tool_card(r, herr[x]) for x in l['herramientas'])
+        # Sin autodiagnóstico para el tema (p. ej. Power Platform): se omiten la sección y el enlace del hero
+        alt = (f'<p class="landing-alt">¿Prefieres partir con una evaluación rápida? <a href="#herramientas">Haz el autodiagnóstico gratuito {ARROW}</a></p>'
+               if tools else '')
+        tools_sec = f'''<section class="section bg-white" id="herramientas"><div class="container stack-40">
+  {section_head('Autodiagnóstico gratuito', '¿No sabes por dónde partir?', 'Responde unas preguntas y obtén una primera recomendación. Al final puedes enviarnos tus resultados para conversarlos.')}
+  <div class="grid grid-2">{tools}</div>
+</div></section>''' if tools else ''
         m = METODO[l['metodo']]
         clientes = [c for c in CLIENTES if c not in ALIANZAS][:12]
         return f'''
@@ -1137,7 +1160,7 @@ def landing_page(l):
       <h1>{escape(l['h1'])}</h1>
       <p class="lead">{escape(l['lead'])}</p>
       <ul class="diag-gets">{hechos}</ul>
-      <p class="landing-alt">¿Prefieres partir con una evaluación rápida? <a href="#herramientas">Haz el autodiagnóstico gratuito {ARROW}</a></p>
+      {alt}
     </div>
     {contact_form(r, l['form_titulo'], l['intereses'], en_pagina=True)}
   </div>
@@ -1148,10 +1171,7 @@ def landing_page(l):
   {que}
   <p class="disclaimer">Los íconos y nombres de productos son marcas de Microsoft y se usan solo para identificar los productos que implementamos.</p>
 </div></section>
-<section class="section bg-white" id="herramientas"><div class="container stack-40">
-  {section_head('Autodiagnóstico gratuito', '¿No sabes por dónde partir?', 'Responde unas preguntas y obtén una primera recomendación. Al final puedes enviarnos tus resultados para conversarlos.')}
-  <div class="grid grid-2">{tools}</div>
-</div></section>
+{tools_sec}
 <section class="section bg-blue"><div class="container stack-40">
   {section_head('Cómo lo hacemos', m['titulo'], m['resumen'])}
   {metodo_html(r, m)}
