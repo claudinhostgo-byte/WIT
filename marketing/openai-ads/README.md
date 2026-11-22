@@ -22,7 +22,8 @@ Pistas de contexto del grupo: empresas en Chile que evalúan un CRM o ERP de Mic
 
 ## Pendiente
 
-- **Facturación**: la completa Don Claudio (tarjeta, correo de facturas, razón social). OpenAI hace una retención temporal de autorización de CLP 3.675. Sin facturación la campaña no se publica.
+- ~~Facturación~~: completada por Don Claudio el 2026-11-22 (facturas a gastos@w-it.cl). Campaña y anuncio quedaron "En servicio" ese mismo día.
+- Conversiones: OpenAI sugiere configurar una fuente de datos; no se instaló etiqueta en el sitio. Los leads se miden en el CRM por `utm_source=chatgpt`.
 - Gobierno de la cuenta: sumar un segundo administrador o pasar a una cuenta corporativa.
 - Perú: agregar cuando OpenAI habilite la segmentación fuera de Chile.
 - Medir a 2 semanas: clics, costo y leads en el CRM con `utm_source=chatgpt`.
