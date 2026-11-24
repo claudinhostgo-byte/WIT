@@ -1512,3 +1512,7 @@ a.mega-js:hover { color: var(--green-dark); }
 /* W-Bridge: formulario en la propia página (campaña de Google Ads) */
 .bridge-contacto { background: var(--bg); }
 .bridge-contacto .contact-intro h2 { margin: 0; }
+
+/* Video comercial de W-Bridge */
+.bridge-video { max-width: 960px; width: 100%; margin: 0 auto; border-radius: 16px; overflow: hidden; background: #0f2a3d; box-shadow: var(--shadow-2); border: 1px solid var(--line); }
+.bridge-video video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }

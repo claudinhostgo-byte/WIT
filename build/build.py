@@ -1370,6 +1370,19 @@ def bridge_flujo(r):
 </div></section>"""
 
 
+BRIDGE_VIDEO_VER = 1  # subir si se reemplaza el video (/assets/ se cachea 7 días)
+
+
+def bridge_video(r):
+    """Video comercial de W-Bridge (2:18). Sin autoplay: carga solo al reproducir."""
+    v = BRIDGE_VIDEO_VER
+    return f"""<section class="section section-compact bg-soft" aria-labelledby="bv-title"><div class="container stack-40">
+  {section_head('Video', '<span id="bv-title">Qué hace W-Bridge, en video.</span>', 'Cómo llegan WhatsApp e Instagram a Dynamics 365 Contact Center con W-Bridge. Duración: 2:18.')}
+  <div class="bridge-video"><video controls preload="none" playsinline poster="{r}assets/video/w-bridge-comercial-poster.webp?v={v}" width="1920" height="1080" aria-label="Video comercial de W-Bridge">
+    <source src="{r}assets/video/w-bridge-comercial.mp4?v={v}" type="video/mp4"></video></div>
+</div></section>"""
+
+
 def bridge(r):
     """Página de producto de W-Bridge, compacta: qué hace y cómo funciona, sobre qué está construido, seguridad (solo lo confirmado), qué incluye y requisitos."""
     pilares = [('Directo con Meta', 'APIs oficiales de WhatsApp Business Platform e Instagram. Tus cuentas quedan en tu Meta Business Manager.'),
@@ -1407,6 +1420,7 @@ def bridge(r):
                      'WhatsApp e Instagram dentro de Dynamics 365, sin un proveedor de mensajería en el medio.',
                      'Para cuentas Business de Meta. W-Bridge recibe cada mensaje desde las APIs oficiales, identifica al cliente y lo entrega a Dynamics 365 Customer Service, Dynamics 365 Contact Center o a un agente de Copilot Studio.',
                      ctas=False, extra=extra, aside=aside) + f"""
+{bridge_video(r)}
 {bridge_flujo(r)}
 <section class="section section-compact bg-soft"><div class="container bridge-cols">
   <div><span class="eyebrow">Qué hace</span><h2 class="h2">Cuatro cosas que un proveedor de mensajería no te da.</h2><ol class="bridge-list">{pil}</ol></div>
