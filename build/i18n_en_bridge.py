@@ -1,9 +1,7 @@
 """Inglés: productos/w-it-bridge/ y el diagrama "Cómo funciona" (compartido con contact center)."""
 
 EN = {
-    'Video': 'Video',
-    'Qué hace W-Bridge, en video.': 'What W-Bridge does, on video.',
-    'Cómo llegan WhatsApp e Instagram a Dynamics 365 Contact Center con W-Bridge. Duración: 2:18.': 'How WhatsApp and Instagram reach Dynamics 365 Contact Center with W-Bridge. Length: 2:18. Audio in Spanish.',
+    'Video · 2:18': 'Video · 2:18 (audio in Spanish)',
     'Video comercial de W-Bridge': 'W-Bridge commercial video',
     'Dynamics 365': 'Dynamics 365',
     'Cómo funciona': 'How it works',
