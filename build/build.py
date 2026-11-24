@@ -943,7 +943,7 @@ FLUJO_RUTAS = {  # id de ruta -> (trazo, clase de color, nodos que la encienden,
     'chat': ('M190 401 H610 Q640 401 640 371 V241 Q640 226 655 226 H1070', 'fl-chat', ('chat', 'plataforma', 'agente-ia', 'ejecutivo'), ['1.3s'])}
 def bridge_mark(r, x, y, w):
     """Símbolo de W-Bridge (assets/logos/w-bridge-simbolo.webp, cuadrado) dentro del SVG del diagrama, de lado w."""
-    return f'<image href="{r}assets/logos/w-bridge-simbolo.webp" x="{x}" y="{y}" width="{w}" height="{w}" preserveAspectRatio="xMidYMid meet"/>'
+    return f'<image href="{r}assets/logos/w-bridge-simbolo.webp?v=2" x="{x}" y="{y}" width="{w}" height="{w}" preserveAspectRatio="xMidYMid meet"/>'
 # Íconos de 24×24 por nodo: ('ms', ícono oficial de Microsoft), ('logo', archivo en assets/logos, con texto si falta) o ('svg', trazado propio / Simple Icons CC0)
 _SVG_SBC = '<rect x="2.5" y="7" width="19" height="10" rx="2" fill="none" stroke="#1B3A50" stroke-width="2"/><path d="M6 12h2M10 12h2M14 12h2" stroke="#54BA00" stroke-width="2.4" stroke-linecap="round"/><path d="M8 7V4M16 7V4M8 17v3M16 17v3" stroke="#1B3A50" stroke-width="2" stroke-linecap="round"/>'
 FLUJO_ICONOS = {
@@ -1316,7 +1316,7 @@ def caso_page(c):
 def productos_index(r):
     items = [('w-it-bridge', 'W-Bridge', 'Conector de WhatsApp e Instagram para Dynamics 365 y Copilot Studio, con conexión directa a Meta.'),
              ('agentes-w-it', 'Agentes W-IT', 'Agentes y aceleradores publicados en Microsoft Marketplace.')]
-    cards = ''.join(f'<a class="card" href="{r}productos/{a}/">{f"<img class=\"prod-mark\" src=\"{r}assets/logos/w-bridge-simbolo.webp\" alt=\"\" width=\"48\" height=\"48\">" if a == "w-it-bridge" else f"<span class=\"icon-slot\" aria-hidden=\"true\">{SHIELD}</span>"}<h3>{b}</h3><p>{c}</p><span class="card-cta">Conocer {ARROW}</span></a>' for a, b, c in items)
+    cards = ''.join(f'<a class="card" href="{r}productos/{a}/">{f"<img class=\"prod-mark\" src=\"{r}assets/logos/w-bridge-simbolo.webp?v=2\" alt=\"\" width=\"48\" height=\"48\">" if a == "w-it-bridge" else f"<span class=\"icon-slot\" aria-hidden=\"true\">{SHIELD}</span>"}<h3>{b}</h3><p>{c}</p><span class="card-cta">Conocer {ARROW}</span></a>' for a, b, c in items)
     return page_hero(r, [('Productos', 'productos/')], 'Productos W-IT', 'Soluciones propias sobre la nube de Microsoft.',
                      'Productos desarrollados por W-IT sobre Azure y Dynamics 365.', ctas=False) + f'''
 <section class="section bg-soft"><div class="container"><div class="grid grid-300">{cards}</div></div></section>
@@ -1400,7 +1400,7 @@ def bridge(r):
     req = ''.join(f'<li>{escape(t)}</li>' for t in requisitos)
     extra = (f'<div class="btn-row"><a class="btn btn-lg btn-primary" href="#contacto">Conversemos</a>'
              f'<a class="btn btn-lg btn-outline" href="{r}soluciones/contact-center/">Ver el contact center completo</a></div>')
-    aside = (f'<div class="page-hero-aside bridge-lockup"><img src="{r}assets/logos/w-bridge-logo.webp" alt="Logo de W-Bridge" width="160" height="160">'
+    aside = (f'<div class="page-hero-aside bridge-lockup"><img src="{r}assets/logos/w-bridge-logo.webp?v=2" alt="Logo de W-Bridge" width="160" height="160">'
              f'<div><span class="bridge-tag">Conector de mensajería · Producto W-IT</span>'
              f'{pills(["SaaS o en tu nube", "Dynamics 365", "Copilot Studio", "Meta Business"])}</div></div>')
     return page_hero(r, [('Productos', 'productos/'), ('W-Bridge', 'productos/w-it-bridge/')], 'Producto W-IT · Conector de mensajería',
@@ -1414,7 +1414,7 @@ def bridge(r):
   <p class="disclaimer">Los íconos y nombres de productos son marcas de Microsoft; WhatsApp e Instagram son marcas de Meta. Se usan solo para identificar los productos sobre los que trabajamos.</p></div>
 </div></section>
 <section class="section section-compact bg-dark"><div class="container bridge-cols">
-  <div class="trust-copy"><img class="bridge-mark-dark" src="{r}assets/logos/w-bridge-logo-fondo-azul.webp" alt="" width="96" height="96"><span class="eyebrow">Seguridad</span><h2 class="h2">Lo que podemos afirmar hoy.</h2>
+  <div class="trust-copy"><img class="bridge-mark-dark" src="{r}assets/logos/w-bridge-logo-fondo-azul.webp?v=2" alt="" width="96" height="96"><span class="eyebrow">Seguridad</span><h2 class="h2">Lo que podemos afirmar hoy.</h2>
     <p>Publicamos solo los controles confirmados por el equipo que opera el conector. La ficha de seguridad completa se entrega bajo acuerdo de confidencialidad y la revisamos con tu equipo antes de cualquier proyecto.</p>
     <a class="btn btn-green" href="{r}contacto/">Pedir la ficha de seguridad</a></div>
   <ul class="checks checks-light">{seg}</ul>
