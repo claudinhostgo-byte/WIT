@@ -53,7 +53,7 @@ EN = {
     'We Make It Simple': 'We Make It Simple',
     'ISO 9001 · ISO 27001 (SGS)': 'ISO 9001 · ISO 27001 (SGS)',
     'Explora': 'Explore',
-    'W-IT Bridge': 'W-IT Bridge',
+    'W-Bridge': 'W-Bridge',
     'Contacto': 'Contact',
     'Las Condes, Santiago': 'Las Condes, Santiago',
     'Santiago de Surco, Lima': 'Santiago de Surco, Lima',

@@ -120,8 +120,8 @@ EN = {
     'El IVR solo transfiere; no resuelve.': 'The IVR only transfers; it does not resolve.',
     'Así viaja cada llamada y cada mensaje hasta tu equipo.': 'This is how every call and message travels to your team.',
     'Haz clic en cada parte para ver qué hace. Donde dice "o", eliges según lo que ya tienes.': 'Click each part to see what it does. Where it says "or", you choose based on what you already have.',
-    'Diagrama: llamadas, WhatsApp, Instagram, chat y correo entran por una de dos conexiones a elegir (SBC AudioCodes o tu propio SBC para la voz; W-IT Bridge o un proveedor como Twilio para la mensajería) a Dynamics 365 Contact Center, los atiende primero un agente de IA y, si hace falta, deriva al ejecutivo con contexto':
-        'Diagram: calls, WhatsApp, Instagram, chat and email come in through one of two connections of your choice (an AudioCodes SBC or your own SBC for voice; W-IT Bridge or a provider such as Twilio for messaging) to Dynamics 365 Contact Center, an AI agent answers first and, if needed, hands off to a human agent with context',
+    'Diagrama: llamadas, WhatsApp, Instagram, chat y correo entran por una de dos conexiones a elegir (SBC AudioCodes o tu propio SBC para la voz; W-Bridge o un proveedor como Twilio para la mensajería) a Dynamics 365 Contact Center, los atiende primero un agente de IA y, si hace falta, deriva al ejecutivo con contexto':
+        'Diagram: calls, WhatsApp, Instagram, chat and email come in through one of two connections of your choice (an AudioCodes SBC or your own SBC for voice; W-Bridge or a provider such as Twilio for messaging) to Dynamics 365 Contact Center, an AI agent answers first and, if needed, hands off to a human agent with context',
     'Conexión': 'Connection',
     'Plataforma': 'Platform',
     'Ejecutivo': 'Agent',
@@ -168,8 +168,8 @@ EN = {
     'Hecho para cuentas Business de Meta: los mensajes llegan desde la API oficial de WhatsApp Business Platform. La cuenta, el número y la verificación en Meta Business Manager siguen siendo tuyos.':
         'Built for Meta Business accounts: messages arrive from the official WhatsApp Business Platform API. The account, the number and the verification in Meta Business Manager remain yours.',
     'Mensajes directos de Instagram': 'Instagram direct messages',
-    'Para cuentas profesionales de Instagram vinculadas a tu Meta Business Manager. Los mensajes directos entran al mismo escritorio que WhatsApp y las llamadas. Instagram no es un canal nativo de Dynamics 365: por eso existe W-IT Bridge.':
-        'For Instagram professional accounts linked to your Meta Business Manager. Direct messages come into the same desktop as WhatsApp and calls. Instagram is not a native Dynamics 365 channel: that is why W-IT Bridge exists.',
+    'Para cuentas profesionales de Instagram vinculadas a tu Meta Business Manager. Los mensajes directos entran al mismo escritorio que WhatsApp y las llamadas. Instagram no es un canal nativo de Dynamics 365: por eso existe W-Bridge.':
+        'For Instagram professional accounts linked to your Meta Business Manager. Direct messages come into the same desktop as WhatsApp and calls. Instagram is not a native Dynamics 365 channel: that is why W-Bridge exists.',
     'Entran por los canales nativos de Dynamics 365 y comparten el mismo historial del cliente que las llamadas y los mensajes.': 'They come in through the native Dynamics 365 channels and share the same customer history as calls and messages.',
     'Chat web': 'Web chat',
     'Correo': 'Email',
@@ -183,14 +183,14 @@ EN = {
     'Si tu empresa ya opera un SBC certificado para Microsoft Teams, lo conectamos a Teams Phone por Direct Routing y no necesitas comprar otro. Es el caso típico de operadores y empresas de telecomunicaciones.':
         'If your company already runs an SBC certified for Microsoft Teams, we connect it to Teams Phone through Direct Routing and you do not need to buy another one. This is the typical case for carriers and telecom companies.',
     'SBC certificado para Teams': 'Teams-certified SBC',
-    'Opción 1 de mensajería: W-IT Bridge': 'Messaging option 1: W-IT Bridge',
+    'Opción 1 de mensajería: W-Bridge': 'Messaging option 1: W-Bridge',
     'Desarrollado por W-IT para cuentas Business de Meta. Recibe cada mensaje de WhatsApp e Instagram directo desde las APIs de Meta, identifica al cliente en el CRM y lo entrega a la cola correcta. No almacena conversaciones y corre en la nube de W-IT o en la tuya.':
         "Developed by W-IT for Meta Business accounts. It receives every WhatsApp and Instagram message directly from Meta's APIs, identifies the customer in the CRM and delivers it to the right queue. It does not store conversations and runs in W-IT's cloud or in yours.",
     'Cuentas Business de Meta': 'Meta Business accounts',
-    'Conocer W-IT Bridge': 'Learn about W-IT Bridge',
+    'Conocer W-Bridge': 'Learn about W-Bridge',
     'Opción 2 de mensajería: Twilio u otro proveedor': 'Messaging option 2: Twilio or another provider',
-    'WhatsApp también puede entrar por un proveedor de mensajería (BSP) como Twilio, con el canal de WhatsApp de Dynamics 365. W-IT Bridge es la alternativa cuando quieres conexión directa con Meta, Instagram incluido y enrutamiento por regla.':
-        'WhatsApp can also come in through a messaging provider (BSP) such as Twilio, using the Dynamics 365 WhatsApp channel. W-IT Bridge is the alternative when you want a direct connection to Meta, Instagram included and rule-based routing.',
+    'WhatsApp también puede entrar por un proveedor de mensajería (BSP) como Twilio, con el canal de WhatsApp de Dynamics 365. W-Bridge es la alternativa cuando quieres conexión directa con Meta, Instagram incluido y enrutamiento por regla.':
+        'WhatsApp can also come in through a messaging provider (BSP) such as Twilio, using the Dynamics 365 WhatsApp channel. W-Bridge is the alternative when you want a direct connection to Meta, Instagram included and rule-based routing.',
     'BSP': 'BSP',
     'Canal WhatsApp de Dynamics 365': 'Dynamics 365 WhatsApp channel',
     'Plataforma: colas y habilidades por canal': 'Platform: queues and skills per channel',

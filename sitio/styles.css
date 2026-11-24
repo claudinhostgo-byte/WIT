@@ -1477,7 +1477,7 @@ a.mega-js:hover { color: var(--green-dark); }
 @media (prefers-reduced-motion: reduce) { .fl-info { animation: none; } }
 @media (max-width: 640px) { .fl-panel { padding: 20px; } .fl-info h3 { font-size: 18px; } .fl-info p { font-size: 15px; } }
 
-/* Página de producto W-IT Bridge (compacta) */
+/* Página de producto W-Bridge (compacta) */
 .section-compact { padding: 56px 0; }
 .bridge-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; align-items: start; }
 .bridge-cols .h2 { font-size: 26px; margin: 8px 0 20px; }
@@ -1499,16 +1499,16 @@ a.mega-js:hover { color: var(--green-dark); }
 .checks-light strong { color: #fff; }
 .trust-copy .btn { align-self: flex-start; }
 .bridge-lockup { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-2); }
-.bridge-lockup img { width: 150px; height: 75px; }
-.bridge-mark-dark { width: 88px; height: 44px; margin-bottom: 4px; }
+.bridge-lockup img { width: 160px; height: auto; aspect-ratio: 1; object-fit: contain; }
+.bridge-mark-dark { width: 96px; height: auto; aspect-ratio: 1; object-fit: contain; border-radius: 12px; margin-bottom: 4px; }
 .bridge-lockup > div { display: flex; flex-direction: column; gap: 8px; }
 .bridge-name { font-size: 24px; font-weight: 700; color: var(--navy); line-height: 1.1; }
 .bridge-tag { font-size: 14px; color: var(--muted); }
-.prod-mark { width: 72px; height: 36px; }
+.prod-mark { width: 48px; height: 48px; object-fit: contain; }
 .fl-more { margin: 6px 0 0; }
 @media (max-width: 900px) { .bridge-cols { grid-template-columns: 1fr; gap: 36px; } .bridge-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .bridge-stack { grid-template-columns: 1fr; } }
 
-/* W-IT Bridge: formulario en la propia página (campaña de Google Ads) */
+/* W-Bridge: formulario en la propia página (campaña de Google Ads) */
 .bridge-contacto { background: var(--bg); }
 .bridge-contacto .contact-intro h2 { margin: 0; }
